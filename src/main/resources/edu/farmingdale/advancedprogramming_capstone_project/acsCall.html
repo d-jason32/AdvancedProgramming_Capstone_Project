@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Azure Communication Services - Calling</title>
+    <!-- Load ACS JavaScript libraries from CDN -->
+    <script src="https://unpkg.com/@azure/communication-common@1.2.0/dist/acsCommon.min.js"></script>
+    <script src="https://unpkg.com/@azure/communication-calling@1.0.0-beta.1/dist/acsCalling.min.js"></script>
+</head>
+<body>
+<h1>ACS Calling Quickstart</h1>
+<input id="token-input" type="text" placeholder="User access token" style="width:200px; margin-bottom:1em;" />
+<button id="token-submit" type="button">Submit</button>
+<br />
+<input id="callee-id-input" type="text" placeholder="Callee id" style="width:200px; margin-bottom:1em; display: block;" />
+<div>
+    <button id="call-button" type="button" disabled>Start Call</button>
+    <button id="accept-call-button" type="button" disabled>Accept Call</button>
+    <button id="hang-up-button" type="button" disabled>Hang Up</button>
+</div>
+<script>
+    const { CallClient } = window.AzureCommunicationCalling;
+    const { AzureCommunicationTokenCredential } = window.AzureCommunicationCommon;
+
+    let call, incomingCall, callAgent, deviceManager, tokenCredential;
+    const userToken = document.getElementById("token-input");
+    const calleeInput = document.getElementById("callee-id-input");
+    const submitToken = document.getElementById("token-submit");
+    const callButton = document.getElementById("call-button");
+    const hangUpButton = document.getElementById("hang-up-button");
+    const acceptCallButton = document.getElementById("accept-call-button");
+
+    submitToken.addEventListener("click", async () => {
+        const callClient = new CallClient();
+        const userTokenCredential = userToken.value;
+        try {
+            tokenCredential = new AzureCommunicationTokenCredential(userTokenCredential);
+            callAgent = await callClient.createCallAgent(tokenCredential);
+            deviceManager = await callClient.getDeviceManager();
+            await deviceManager.askDevicePermission({ audio: true });
+            callButton.disabled = false;
+            submitToken.disabled = true;
+            callAgent.on('incomingCall', async (args) => {
+                try {
+                    incomingCall = args.incomingCall;
+                    acceptCallButton.disabled = false;
+                    callButton.disabled = true;
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+        } catch (error) {
+            alert("Please submit a valid token!");
+        }
+    });
+
+    callButton.addEventListener("click", () => {
+        const userToCall = calleeInput.value;
+        call = callAgent.startCall([{ id: userToCall }], {});
+        hangUpButton.disabled = false;
+        callButton.disabled = true;
+    });
+
+    hangUpButton.addEventListener("click", () => {
+        call.hangUp({ forEveryone: true });
+        hangUpButton.disabled = true;
+        callButton.disabled = false;
+        submitToken.disabled = false;
+        acceptCallButton.disabled = true;
+    });
+
+    acceptCallButton.addEventListener("click", async () => {
+        try {
+            call = await incomingCall.accept();
+            acceptCallButton.disabled = true;
+            hangUpButton.disabled = false;
+        } catch (error) {
+            console.error(error);
+        }
+    });
+</script>
+</body>
+</html>
