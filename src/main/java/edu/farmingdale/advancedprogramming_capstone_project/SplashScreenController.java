@@ -3,7 +3,7 @@ package edu.farmingdale.advancedprogramming_capstone_project;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class HelloController {
+public class SplashScreenController {
     @FXML
     private Label welcomeText;
 
