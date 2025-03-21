@@ -75,6 +75,11 @@
             <version>${jjwt.version}</version>
             <scope>runtime</scope>
         </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-communication-identity</artifactId>
+            <version>1.6.3</version>
+        </dependency>
     </dependencies>
 
     <build>

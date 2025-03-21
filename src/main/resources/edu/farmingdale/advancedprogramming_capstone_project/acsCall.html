@@ -2,82 +2,58 @@
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Azure Communication Services - Calling</title>
+    <title>ACS Calling - Join Session</title>
     <!-- Load ACS JavaScript libraries from CDN -->
     <script src="https://unpkg.com/@azure/communication-common@1.2.0/dist/acsCommon.min.js"></script>
     <script src="https://unpkg.com/@azure/communication-calling@1.0.0-beta.1/dist/acsCalling.min.js"></script>
+    <style>
+        #video-container {
+            width: 640px;
+            height: 480px;
+            background-color: #000;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
-<h1>ACS Calling Quickstart</h1>
-<input id="token-input" type="text" placeholder="User access token" style="width:200px; margin-bottom:1em;" />
-<button id="token-submit" type="button">Submit</button>
-<br />
-<input id="callee-id-input" type="text" placeholder="Callee id" style="width:200px; margin-bottom:1em; display: block;" />
-<div>
-    <button id="call-button" type="button" disabled>Start Call</button>
-    <button id="accept-call-button" type="button" disabled>Accept Call</button>
-    <button id="hang-up-button" type="button" disabled>Hang Up</button>
+<h1>ACS Calling Interface</h1>
+<div id="video-container">
+    <video id="remoteVideo" autoplay playsinline></video>
 </div>
 <script>
+    // Get the token from the URL query parameter.
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (!token) {
+        alert("No access token provided.");
+    }
+    console.log("Using token:", token);
+
     const { CallClient } = window.AzureCommunicationCalling;
     const { AzureCommunicationTokenCredential } = window.AzureCommunicationCommon;
 
-    let call, incomingCall, callAgent, deviceManager, tokenCredential;
-    const userToken = document.getElementById("token-input");
-    const calleeInput = document.getElementById("callee-id-input");
-    const submitToken = document.getElementById("token-submit");
-    const callButton = document.getElementById("call-button");
-    const hangUpButton = document.getElementById("hang-up-button");
-    const acceptCallButton = document.getElementById("accept-call-button");
+    let callClient, callAgent, deviceManager, call;
+    const remoteVideoElement = document.getElementById("remoteVideo");
 
-    submitToken.addEventListener("click", async () => {
-        const callClient = new CallClient();
-        const userTokenCredential = userToken.value;
+    (async () => {
         try {
-            tokenCredential = new AzureCommunicationTokenCredential(userTokenCredential);
+            callClient = new CallClient();
+            const tokenCredential = new AzureCommunicationTokenCredential(token);
             callAgent = await callClient.createCallAgent(tokenCredential);
             deviceManager = await callClient.getDeviceManager();
-            await deviceManager.askDevicePermission({ audio: true });
-            callButton.disabled = false;
-            submitToken.disabled = true;
-            callAgent.on('incomingCall', async (args) => {
-                try {
-                    incomingCall = args.incomingCall;
-                    acceptCallButton.disabled = false;
-                    callButton.disabled = true;
-                } catch (error) {
-                    console.error(error);
-                }
-            });
+            await deviceManager.askDevicePermission({ audio: true, video: true });
+            // For testing, if no call is active, start a new call (this may open your local camera stream).\n
+            call = callAgent.startCall([], {}); // Starting a call with no participants can sometimes loop back to your device (if supported)\n
+            console.log("Call started.");
+            // Here you might add event listeners for remote video streams if you had participants.\n
         } catch (error) {
-            alert("Please submit a valid token!");
+            console.error("Error starting call:", error);
+            alert("Error starting call: " + error.message);
         }
-    });
-
-    callButton.addEventListener("click", () => {
-        const userToCall = calleeInput.value;
-        call = callAgent.startCall([{ id: userToCall }], {});
-        hangUpButton.disabled = false;
-        callButton.disabled = true;
-    });
-
-    hangUpButton.addEventListener("click", () => {
-        call.hangUp({ forEveryone: true });
-        hangUpButton.disabled = true;
-        callButton.disabled = false;
-        submitToken.disabled = false;
-        acceptCallButton.disabled = true;
-    });
-
-    acceptCallButton.addEventListener("click", async () => {
-        try {
-            call = await incomingCall.accept();
-            acceptCallButton.disabled = true;
-            hangUpButton.disabled = false;
-        } catch (error) {
-            console.error(error);
-        }
-    });
+    })();
 </script>
 </body>
 </html>

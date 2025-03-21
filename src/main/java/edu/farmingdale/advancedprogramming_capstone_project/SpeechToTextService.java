@@ -14,16 +14,15 @@ public class SpeechToTextService {
     private TextArea transcriptionArea;
 
     /**
-     * Configures the Speech SDK with the provided subscription and region.
+     * Configures the Speech SDK with your subscription key and region.
      * @param subscriptionKey Azure Speech subscription key.
-     * @param region          Azure region (e.g., "eastus").
-     * @param transcriptionArea The TextArea for displaying transcription.
+     * @param region Azure region (e.g., "eastus").
+     * @param transcriptionArea TextArea to display transcription.
      */
     public SpeechToTextService(String subscriptionKey, String region, TextArea transcriptionArea) {
         this.transcriptionArea = transcriptionArea;
         try {
             SpeechConfig config = SpeechConfig.fromSubscription(subscriptionKey, region);
-            // Optionally set language: config.setSpeechRecognitionLanguage("en-US");
             AudioConfig audioConfig = AudioConfig.fromDefaultMicrophoneInput();
             recognizer = new SpeechRecognizer(config, audioConfig);
         } catch (Exception ex) {
@@ -35,9 +34,9 @@ public class SpeechToTextService {
      * Starts continuous speech recognition.
      */
     public void startRecognition() {
-        recognizer.recognizing.addEventListener((s, e) -> Platform.runLater(() ->
-                transcriptionArea.setText("Recognizing: " + e.getResult().getText())
-        ));
+        recognizer.recognizing.addEventListener((s, e) ->
+                Platform.runLater(() -> transcriptionArea.setText("Recognizing: " + e.getResult().getText()))
+        );
 
         recognizer.recognized.addEventListener((s, e) -> {
             if (e.getResult().getReason() == ResultReason.RecognizedSpeech) {
@@ -46,20 +45,20 @@ public class SpeechToTextService {
                     transcriptionArea.setText(currentText + "\nFinal: " + e.getResult().getText());
                 });
             } else if (e.getResult().getReason() == ResultReason.NoMatch) {
-                Platform.runLater(() -> transcriptionArea.appendText("\nNo speech could be recognized."));
+                Platform.runLater(() -> transcriptionArea.appendText("\nNo speech recognized."));
             }
         });
 
-        recognizer.canceled.addEventListener((s, e) -> Platform.runLater(() ->
-                transcriptionArea.appendText("\nRecognition canceled: " + e.getErrorDetails())
-        ));
+        recognizer.canceled.addEventListener((s, e) ->
+                Platform.runLater(() -> transcriptionArea.appendText("\nRecognition canceled: " + e.getErrorDetails()))
+        );
 
-        recognizer.sessionStarted.addEventListener((s, e) -> Platform.runLater(() ->
-                transcriptionArea.appendText("\nSession started.")
-        ));
-        recognizer.sessionStopped.addEventListener((s, e) -> Platform.runLater(() ->
-                transcriptionArea.appendText("\nSession stopped.")
-        ));
+        recognizer.sessionStarted.addEventListener((s, e) ->
+                Platform.runLater(() -> transcriptionArea.appendText("\nSession started."))
+        );
+        recognizer.sessionStopped.addEventListener((s, e) ->
+                Platform.runLater(() -> transcriptionArea.appendText("\nSession stopped."))
+        );
 
         recognizer.startContinuousRecognitionAsync();
     }
