@@ -6,64 +6,97 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
 import java.io.IOException;
 
 /**
- * MainController handles the main menu options, including:
- * - Creating a session
- * - Opening the ACS Calling interface (video chat)
- * - Generating lesson summaries
- * - Opening live transcription
+ * MainController handles the main menu functions:
+ * - Starting a new call (generates a session code and automatically gets an ACS token)
+ * - Joining an existing call using the session code
+ * - Generating AI lesson summaries via the Gemini API
+ * - Opening a live transcription window
+ * - Generating an ACS token for testing (automatically copied to clipboard)
  */
 public class MainController {
 
-    @FXML private Label sessionLabel;  // Displays the session code
+    @FXML private Label sessionLabel;         // Displays generated session code
+    @FXML private TextField joinSessionField;   // Field for entering a session code to join
+    @FXML private Label summaryLabel;           // Displays AI summary (for summary window)
+
+    // Your ACS connection string from the Azure portal
+    private final String acsConnectionString = "endpoint=https://whiteboardcommunicationservices.unitedstates.communication.azure.com/;accesskey=4zUSuTrFjA9xvqjF5glfzQAXkRRJoInD9mP0n9mBejaGX1Hl7IQ0JQQJ99BCACULyCpOhylNAAAAAZCS1x52";
 
     /**
-     * Creates a new session and shows the session code on the screen.
+     * Starts a new call session: generates a session code, automatically gets an ACS token,
+     * and opens the video chat window.
      */
     @FXML
-    public void createSession() {
+    public void startNewCall() {
+        // Generate a new session code.
         String sessionCode = SessionManager.createSession();
         sessionLabel.setText("Session Code: " + sessionCode);
+        // Automatically generate an ACS token.
+        TokenGeneratorService tokenService = new TokenGeneratorService(acsConnectionString);
+        TokenGeneratorService.TokenInfo tokenInfo = tokenService.generateToken();
+        // Open the video chat window with the session code and token.
+        openVideoChatWindow(sessionCode, tokenInfo.getToken());
     }
 
     /**
-     * Opens the ACS video chat window.
+     * Joins an existing call session using the session code entered by the user.
      */
     @FXML
-    public void openVideoChatWindow() {
+    public void joinCall() {
+        String sessionCode = joinSessionField.getText().trim();
+        if (sessionCode.isEmpty() || !SessionManager.joinSession(sessionCode)) {
+            sessionLabel.setText("Invalid session code.");
+            return;
+        }
+        // Automatically generate a token for this client.
+        TokenGeneratorService tokenService = new TokenGeneratorService(acsConnectionString);
+        TokenGeneratorService.TokenInfo tokenInfo = tokenService.generateToken();
+        openVideoChatWindow(sessionCode, tokenInfo.getToken());
+    }
+
+    /**
+     * Opens the ACS Calling interface window and passes the session code and token.
+     * @param sessionCode The shared session code.
+     * @param token The ACS access token.
+     */
+    private void openVideoChatWindow(String sessionCode, String token) {
         try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("acsCall.fxml"));
+            Parent root = loader.load();
+            ACSCallController controller = loader.getController();
+            // Pass session code and token to the ACS call controller.
+            controller.setSessionCode(sessionCode);
+            controller.setToken(token);
             Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("acsCall.fxml"));
             Scene scene = new Scene(root, 800, 600);
-            stage.setTitle("Video Chat & Messaging");
+            stage.setTitle("Video Chat - Session: " + sessionCode);
             stage.setScene(scene);
             stage.show();
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Generates an AI summary of a lesson and displays it in a new window.
+     * Calls the Gemini API to generate a lesson summary and displays it in a new window.
      */
     @FXML
     public void getSummary() throws IOException {
         String prompt = "Sample whiteboard and chat content.";
-
-        // Call Gemini AI to get a summary
         GeminiService.getSummaryAsync(prompt).thenAccept(summary -> {
             Platform.runLater(() -> {
                 try {
-                    // Load the summary window
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryView.fxml"));
                     Parent root = loader.load();
                     SummaryController summaryController = loader.getController();
                     summaryController.setSummary(summary);
-
-                    // Show the summary window
                     Stage summaryStage = new Stage();
                     summaryStage.setTitle("Lesson Summary");
                     summaryStage.setScene(new Scene(root));
