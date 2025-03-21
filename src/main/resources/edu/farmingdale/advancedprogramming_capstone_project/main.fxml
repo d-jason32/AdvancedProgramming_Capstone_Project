@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
@@ -18,11 +19,12 @@
                 <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
             <HBox spacing="10">
-                <Button text="Create Session" onAction="#createSession"/>
+                <Button text="Start New Call" onAction="#startNewCall"/>
                 <Label fx:id="sessionLabel" styleClass="info-label"/>
             </HBox>
             <HBox spacing="10">
-                <Button text="Open Video Chat" onAction="#openVideoChatWindow"/>
+                <TextField fx:id="joinSessionField" promptText="Enter session code to join"/>
+                <Button text="Join Call" onAction="#joinCall"/>
             </HBox>
             <HBox spacing="10">
                 <Button text="Get Summary" onAction="#getSummary"/>
@@ -34,7 +36,6 @@
         </VBox>
     </center>
     <bottom>
-        <Label text="Use the controls above to manage sessions, video chat, transcription, and summaries."
-               styleClass="footer-label" BorderPane.alignment="CENTER"/>
+        <Label text="Use the controls above to manage sessions, video chat, transcription, and summaries." styleClass="footer-label" BorderPane.alignment="CENTER"/>
     </bottom>
 </BorderPane>
