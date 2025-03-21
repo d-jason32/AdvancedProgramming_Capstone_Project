@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.web.WebView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.advancedprogramming_capstone_project.ACSCallController">
+    <WebView fx:id="webView" AnchorPane.topAnchor="40.0" AnchorPane.bottomAnchor="0.0"
+             AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"/>
+    <Label fx:id="sessionCodeLabel" layoutX="10.0" layoutY="10.0" text="Session: "/>
+</AnchorPane>
