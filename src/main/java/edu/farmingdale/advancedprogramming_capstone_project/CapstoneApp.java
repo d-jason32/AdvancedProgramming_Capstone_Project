@@ -21,6 +21,7 @@ public class CapstoneApp extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    //testing
 
     public static void main(String[] args) {
         launch(args);
