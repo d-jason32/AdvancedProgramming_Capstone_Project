@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+    <top>
+        <Label text="AI Whiteboard Teaching Tool" styleClass="title-label" BorderPane.alignment="CENTER"/>
+    </top>
+    <center>
+        <VBox spacing="15" alignment="CENTER">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            <HBox spacing="10">
+                <Button text="Start New Call" onAction="#startNewCall"/>
+                <Label fx:id="sessionLabel" styleClass="info-label"/>
+            </HBox>
+            <HBox spacing="10">
+                <TextField fx:id="joinSessionField" promptText="Enter session code to join"/>
+                <Button text="Join Call" onAction="#joinCall"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="Get Summary" onAction="#getSummary"/>
+                <Label fx:id="summaryLabel" styleClass="info-label"/>
+            </HBox>
+            <HBox spacing="10">
+                <Button text="Live Transcription" onAction="#openTranscriptionWindow"/>
+            </HBox>
+        </VBox>
+    </center>
+    <bottom>
+        <Label text="Use the controls above to manage sessions, video chat, transcription, and summaries." styleClass="footer-label" BorderPane.alignment="CENTER"/>
+    </bottom>
+</BorderPane>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>ACS Calling - Join Session</title>
+    <!-- Load ACS JavaScript libraries from CDN -->
+    <script src="https://unpkg.com/@azure/communication-common@1.2.0/dist/acsCommon.min.js"></script>
+    <script src="https://unpkg.com/@azure/communication-calling@1.0.0-beta.1/dist/acsCalling.min.js"></script>
+    <style>
+        #video-container {
+            width: 640px;
+            height: 480px;
+            background-color: #000;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>ACS Calling Interface</h1>
+<div id="video-container">
+    <video id="remoteVideo" autoplay playsinline></video>
+</div>
+<script>
+    // Get the token from the URL query parameter.
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+    if (!token) {
+        alert("No access token provided.");
+    }
+    console.log("Using token:", token);
+
+    const { CallClient } = window.AzureCommunicationCalling;
+    const { AzureCommunicationTokenCredential } = window.AzureCommunicationCommon;
+
+    let callClient, callAgent, deviceManager, call;
+    const remoteVideoElement = document.getElementById("remoteVideo");
+
+    (async () => {
+        try {
+            callClient = new CallClient();
+            const tokenCredential = new AzureCommunicationTokenCredential(token);
+            callAgent = await callClient.createCallAgent(tokenCredential);
+            deviceManager = await callClient.getDeviceManager();
+            await deviceManager.askDevicePermission({ audio: true, video: true });
+            // For testing, if no call is active, start a new call (this may open your local camera stream).\n
+            call = callAgent.startCall([], {}); // Starting a call with no participants can sometimes loop back to your device (if supported)\n
+            console.log("Call started.");
+            // Here you might add event listeners for remote video streams if you had participants.\n
+        } catch (error) {
+            console.error("Error starting call:", error);
+            alert("Error starting call: " + error.message);
+        }
+    })();
+</script>
+</body>
+</html>

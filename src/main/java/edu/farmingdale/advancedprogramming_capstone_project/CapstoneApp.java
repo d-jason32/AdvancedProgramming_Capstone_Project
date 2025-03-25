@@ -1,12 +1,16 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.application.Application;
+
 import javafx.application.Platform;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import static javafx.stage.StageStyle.UNDECORATED;
+
 
 /**
  * CapstoneApp is the main launcher for the application.
@@ -14,6 +18,7 @@ import static javafx.stage.StageStyle.UNDECORATED;
  * generating summaries, and live transcription.
  */
 public class CapstoneApp extends Application {
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -53,6 +58,7 @@ public class CapstoneApp extends Application {
                 }
             });
         });
+
     }
 
     public static void main(String[] args) {
