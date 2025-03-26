@@ -45,8 +45,9 @@ public class CapstoneApp extends Application {
             // makes main fxml run after splash screen is closed
             Platform.runLater(() -> {
                 try {
+                    splashStage.close();
                     Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
-                    Scene scene = new Scene(root, 600, 400);
+                    Scene scene = new Scene(root, 1000, 800);
                     scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
                     primaryStage.setTitle("AI Whiteboard Teaching Tool");
                     primaryStage.setScene(scene);
