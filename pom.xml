@@ -13,7 +13,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.2</junit.version>
-        <javafx.version>17.0.6</javafx.version>
+
+        <javafx.version>23.0.1</javafx.version>
+
         <jjwt.version>0.11.5</jjwt.version>
         <rxjava.version>2.2.21</rxjava.version>
     </properties>
