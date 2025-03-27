@@ -8,7 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import java.util.Objects;
 import static javafx.stage.StageStyle.UNDECORATED;
 
 
@@ -31,7 +31,7 @@ public class CapstoneApp extends Application {
         // makes new scene for splash screen setting style and size
         // makes style undecorated (no menu bar & label)
         Scene splashScene = new Scene(splashRoot, 600, 450);
-        splashScene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        splashScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
         Stage splashStage = new Stage();
         splashStage.setScene(splashScene);
         splashStage.setResizable(false);
@@ -44,11 +44,13 @@ public class CapstoneApp extends Application {
 
             // makes main fxml run after splash screen is closed
             Platform.runLater(() -> {
+              
                 try {
                     splashStage.close();
-                    Parent root = FXMLLoader.load(getClass().getResource("main.fxml"));
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
                     Scene scene = new Scene(root, 1000, 800);
-                    scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+
                     primaryStage.setTitle("AI Whiteboard Teaching Tool");
                     primaryStage.setScene(scene);
                     primaryStage.show();

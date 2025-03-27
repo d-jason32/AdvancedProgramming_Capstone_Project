@@ -12,38 +12,43 @@ public class SplashScreenController implements Initializable {
 
     /**
      * initializes three classes for splash screen:
-     * splashLabel | ProgressBar | Runnable
+     * splashLabel | loadingBar | checkLoadingBarFinished | progressText
      */
     @FXML private Label splashLabel;
     @FXML private ProgressBar loadingBar;
+    @FXML private Label progressText;
     private Runnable checkLoadingBarFinished;
 
     /**
      * method for progressBar on Splash Screen
      * the bar will start from 0% and progress until 100%
      * when it completes, it will close and main fxml file will launch
-     * takes estimated time of 3.5 seconds to complete
+     * takes estimated time of 4 seconds to complete
      */
     private void startLoadingBar() {
         Thread barLoad = new Thread(() -> {
-            for (double i = 0.0; i <= 1.0; i = i + 0.01) {
+            for (int i = 0; i <= 100; i++) { // from 0% to 100%
 
                 try {
-                    final double progressTime = i;
-                    Platform.runLater(() -> loadingBar.setProgress(progressTime));
-                    Thread.sleep(50);
-                }
+                    final int progressValue = i; // final variable for lambda
+                    Platform.runLater(() -> {
+                        if (loadingBar != null && progressText != null) {
+                            loadingBar.setProgress(progressValue / 100.0); // update progress bar
+                            progressText.setText(progressValue + "%"); // update text label
+                        }
+                    });
+                    Thread.sleep(35); // adjust speed as needed
 
-                catch (InterruptedException e) {
+                } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     System.out.println("Loading Bar Did Not Run Properly");
                     return;
                 }
             }
-            loadingBarFinished(); // calls function for when bar is finished (100%)
+            Platform.runLater(this::loadingBarFinished); // call method when done
         });
-        barLoad.setDaemon(true); // terminates thread when the application exits
-        barLoad.start(); //
+        barLoad.setDaemon(true); // allows thread to terminate after all others are finished
+        barLoad.start();
     }
 
     /**
@@ -81,7 +86,7 @@ public class SplashScreenController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resource) {
         splashLabel.setText("Whiteboard Teaching Tool");
-
+        progressText.setText("0%");
         loadingBar.setProgress(0.0); // always starts from 0%
         startLoadingBar(); // calls function
     }
