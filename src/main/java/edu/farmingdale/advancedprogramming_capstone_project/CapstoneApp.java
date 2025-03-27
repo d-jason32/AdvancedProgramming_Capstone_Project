@@ -47,11 +47,10 @@ public class CapstoneApp extends Application {
               
                 try {
                     splashStage.close();
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
-                    Scene scene = new Scene(root, 1000, 800);
-                    scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-screen.fxml")));
+                    Scene scene = new Scene(root);
 
-                    primaryStage.setTitle("AI Whiteboard Teaching Tool");
+                    primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 }
@@ -59,6 +58,24 @@ public class CapstoneApp extends Application {
                 catch (Exception e) {
                     e.printStackTrace();
                 }
+
+                /*
+                    try {
+                    splashStage.close();
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-screen.fxml")));
+                    Scene scene = new Scene(root);
+
+                    primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                }
+
+                catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Idk where this goes
+                 */
             });
         });
 
