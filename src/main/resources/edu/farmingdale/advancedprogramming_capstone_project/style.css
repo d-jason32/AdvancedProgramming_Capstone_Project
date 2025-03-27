@@ -1,0 +1,35 @@
+.root {
+    -fx-background-color: #f4f4f4;
+    -fx-font-family: Arial, sans-serif;
+}
+
+.title-label {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+}
+
+.info-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #333;
+}
+
+.footer-label {
+    -fx-font-size: 12px;
+    -fx-padding: 10;
+    -fx-text-fill: #555;
+}
+
+.button {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+.progress-bar .track {
+    -fx-background-color: #AEB7CF;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #F7D600;
+}
