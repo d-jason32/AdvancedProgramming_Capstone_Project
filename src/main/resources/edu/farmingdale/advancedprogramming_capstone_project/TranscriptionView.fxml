@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="edu.farmingdale.advancedprogramming_capstone_project.TranscriptionController"
+      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300">
+    <TextArea fx:id="transcriptionTextArea" editable="false" wrapText="true" prefWidth="380" prefHeight="280"/>
+</VBox>

@@ -1,7 +1,9 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.application.Application;
+
 import javafx.application.Platform;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,12 +11,14 @@ import javafx.stage.Stage;
 import java.util.Objects;
 import static javafx.stage.StageStyle.UNDECORATED;
 
+
 /**
  * CapstoneApp is the main launcher for the application.
  * It loads main.fxml, which provides options for starting/joining calls,
  * generating summaries, and live transcription.
  */
 public class CapstoneApp extends Application {
+
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -40,11 +44,13 @@ public class CapstoneApp extends Application {
 
             // makes main fxml run after splash screen is closed
             Platform.runLater(() -> {
+              
                 try {
                     splashStage.close();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("main.fxml")));
                     Scene scene = new Scene(root, 1000, 800);
                     scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+
                     primaryStage.setTitle("AI Whiteboard Teaching Tool");
                     primaryStage.setScene(scene);
                     primaryStage.show();
@@ -55,6 +61,7 @@ public class CapstoneApp extends Application {
                 }
             });
         });
+
     }
 
     public static void main(String[] args) {
