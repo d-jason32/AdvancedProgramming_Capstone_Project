@@ -1,16 +1,18 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.Clipboard;
-import javafx.scene.input.ClipboardContent;
 import javafx.stage.Stage;
+
 import java.io.IOException;
+import java.util.EventObject;
 
 /**
  * MainController handles the main menu functions:
@@ -121,6 +123,24 @@ public class MainController {
             transcriptionStage.setScene(new Scene(root));
             transcriptionStage.show();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goToProfile(ActionEvent event) {
+        try {
+            // Load the profilePage.fxml file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("profilePage.fxml"));
+            Parent profilePage = loader.load();
+
+            // Create a new Stage (window) for the profile page
+            Stage profileStage = new Stage();
+            Scene scene = new Scene(profilePage, 600, 450); // Adjust size as needed
+
+            profileStage.setScene(scene);
+            profileStage.setTitle("Profile");
+            profileStage.show();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
