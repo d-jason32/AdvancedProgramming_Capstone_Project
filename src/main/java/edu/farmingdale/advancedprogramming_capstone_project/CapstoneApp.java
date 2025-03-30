@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import java.util.Objects;
 import static javafx.stage.StageStyle.UNDECORATED;
 
-
 /**
  * CapstoneApp is the main launcher for the application.
  * It loads main.fxml, which provides options for starting/joining calls,

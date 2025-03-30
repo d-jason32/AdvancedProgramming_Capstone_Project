@@ -7,35 +7,41 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+<BorderPane style="-fx-border-color: darkgreen;" styleClass="border-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
     <top>
-        <Label text="AI Whiteboard Teaching Tool" styleClass="title-label" BorderPane.alignment="CENTER"/>
+        <Label styleClass="title-label" text="AI Whiteboard Teaching Tool" BorderPane.alignment="CENTER" />
     </top>
     <center>
-        <VBox spacing="15" alignment="CENTER">
+        <VBox alignment="CENTER" spacing="15">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
             <HBox spacing="10">
-                <Button text="Start New Call" onAction="#startNewCall"/>
-                <Label fx:id="sessionLabel" styleClass="info-label"/>
+                <Button onAction="#startNewCall" text="Start New Call" />
+                <Label fx:id="sessionLabel" styleClass="info-label" />
             </HBox>
             <HBox spacing="10">
-                <TextField fx:id="joinSessionField" promptText="Enter session code to join"/>
-                <Button text="Join Call" onAction="#joinCall"/>
+                <TextField fx:id="joinSessionField" promptText="Enter session code to join" style="-fx-border-color: grey; -fx-border-width: 2; -fx-border-radius: 3;">
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font></TextField>
+                <Button onAction="#joinCall" text="Join Call">
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin></Button>
             </HBox>
             <HBox spacing="10">
-                <Button text="Get Summary" onAction="#getSummary"/>
-                <Label fx:id="summaryLabel" styleClass="info-label"/>
+                <Button onAction="#getSummary" text="Get Summary" />
+                <Label fx:id="summaryLabel" styleClass="info-label" />
             </HBox>
             <HBox spacing="10">
-                <Button text="Live Transcription" onAction="#openTranscriptionWindow"/>
+                <Button onAction="#openTranscriptionWindow" text="Live Transcription" />
             </HBox>
         </VBox>
     </center>
     <bottom>
-        <Label text="Use the controls above to manage sessions, video chat, transcription, and summaries." styleClass="footer-label" BorderPane.alignment="CENTER"/>
+        <Label styleClass="footer-label" text="Use the controls above to manage sessions, video chat, transcription, and summaries." BorderPane.alignment="CENTER" />
     </bottom>
 </BorderPane>

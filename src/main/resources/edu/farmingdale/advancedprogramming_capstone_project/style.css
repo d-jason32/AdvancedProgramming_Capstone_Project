@@ -3,8 +3,14 @@
     -fx-font-family: Arial, sans-serif;
 }
 
+.border-pane {
+    -fx-background-color: #B8E3E9;
+    -fx-border-color: 006400;
+    -fx-border-width: 4;
+}
+
 .title-label {
-    -fx-font-size: 24px;
+    -fx-font-size: 30px;
     -fx-font-weight: bold;
     -fx-padding: 10;
 }
