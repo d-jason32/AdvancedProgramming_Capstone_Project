@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
 /**
- * SummaryController handles displaying the AI-generated lesson summary.
+ * SummaryController handles displaying the AI-generated session summary.
  */
 public class SummaryController {
     @FXML private TextArea summaryTextArea;
@@ -17,4 +17,5 @@ public class SummaryController {
         summaryTextArea.setText(summary);
     }
 }
+
 

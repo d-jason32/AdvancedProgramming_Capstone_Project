@@ -17,3 +17,4 @@ public class TranscriptionController {
         transcriptionTextArea.appendText(text + "\n");
     }
 }
+

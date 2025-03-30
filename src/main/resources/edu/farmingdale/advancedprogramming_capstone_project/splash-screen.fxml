@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.SplashScreenController">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: POWDERBLUE; -fx-border-color: DARKGREEN; -fx-border-width: 6;">
+        <bottom>
+            <ProgressBar fx:id="loadingBar" prefHeight="40.0" prefWidth="485.0" style="-fx-border-color: DARKGREEN; -fx-border-width: 4; -fx-border-radius: 4;" translateX="-35.0" BorderPane.alignment="CENTER">
+                <opaqueInsets>
+                    <Insets />
+                </opaqueInsets>
+                <BorderPane.margin>
+                    <Insets bottom="8.0" />
+                </BorderPane.margin>
+            </ProgressBar>
+        </bottom>
+        <center>
+            <ImageView fitHeight="330.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+                <BorderPane.margin>
+                    <Insets bottom="5.0" top="-14.0" />
+                </BorderPane.margin>
+                <Image url="@SUNY_Farmingdale_seal.svg.png" />
+            </ImageView>
+        </center>
+        <top>
+            <Label fx:id="splashLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="550.0" text="WHITEBOARD TEACH TOOL" textAlignment="CENTER" textFill="#757c12" BorderPane.alignment="CENTER">
+                <font>
+                    <Font name="Georgia Bold Italic" size="36.0" />
+                </font>
+                <BorderPane.margin>
+                    <Insets bottom="5.0" />
+                </BorderPane.margin>
+            </Label>
+        </top>
+        <cursor>
+            <Cursor fx:constant="NONE" />
+        </cursor>
+    </BorderPane>
+    <Label fx:id="progressText" alignment="CENTER" text="0%" textAlignment="CENTER" translateX="518.0" translateY="400.0" wrapText="true">
+        <opaqueInsets>
+            <Insets />
+        </opaqueInsets>
+        <font>
+            <Font name="Verdana Bold" size="25.0" />
+        </font>
+        <effect>
+            <Glow level="0.35" />
+        </effect>
+    </Label>
+</AnchorPane>
