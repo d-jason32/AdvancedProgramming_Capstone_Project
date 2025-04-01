@@ -50,6 +50,7 @@ public class CapstoneApp extends Application {
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-screen.fxml")));
                     Scene scene = new Scene(root);
 
+
                     primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
                     primaryStage.setScene(scene);
                     primaryStage.show();

@@ -11,6 +11,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class LoginController {
     @FXML
@@ -27,17 +28,18 @@ public class LoginController {
 
     @FXML
     void onEnterButtonPress(ActionEvent event) throws IOException {
-        if(usernameField.getText().equals("moses") && passwordField.getText().equals("12345"))
+        if(usernameField.getText().equals("tester") && passwordField.getText().equals("12345"))
         {
             text.setText("Logging in...");
             text.setFill(Color.GREEN);
             FXMLLoader fxmlLoader = new FXMLLoader(CapstoneApp.class.getResource("main.fxml"));
 
             Scene scene = new Scene(fxmlLoader.load());
-            Stage stage = new Stage();
-            stage.setTitle("AI Whiteboard Program - Main Screen");
-            stage.setScene(scene);
-            stage.show();
+            Stage mainstage = new Stage();
+            scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+            mainstage.setTitle("AI Whiteboard Program - Main Screen");
+            mainstage.setScene(scene);
+            mainstage.show();
         }
         else{
             System.out.println(usernameField.getText());
