@@ -7,9 +7,8 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-border-color: darkgreen;" styleClass="border-pane" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
     <top>
         <Label styleClass="title-label" text="AI Whiteboard Teaching Tool" BorderPane.alignment="CENTER" />
     </top>
@@ -21,16 +20,11 @@
             <HBox spacing="10">
                 <Button onAction="#startNewCall" text="Start New Call" />
                 <Label fx:id="sessionLabel" styleClass="info-label" />
+                <Button text="My Profile" onAction="#goToProfile" />
             </HBox>
             <HBox spacing="10">
-                <TextField fx:id="joinSessionField" promptText="Enter session code to join" style="-fx-border-color: grey; -fx-border-width: 2; -fx-border-radius: 3;">
-               <font>
-                  <Font name="System Bold" size="13.0" />
-               </font></TextField>
-                <Button onAction="#joinCall" text="Join Call">
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin></Button>
+                <TextField fx:id="joinSessionField" promptText="Enter session code to join" />
+                <Button onAction="#joinCall" text="Join Call" />
             </HBox>
             <HBox spacing="10">
                 <Button onAction="#getSummary" text="Get Summary" />
