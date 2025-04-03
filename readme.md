@@ -1,1 +1,1 @@
-![logo.png](src/main/resources/edu/farmingdale/advancedprogramming_capstone_project/logo.png)
+![img.png](img.png)
