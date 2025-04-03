@@ -58,8 +58,9 @@
 ## ❓FAQ or Troubleshooting
 
 ## 👥 Contributors
-| [<img src="https://github.com/d-jason32.png" width="80px;"><br><sub>@d-jason32</sub>](https://github.com/username1) | [<img src="https://github.com/username2.png" width="80px;"><br><sub>@username2</sub>](https://github.com/username2) |
-|:-------------------------------------------------------------------------------------------------------------------:| :---: |
+
+| [<img src="https://github.com/d-jason32.png" width="80px;"><br><sub>@Jason Devaraj</sub>](https://github.com/d-jason32) | [<img src="https://github.com/sames007.png" width="80px;"><br><sub>@Saim Sameer</sub>](https://github.com/sames007) | [<img src="https://github.com/Angel-Adames.png" width="80px;"><br><sub>@Yohangel Adames</sub>](https://github.com/Angel-Adames) | [<img src="https://github.com/Milton-Moses.png" width="80px;"><br><sub>@Milton Moses</sub>](https://github.com/Milton-Moses) | [<img src="https://github.com/obyeshaji.png" width="80px;"><br><sub>@Obye Shaji</sub>](https://github.com/obyeshaji) |
+|:-----------------------------------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------------------------:| :---: | :---: | :---: |
 
 ## 🙏 Acknowledgments
 
