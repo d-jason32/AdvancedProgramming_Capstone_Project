@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.effect.Glow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.SplashScreenController">
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.SplashScreenController">
     <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: POWDERBLUE; -fx-border-color: DARKGREEN; -fx-border-width: 6;">
         <bottom>
             <ProgressBar fx:id="loadingBar" prefHeight="40.0" prefWidth="485.0" style="-fx-border-color: DARKGREEN; -fx-border-width: 4; -fx-border-radius: 4;" translateX="-35.0" BorderPane.alignment="CENTER">
@@ -24,7 +21,7 @@
           </ProgressBar>
         </bottom>
         <center>
-            <ImageView fitHeight="330.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="330.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true" translateX="38.0" BorderPane.alignment="CENTER">
                 <BorderPane.margin>
                     <Insets bottom="5.0" top="-14.0" />
                 </BorderPane.margin>
@@ -44,6 +41,13 @@
       <cursor>
          <Cursor fx:constant="NONE" />
       </cursor>
+      <right>
+         <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateX="-10.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
+            <image>
+               <Image url="@fsclogo.png" />
+            </image>
+         </ImageView>
+      </right>
     </BorderPane>
     <Label fx:id="progressText" alignment="CENTER" text="0%" textAlignment="CENTER" translateX="518.0" translateY="400.0" wrapText="true">
         <opaqueInsets>
