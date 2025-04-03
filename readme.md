@@ -14,11 +14,51 @@
 
 
 <p align="center">
-  TutorLoop is an online learning platform with video chatting and white board functionality.
+  CollaBoard is an online learning platform with video chatting and white board functionality.
 </p>
 
 ![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/d-jason32/AdvancedProgramming_Capstone_Project/master)
 
 
-## Table of Contents
 
+## INSERT DEMO GIF HERE
+
+## 📚 Table of Contents
+- [🚀 Features](#-features)
+- [▶️ Demo](#-demo)
+- [🧰 Tech Stack](#-tech-stack)
+- [🛠️ Installation](#-installation)
+- [🧪 Usage](#-usage)
+- [👨‍💻 Code Examples](#-code-examples)
+- [⚙️ Configuration](#-configuration)
+- [📁 Project Structure](#-project-structure)
+- [📝 License](#-license)
+- [❓faq-or-troubleshooting](#faq-or-troubleshooting)
+- [👥 Contributors](#-contributors)
+- [🙏 Acknowledgments](#-acknowledgments)
+
+## 🚀 Features
+
+## ▶️ Demo
+
+## 🧰 Tech Stack
+
+## 🛠️ Installation
+
+## 🧪 Usage
+
+## 👨‍💻 Code Examples
+
+## ⚙️ Configuration
+
+## 📁 Project Structure
+
+## 📝 License
+
+## ❓FAQ or Troubleshooting
+
+## 👥 Contributors
+
+## 🙏 Acknowledgments
+
+- Special thanks to **Dr. Moaath Alrajab** for his guidance and support throughout the development of this project.
