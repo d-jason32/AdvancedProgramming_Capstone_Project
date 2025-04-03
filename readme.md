@@ -12,9 +12,13 @@
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
 
+
 <p align="center">
   TutorLoop is an online learning platform with video chatting and white board functionality.
 </p>
+
+![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/d-jason32/AdvancedProgramming_Capstone_Project/master)
+
 
 ## Table of Contents
 
