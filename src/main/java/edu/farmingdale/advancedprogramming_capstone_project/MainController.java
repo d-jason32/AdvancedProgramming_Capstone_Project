@@ -4,93 +4,90 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.util.EventObject;
+import java.util.UUID;
 
 /**
  * MainController handles the main menu functions:
- * - Starting a new call (generates a session code and automatically gets an ACS token)
- * - Joining an existing call using the session code
- * - Generating AI lesson summaries via the Gemini API
+ * - Starting a new call (generates a session code and displays it)
+ * - Joining an existing call (by entering a session code)
+ * - Generating session summaries via the Gemini API
  * - Opening a live transcription window
- * - Generating an ACS token for testing (automatically copied to clipboard)
  */
 public class MainController {
 
-    @FXML private Label sessionLabel;         // Displays generated session code
-    @FXML private TextField joinSessionField;   // Field for entering a session code to join
-    @FXML private Label summaryLabel;           // Displays AI summary (for summary window)
+    @FXML private Label sessionLabel;      // Displays the generated session code for a new call
+    @FXML private TextField joinSessionField; // User input for joining an existing session
 
-    // Your ACS connection string from the Azure portal
-    private final String acsConnectionString = "endpoint=https://whiteboardcommunicationservices.unitedstates.communication.azure.com/;accesskey=4zUSuTrFjA9xvqjF5glfzQAXkRRJoInD9mP0n9mBejaGX1Hl7IQ0JQQJ99BCACULyCpOhylNAAAAAZCS1x52";
+    // This TextArea is used for live transcription
+    @FXML private TextField transcriptionArea;
 
     /**
-     * Starts a new call session: generates a session code, automatically gets an ACS token,
-     * and opens the video chat window.
+     * Called when the "Start New Call" button is clicked.
+     * It generates a unique session code and launches the video call window.
      */
     @FXML
     public void startNewCall() {
-        // Generate a new session code.
-        String sessionCode = SessionManager.createSession();
-        sessionLabel.setText("Session Code: " + sessionCode);
-        // Automatically generate an ACS token.
-        TokenGeneratorService tokenService = new TokenGeneratorService(acsConnectionString);
-        TokenGeneratorService.TokenInfo tokenInfo = tokenService.generateToken();
-        // Open the video chat window with the session code and token.
-        openVideoChatWindow(sessionCode, tokenInfo.getToken());
-    }
-
-    /**
-     * Joins an existing call session using the session code entered by the user.
-     */
-    @FXML
-    public void joinCall() {
-        String sessionCode = joinSessionField.getText().trim();
-        if (sessionCode.isEmpty() || !SessionManager.joinSession(sessionCode)) {
-            sessionLabel.setText("Invalid session code.");
-            return;
-        }
-        // Automatically generate a token for this client.
-        TokenGeneratorService tokenService = new TokenGeneratorService(acsConnectionString);
-        TokenGeneratorService.TokenInfo tokenInfo = tokenService.generateToken();
-        openVideoChatWindow(sessionCode, tokenInfo.getToken());
-    }
-
-    /**
-     * Opens the ACS Calling interface window and passes the session code and token.
-     * @param sessionCode The shared session code.
-     * @param token The ACS access token.
-     */
-    private void openVideoChatWindow(String sessionCode, String token) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("acsCall.fxml"));
+            // Generate a unique 6-character session code (e.g., "A1B2C3")
+            String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+            System.out.println("Generated Session Code: " + sessionCode);
+            // Display the generated session code on the main UI for sharing
+            sessionLabel.setText("Session Code: " + sessionCode);
+
+            // Load the VideoCallView FXML and pass the generated session code
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VideoCallView.fxml"));
             Parent root = loader.load();
-            ACSCallController controller = loader.getController();
-            // Pass session code and token to the ACS call controller.
-            controller.setSessionCode(sessionCode);
-            controller.setToken(token);
-            Stage stage = new Stage();
-            Scene scene = new Scene(root, 800, 600);
-            stage.setTitle("Video Chat - Session: " + sessionCode);
-            stage.setScene(scene);
-            stage.show();
+            VideoCallController vcController = loader.getController();
+            vcController.setRoomCode(sessionCode);
+
+            // Launch the video call window with the session code in the title
+            launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Calls the Gemini API to generate a lesson summary and displays it in a new window.
+     * Called when the "Join Call" button is clicked.
+     * It reads the session code entered by the user and launches the video call window with that code.
      */
     @FXML
-    public void getSummary() throws IOException {
+    public void joinCall() {
+        try {
+            // Retrieve and trim the session code from the join session text field
+            String sessionCode = joinSessionField.getText().trim();
+            if (sessionCode.isEmpty()) {
+                System.out.println("Please enter a valid session code.");
+                return;
+            }
+            System.out.println("Joining Session: " + sessionCode);
+
+            // Load the VideoCallView FXML and pass the entered session code
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("VideoCallView.fxml"));
+            Parent root = loader.load();
+            VideoCallController vcController = loader.getController();
+            vcController.setRoomCode(sessionCode);
+
+            // Launch the video call window with the provided session code in the title
+            launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Called when the "Get Summary" button is clicked.
+     * Sends the transcript (or sample text) to the Gemini API and displays the summary in a new window.
+     */
+    @FXML
+    public void getSummary() {
+        // For demonstration, using a sample prompt.
         String prompt = "Sample whiteboard and chat content.";
         GeminiService.getSummaryAsync(prompt).thenAccept(summary -> {
             Platform.runLater(() -> {
@@ -99,10 +96,7 @@ public class MainController {
                     Parent root = loader.load();
                     SummaryController summaryController = loader.getController();
                     summaryController.setSummary(summary);
-                    Stage summaryStage = new Stage();
-                    summaryStage.setTitle("Lesson Summary");
-                    summaryStage.setScene(new Scene(root));
-                    summaryStage.show();
+                    launchNewWindow("Session Summary", root, 600, 400);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -111,18 +105,16 @@ public class MainController {
     }
 
     /**
-     * Opens a new window for real-time audio transcription.
+     * Called when the "Live Transcription" button is clicked.
+     * Opens a new window to display live transcription.
      */
     @FXML
     public void openTranscriptionWindow() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("TranscriptionView.fxml"));
             Parent root = loader.load();
-            Stage transcriptionStage = new Stage();
-            transcriptionStage.setTitle("Live Transcription");
-            transcriptionStage.setScene(new Scene(root));
-            transcriptionStage.show();
-        } catch (Exception e) {
+            launchNewWindow("Live Transcription", root, 400, 300);
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -143,5 +135,19 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Helper method to launch a new window with a given title, content, and dimensions.
+     * @param title the window title
+     * @param root the root node of the scene
+     * @param width the scene width
+     * @param height the scene height
+     */
+    private void launchNewWindow(String title, Parent root, int width, int height) {
+        Stage stage = new Stage();
+        stage.setTitle(title);
+        stage.setScene(new Scene(root, width, height));
+        stage.show();
     }
 }
