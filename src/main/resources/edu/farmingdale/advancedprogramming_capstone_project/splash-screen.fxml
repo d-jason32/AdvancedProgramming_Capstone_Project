@@ -45,11 +45,10 @@
          <Cursor fx:constant="NONE" />
       </cursor>
       <right>
-         <ImageView fitHeight="75.0" fitWidth="75.0" pickOnBounds="true" preserveRatio="true" translateX="-12.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
-            <image>
-               <Image url="@fsclogo.png" />
-            </image>
-         </ImageView>
+          <ImageView fitHeight="75.0" fitWidth="75.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true"
+                     translateX="-12.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
+              <Image url="@fsclogo.png"/>
+          </ImageView>
       </right>
     </BorderPane>
     <Label fx:id="progressText" alignment="CENTER" text="0%" textAlignment="CENTER" translateX="518.0" translateY="400.0" wrapText="true">

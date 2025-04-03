@@ -11,7 +11,7 @@ import java.util.ResourceBundle;
 public class SplashScreenController implements Initializable {
 
     /**
-     * initializes three classes for splash screen:
+     * initializes four classes for splash screen:
      * splashLabel | loadingBar | checkLoadingBarFinished | progressText
      */
     @FXML private Label splashLabel;

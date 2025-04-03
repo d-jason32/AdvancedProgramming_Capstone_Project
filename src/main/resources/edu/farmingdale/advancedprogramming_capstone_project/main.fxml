@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+<BorderPane style="-fx-background-color: POWDERBLUE; -fx-border-color: GREEN; -fx-border-width: 4;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
     <top>
-        <Label styleClass="title-label" text="AI Whiteboard Teaching Tool" BorderPane.alignment="CENTER" />
+        <Label styleClass="title-label" text="AI Whiteboard Teaching Tool" textAlignment="CENTER" BorderPane.alignment="CENTER" />
     </top>
     <center>
         <VBox alignment="CENTER" spacing="15">
@@ -20,7 +20,7 @@
             <HBox spacing="10">
                 <Button onAction="#startNewCall" text="Start New Call" />
                 <Label fx:id="sessionLabel" styleClass="info-label" />
-                <Button text="My Profile" onAction="#goToProfile" />
+                <Button onAction="#goToProfile" text="My Profile" />
             </HBox>
             <HBox spacing="10">
                 <TextField fx:id="joinSessionField" promptText="Enter session code to join" />
