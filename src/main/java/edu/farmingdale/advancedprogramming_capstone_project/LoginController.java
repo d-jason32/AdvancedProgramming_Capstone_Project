@@ -34,7 +34,7 @@ public class LoginController {
             text.setFill(Color.GREEN);
             FXMLLoader fxmlLoader = new FXMLLoader(CapstoneApp.class.getResource("main.fxml"));
 
-            Scene scene = new Scene(fxmlLoader.load());
+            Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
             Stage mainstage = new Stage();
             scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
             mainstage.setTitle("AI Whiteboard Program - Main Screen");
