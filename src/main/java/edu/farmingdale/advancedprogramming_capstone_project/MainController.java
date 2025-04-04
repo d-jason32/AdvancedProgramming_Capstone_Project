@@ -13,77 +13,80 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * MainController handles the main menu functions:
- * - Starting a new call (generates a session code and displays it)
- * - Joining an existing call (by entering a session code)
- * - Generating session summaries via the Gemini API
- * - Opening a live transcription window
+ * MainController handles the main menu actions:
+ * - Starting a new call
+ * - Joining an existing call
+ * - Getting a summary and live transcription
  */
 public class MainController {
 
-    @FXML private Label sessionLabel;      // Displays the generated session code for a new call
-    @FXML private TextField joinSessionField; // User input for joining an existing session
-
-    // This TextArea is used for live transcription
-    @FXML private TextField transcriptionArea;
+    @FXML private Label sessionLabel;      // Shows the generated session code
+    @FXML private TextField joinSessionField; // Field for user to enter session code
+    @FXML private TextField transcriptionArea; // Field for live transcription (if needed)
 
     /**
-     * Called when the "Start New Call" button is clicked.
-     * It generates a unique session code and launches the video call window.
+     * Called when the "Start New Call" button is pressed.
+     * It generates a session code and opens the Jitsi Meet call in the external browser.
      */
     @FXML
     public void startNewCall() {
         try {
-            // Generate a unique 6-character session code (e.g., "A1B2C3")
+            // Generate session code and launch video call window
             String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-            System.out.println("Generated Session Code: " + sessionCode);
-            // Display the generated session code on the main UI for sharing
             sessionLabel.setText("Session Code: " + sessionCode);
-
-            // Load the VideoCallView FXML and pass the generated session code
             FXMLLoader loader = new FXMLLoader(getClass().getResource("VideoCallView.fxml"));
             Parent root = loader.load();
             VideoCallController vcController = loader.getController();
             vcController.setRoomCode(sessionCode);
-
-            // Launch the video call window with the session code in the title
             launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
+
+            // Automatically open the transcription window and start transcription
+            openTranscriptionWindow();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Called when the "Join Call" button is clicked.
-     * It reads the session code entered by the user and launches the video call window with that code.
+     * Helper method that builds the Jitsi Meet URL and opens it using HostServices.
+     * @param sessionCode The unique code for the call session.
+     */
+    public void openCallInBrowser(String sessionCode) {
+        try {
+            // Build the URL by loading the local jitsi.html file and appending the session code.
+            String jitsiUrl = getClass().getResource("jitsi.html").toExternalForm() + "?room=" + sessionCode;
+            // Open the URL in the default external browser using HostServices.
+            CapstoneApp.getStaticHostServices().showDocument(jitsiUrl);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Called when the "Join Call" button is pressed.
+     * It gets the session code from the text field and opens the call.
      */
     @FXML
     public void joinCall() {
         try {
-            // Retrieve and trim the session code from the join session text field
+            // Retrieve and trim the session code from the text field.
             String sessionCode = joinSessionField.getText().trim();
             if (sessionCode.isEmpty()) {
                 System.out.println("Please enter a valid session code.");
                 return;
             }
             System.out.println("Joining Session: " + sessionCode);
-
-            // Load the VideoCallView FXML and pass the entered session code
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("VideoCallView.fxml"));
-            Parent root = loader.load();
-            VideoCallController vcController = loader.getController();
-            vcController.setRoomCode(sessionCode);
-
-            // Launch the video call window with the provided session code in the title
-            launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
-        } catch (IOException e) {
+            // Open the call in the external browser.
+            openCallInBrowser(sessionCode);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Called when the "Get Summary" button is clicked.
-     * Sends the transcript (or sample text) to the Gemini API and displays the summary in a new window.
+     * Called when the "Get Summary" button is pressed.
+     * It sends text to the Gemini API and opens a window to show the summary.
      */
     @FXML
     public void getSummary() {
@@ -105,8 +108,8 @@ public class MainController {
     }
 
     /**
-     * Called when the "Live Transcription" button is clicked.
-     * Opens a new window to display live transcription.
+     * Called when the "Live Transcription" button is pressed.
+     * It opens a new window for live transcription.
      */
     @FXML
     public void openTranscriptionWindow() {
@@ -119,16 +122,16 @@ public class MainController {
         }
     }
 
+    /**
+     * Called when the "My Profile" button is pressed.
+     * It loads and displays the profile page in a new window.
+     */
     public void goToProfile(ActionEvent event) {
         try {
-            // Load the profilePage.fxml file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("profilePage.fxml"));
             Parent profilePage = loader.load();
-
-            // Create a new Stage (window) for the profile page
             Stage profileStage = new Stage();
-            Scene scene = new Scene(profilePage, 600, 450); // Adjust size as needed
-
+            Scene scene = new Scene(profilePage, 600, 450); // Set desired window size
             profileStage.setScene(scene);
             profileStage.setTitle("Profile");
             profileStage.show();
@@ -138,11 +141,11 @@ public class MainController {
     }
 
     /**
-     * Helper method to launch a new window with a given title, content, and dimensions.
-     * @param title the window title
-     * @param root the root node of the scene
-     * @param width the scene width
-     * @param height the scene height
+     * Helper method to launch a new window.
+     * @param title The window title.
+     * @param root The root node of the scene.
+     * @param width The scene width.
+     * @param height The scene height.
      */
     private void launchNewWindow(String title, Parent root, int width, int height) {
         Stage stage = new Stage();
