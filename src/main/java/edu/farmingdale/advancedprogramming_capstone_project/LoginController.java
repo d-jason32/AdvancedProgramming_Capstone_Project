@@ -40,6 +40,8 @@ public class LoginController {
             mainstage.setTitle("AI Whiteboard Program - Main Screen");
             mainstage.setScene(scene);
             mainstage.show();
+            Stage currentStage = (Stage) enterButton.getScene().getWindow();
+            currentStage.close();
         }
         else{
             System.out.println(usernameField.getText());

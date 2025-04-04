@@ -19,6 +19,7 @@ public class CapstoneApp extends Application {
 
     // This static field holds the HostServices reference for opening URLs.
     private static HostServices hostServices;
+    public Scene loginScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -45,9 +46,9 @@ public class CapstoneApp extends Application {
                 try {
                     splashStage.close();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-screen.fxml")));
-                    Scene scene = new Scene(root);
+                    loginScene = new Scene(root);
                     primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
-                    primaryStage.setScene(scene);
+                    primaryStage.setScene(loginScene);
                     primaryStage.show();
                 } catch (Exception e) {
                     e.printStackTrace();

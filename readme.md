@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img_1.png" alt="Logo" />
+  <img src="CollaBoard_Logo.png" alt="Logo" />
 </p>
 
 <div align="center">
