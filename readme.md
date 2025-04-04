@@ -2,6 +2,8 @@
   <img src="img_1.png" alt="Logo" />
 </p>
 
+<div align="center">
+
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
@@ -11,14 +13,26 @@
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
+</div>
 
 
 <p align="center">
   CollaBoard is an online learning platform with video chatting and white board functionality.
 </p>
 
-![GitHub commit activity (branch)](https://img.shields.io/github/commit-activity/t/d-jason32/AdvancedProgramming_Capstone_Project/master)
+<div align="center">
 
+![GitHub repo size](https://img.shields.io/github/repo-size/d-jason32/AdvancedProgramming_Capstone_Project)
+![GitHub stars](https://img.shields.io/github/stars/d-jason32/AdvancedProgramming_Capstone_Project?style=social)
+![GitHub forks](https://img.shields.io/github/forks/d-jason32/AdvancedProgramming_Capstone_Project?style=social)
+![GitHub issues](https://img.shields.io/github/issues/d-jason32/AdvancedProgramming_Capstone_Project)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/d-jason32/AdvancedProgramming_Capstone_Project)
+![GitHub last commit](https://img.shields.io/github/last-commit/d-jason32/AdvancedProgramming_Capstone_Project)
+
+![GitHub top language](https://img.shields.io/github/languages/top/d-jason32/AdvancedProgramming_Capstone_Project)
+![Languages count](https://img.shields.io/github/languages/count/d-jason32/AdvancedProgramming_Capstone_Project)
+![License](https://img.shields.io/github/license/d-jason32/AdvancedProgramming_Capstone_Project)
+</div>
 
 
 ## INSERT DEMO GIF HERE
