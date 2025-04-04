@@ -47,7 +47,7 @@
 - [⚙️ Configuration](#-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
-- [❓Faq-or-Troubleshooting](#faq-or-troubleshooting)
+- [❓Faq](#faq-or-troubleshooting)
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
@@ -69,7 +69,7 @@
 
 ## 📝 License
 
-## ❓FAQ or Troubleshooting
+## ❓FAQ
 
 ## 👥 Contributors
 
