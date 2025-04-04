@@ -52,7 +52,7 @@
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
-## 💬 Introduction 
+## 💬 Introduction
 
 ## 🚀 Features
 
