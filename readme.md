@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="img_1.png" alt="Logo" />
+  <img src="CollaBoard_Logo.png" alt="Logo" />
 </p>
 
 <div align="center">
@@ -17,7 +17,7 @@
 
 
 <p align="center">
-  CollaBoard is an online learning platform with video chatting and white board functionality.
+  CollaBoard is a dynamic online learning platform that seamlessly integrates video conferencing and interactive whiteboards for real-time collaboration.
 </p>
 
 <div align="center">
@@ -52,7 +52,7 @@
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
-## 💬 Introduction 
+## 💬 Introduction
 
 ## 🚀 Features
 
