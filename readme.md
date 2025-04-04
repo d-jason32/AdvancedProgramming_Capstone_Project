@@ -17,7 +17,7 @@
 
 
 <p align="center">
-  CollaBoard is an online learning platform with video chatting and white board functionality.
+  CollaBoard is a dynamic online learning platform that seamlessly integrates video conferencing and interactive whiteboards for real-time collaboration.
 </p>
 
 <div align="center">
