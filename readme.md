@@ -35,9 +35,10 @@
 </div>
 
 
-## INSERT DEMO GIF HERE
+# !!!!INSERT DEMO GIF HERE
 
 ## 📚 Table of Contents
+- [💬 Introduction](#-introduction)
 - [🚀 Features](#-features)
 - [▶️ Demo](#-demo)
 - [🧰 Tech Stack](#-tech-stack)
@@ -47,13 +48,17 @@
 - [⚙️ Configuration](#-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
-- [❓Faq](#faq-or-troubleshooting)
+- [❓FAQ](#faq)
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
+
+## 💬 Introduction 
 
 ## 🚀 Features
 
 ## ▶️ Demo
+
+!!! INSERT YOUTUBE VIDEO HERE
 
 ## 🧰 Tech Stack
 
