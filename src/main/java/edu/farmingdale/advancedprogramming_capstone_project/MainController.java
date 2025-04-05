@@ -38,7 +38,7 @@ public class MainController {
             Parent root = loader.load();
             VideoCallController vcController = loader.getController();
             vcController.setRoomCode(sessionCode);
-            launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
+            launchNewWindow("Video Call - Session: " + sessionCode, root, 1280, 800);
 
             // Automatically open the transcription window and start transcription
             openTranscriptionWindow();

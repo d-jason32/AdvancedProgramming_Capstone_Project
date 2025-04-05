@@ -1,6 +1,10 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.fxml.FXML;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 import javafx.scene.web.WebView;
 
 /**
@@ -12,6 +16,7 @@ public class VideoCallController {
 
     // Default room code if none is provided.
     private String roomCode = "TestRoom";
+
 
     /**
      * Sets the room code (session code) for the video call.
@@ -27,7 +32,7 @@ public class VideoCallController {
     }
 
     /**
-     * Called automatically when the FXML is loaded.
+     * Called automatically when the FXML is loaded and initializes whiteboard.
      */
     public void initialize() {
         loadJitsiMeet();
@@ -41,4 +46,6 @@ public class VideoCallController {
         String url = getClass().getResource("jitsi.html").toExternalForm() + "?room=" + roomCode;
         webView.getEngine().load(url);
     }
+
+
 }
