@@ -44,6 +44,7 @@
             <artifactId>client-sdk</artifactId>
             <version>1.25.0</version>
         </dependency>
+
     </dependencies>
 
     <build>
