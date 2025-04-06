@@ -4,17 +4,34 @@
     <meta charset="UTF-8">
     <title>Jitsi Meet Call</title>
     <script src="https://meet.jit.si/external_api.js"></script>
+    <script src="https://www.whiteboard.team/dist/api.js"></script>
     <style>
-        html, body, #jitsi-container {
-            height: 100%;
-            width: 100%;
+        html, body {
             margin: 0;
             padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: sans-serif;
+        }
+
+        #main-container {
+            display: flex;
+            height: 100%;
+            width: 100%;
+        }
+
+        #jitsi-container, #wt-container {
+            flex: 1;
+            height: 100%;
         }
     </style>
 </head>
 <body>
-<div id="jitsi-container"></div>
+<div id="main-container">
+    <div id="jitsi-container"></div>
+    <div id="wt-container"></div>
+</div>
+
 <script>
     let roomName = "TestRoom";
     const urlParams = new URLSearchParams(window.location.search);
@@ -40,9 +57,13 @@
         }
     };
 
-    const api = new JitsiMeetExternalAPI(domain, options);
+    const jitsiApi = new JitsiMeetExternalAPI(domain, options);
 
     console.log("Initialized Jitsi Meet with room:", roomName);
+    const wt = new api.WhiteboardTeam('#wt-container', {
+        clientId: '826eece0e58a661b21e57fdde1c4b032', // Replace with your actual clientId
+        boardCode: '22b58b6b-147c-48d4-8c84-6209d3816837'   // Replace with your actual board code
+    });
 </script>
 </body>
 </html>
