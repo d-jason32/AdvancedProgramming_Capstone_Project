@@ -31,7 +31,7 @@ public class SpeechToTextService {
     }
 
     /**
-     * Starts continuous speech recognition.
+     * Starts continuous speech recognition and updates the transcription area.
      */
     public void startRecognition() {
         recognizer.recognizing.addEventListener((s, e) ->
