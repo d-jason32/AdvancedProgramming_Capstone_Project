@@ -63,7 +63,6 @@ public class CapstoneApp extends Application {
     public static HostServices getStaticHostServices() {
         return hostServices;
     }
-    //testing
 
     public static void main(String[] args) {
         launch(args);
