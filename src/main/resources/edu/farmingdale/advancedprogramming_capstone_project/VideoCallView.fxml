@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.web.WebView?>
 
-<BorderPane prefHeight="611.0" prefWidth="1063.0" stylesheets="@video_call_view_style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.VideoCallController">
-   <left>
-       <WebView fx:id="webView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </left>
-   <center>
-      <WebView fx:id="whiteboardWebView" prefHeight="611.0" prefWidth="591.0" BorderPane.alignment="CENTER" />
-   </center>
-</BorderPane>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.VideoCallController">
+   <children>
+       <WebView fx:id="webView" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="600.0" />
+   </children>
+</StackPane>
