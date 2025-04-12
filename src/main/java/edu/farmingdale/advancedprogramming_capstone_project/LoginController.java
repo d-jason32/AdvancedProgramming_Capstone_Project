@@ -30,8 +30,6 @@ public class LoginController {
     void onEnterButtonPress(ActionEvent event) throws IOException {
         if(usernameField.getText().equals("tester") && passwordField.getText().equals("12345"))
         {
-            text.setText("Logging in...");
-            text.setFill(Color.GREEN);
             FXMLLoader fxmlLoader = new FXMLLoader(CapstoneApp.class.getResource("main.fxml"));
 
             Scene scene = new Scene(fxmlLoader.load(), 1280, 800);
@@ -45,8 +43,6 @@ public class LoginController {
         }
         else{
             System.out.println(usernameField.getText());
-            text.setText("Incorrect Username and Password. Try Again.");
-            text.setFill(Color.RED);
         }
     }
 }

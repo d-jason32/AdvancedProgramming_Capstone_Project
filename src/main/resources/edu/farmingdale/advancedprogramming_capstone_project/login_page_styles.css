@@ -1,7 +1,7 @@
 
 
 .body-background {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1a1f2b, #3a4254);
+
 }
 
 .text-field {
@@ -10,6 +10,7 @@
     -fx-background-radius: 40px;
     -fx-padding: 8px 16px;
     -fx-font-size: 16px;
+    -fx-background-color: #
 }
 
 .button {
