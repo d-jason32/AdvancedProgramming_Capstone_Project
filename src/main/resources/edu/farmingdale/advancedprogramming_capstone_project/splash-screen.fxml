@@ -21,7 +21,7 @@
                 <BorderPane.margin>
                     <Insets bottom="8.0" />
                 </BorderPane.margin>
-          </ProgressBar>
+            </ProgressBar>
         </bottom>
         <center>
             <ImageView fitHeight="330.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true" translateX="38.0" BorderPane.alignment="CENTER">
@@ -32,34 +32,34 @@
             </ImageView>
         </center>
         <top>
-          <Label fx:id="splashLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="550.0" text="WHITEBOARD TEACH TOOL" textAlignment="CENTER" textFill="#757c12" BorderPane.alignment="CENTER">
-              <font>
-                  <Font name="Georgia Bold Italic" size="36.0" />
-              </font>
-              <BorderPane.margin>
-                  <Insets bottom="5.0" />
-              </BorderPane.margin>
-          </Label>
+            <Label fx:id="splashLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="550.0" text="WHITEBOARD TEACH TOOL" textAlignment="CENTER" textFill="#757c12" BorderPane.alignment="CENTER">
+                <font>
+                    <Font name="Georgia Bold Italic" size="36.0" />
+                </font>
+                <BorderPane.margin>
+                    <Insets bottom="5.0" />
+                </BorderPane.margin>
+            </Label>
         </top>
-      <cursor>
-         <Cursor fx:constant="NONE" />
-      </cursor>
-      <right>
-          <ImageView fitHeight="75.0" fitWidth="75.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true"
-                     translateX="-12.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
-              <Image url="@fsclogo.png"/>
-          </ImageView>
-      </right>
+        <cursor>
+            <Cursor fx:constant="NONE" />
+        </cursor>
+        <right>
+            <ImageView fitHeight="75.0" fitWidth="75.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true"
+                       translateX="-12.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
+                <Image url="@fsclogo.png"/>
+            </ImageView>
+        </right>
     </BorderPane>
     <Label fx:id="progressText" alignment="CENTER" text="0%" textAlignment="CENTER" translateX="518.0" translateY="400.0" wrapText="true">
         <opaqueInsets>
-          <Insets />
+            <Insets />
         </opaqueInsets>
         <font>
-          <Font name="Verdana Bold" size="25.0" />
+            <Font name="Verdana Bold" size="25.0" />
         </font>
-      <effect>
-         <Glow level="0.35" />
-      </effect>
+        <effect>
+            <Glow level="0.35" />
+        </effect>
     </Label>
 </AnchorPane>
