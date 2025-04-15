@@ -14,71 +14,57 @@ import java.util.UUID;
 
 /**
  * MainController handles the main menu actions:
- * - Starting a new call
- * - Joining an existing call
+ * - Starting a new call (opens the default browser)
+ * - Joining an existing call (opens the default browser)
  * - Getting a summary and live transcription
  */
 public class MainController {
 
-    @FXML private Label sessionLabel;      // Shows the generated session code
-    @FXML private TextField joinSessionField; // Field for user to enter session code
-    @FXML private TextField transcriptionArea; // Field for live transcription (if needed)
+    @FXML
+    private Label sessionLabel;           // Displays the generated session code.
+
+    @FXML
+    private TextField joinSessionField;   // Field for user to enter session code.
+
+    @FXML
+    private TextField transcriptionArea;  // Field for live transcription.
 
     /**
      * Called when the "Start New Call" button is pressed.
-     * It generates a session code and opens the Jitsi Meet call in the external browser.
+     * Generates a session code, builds the call URL, and opens it in the default browser.
      */
     @FXML
     public void startNewCall() {
-        try {
-            // Generate session code and launch video call window
-            String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-            sessionLabel.setText("Session Code: " + sessionCode);
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("VideoCallView.fxml"));
-            Parent root = loader.load();
-            VideoCallController vcController = loader.getController();
-            vcController.setRoomCode(sessionCode);
-            launchNewWindow("Video Call - Session: " + sessionCode, root, 800, 600);
+        // Generate a unique session code.
+        String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        sessionLabel.setText("Session Code: " + sessionCode);
 
-            // Automatically open the transcription window and start transcription
-            openTranscriptionWindow();
+        // Build the call URL using the HTTP endpoint of your ASP.NET Core app.
+        String callUrl = "http://localhost:5186/peerjs_call.html?room=" + sessionCode;
+        CapstoneApp.getStaticHostServices().showDocument(callUrl);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Helper method that builds the Jitsi Meet URL and opens it using HostServices.
-     * @param sessionCode The unique code for the call session.
-     */
-    public void openCallInBrowser(String sessionCode) {
-        try {
-            // Build the URL by loading the local jitsi.html file and appending the session code.
-            String jitsiUrl = getClass().getResource("jitsi.html").toExternalForm() + "?room=" + sessionCode;
-            // Open the URL in the default external browser using HostServices.
-            CapstoneApp.getStaticHostServices().showDocument(jitsiUrl);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        // Optionally, open the transcription window if needed.
+        openTranscriptionWindow();
     }
 
     /**
      * Called when the "Join Call" button is pressed.
-     * It gets the session code from the text field and opens the call.
+     * Retrieves the session code from the text field, builds the call URL, and opens it in the default browser.
      */
     @FXML
     public void joinCall() {
         try {
-            // Retrieve and trim the session code from the text field.
+            // Retrieve and trim the session code.
             String sessionCode = joinSessionField.getText().trim();
             if (sessionCode.isEmpty()) {
                 System.out.println("Please enter a valid session code.");
                 return;
             }
             System.out.println("Joining Session: " + sessionCode);
-            // Open the call in the external browser.
-            openCallInBrowser(sessionCode);
+
+            // Build the call URL with the session code parameter.
+            String callUrl = "http://localhost:5186/peerjs_call.html?room=" + sessionCode;
+            CapstoneApp.getStaticHostServices().showDocument(callUrl);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -86,11 +72,11 @@ public class MainController {
 
     /**
      * Called when the "Get Summary" button is pressed.
-     * It sends text to the Gemini API and opens a window to show the summary.
+     * Sends session content to the Gemini API and opens a window to display the summary.
      */
     @FXML
     public void getSummary() {
-        // For demonstration, using a sample prompt.
+        // Use a sample prompt for demonstration.
         String prompt = "Sample whiteboard and chat content.";
         GeminiService.getSummaryAsync(prompt).thenAccept(summary -> {
             Platform.runLater(() -> {
@@ -109,7 +95,7 @@ public class MainController {
 
     /**
      * Called when the "Live Transcription" button is pressed.
-     * It opens a new window for live transcription.
+     * Opens a new window for live transcription.
      */
     @FXML
     public void openTranscriptionWindow() {
@@ -124,14 +110,14 @@ public class MainController {
 
     /**
      * Called when the "My Profile" button is pressed.
-     * It loads and displays the profile page in a new window.
+     * Loads and displays the profile page in a new window.
      */
     public void goToProfile(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("profilePage.fxml"));
             Parent profilePage = loader.load();
             Stage profileStage = new Stage();
-            Scene scene = new Scene(profilePage, 600, 450); // Set desired window size
+            Scene scene = new Scene(profilePage, 600, 450);
             profileStage.setScene(scene);
             profileStage.setTitle("Profile");
             profileStage.show();
@@ -142,8 +128,9 @@ public class MainController {
 
     /**
      * Helper method to launch a new window.
+     *
      * @param title The window title.
-     * @param root The root node of the scene.
+     * @param root  The root node of the scene.
      * @param width The scene width.
      * @param height The scene height.
      */
