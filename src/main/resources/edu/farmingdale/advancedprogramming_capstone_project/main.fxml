@@ -14,53 +14,53 @@
     <bottom>
         <Label styleClass="footer-label" text="Made in NYC." BorderPane.alignment="CENTER" />
     </bottom>
-   <top>
-      <ImageView fitHeight="356.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-         <image>
-            <Image url="@final_logo.png" />
-         </image>
-      </ImageView>
-   </top>
-   <center>
+    <top>
+        <ImageView fitHeight="356.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@final_logo.png" />
+            </image>
+        </ImageView>
+    </top>
+    <center>
         <VBox alignment="CENTER" prefHeight="577.0" prefWidth="1280.0" spacing="15" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
-             <TextField fx:id="joinSessionField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="400.0" promptText="Enter session code to join">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </TextField>
-             <Button onAction="#joinCall" prefHeight="25.0" prefWidth="400.0" text="Join Call">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-             <Button onAction="#startNewCall" prefHeight="25.0" prefWidth="400.0" text="Start New Call">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-             <Button onAction="#openTranscriptionWindow" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
-            <VBox.margin>
-               <Insets />
-            </VBox.margin>
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-             <Button onAction="#getSummary" prefHeight="25.0" prefWidth="400.0" text="Get Summary">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-             <Button onAction="#goToProfile" prefHeight="25.0" prefWidth="400.0" text="My Profile">
-            <font>
-               <Font size="20.0" />
-            </font>
-         </Button>
-             <Label fx:id="summaryLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Summary Label" />
-             <Label fx:id="sessionLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Session label" />
+            <TextField fx:id="joinSessionField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="400.0" promptText="Enter session code to join">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </TextField>
+            <Button onAction="#joinCall" prefHeight="25.0" prefWidth="400.0" text="Join Call">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#startNewCall" prefHeight="25.0" prefWidth="400.0" text="Start New Call">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#openTranscriptionWindow" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#getSummary" prefHeight="25.0" prefWidth="400.0" text="Get Summary">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#goToProfile" prefHeight="25.0" prefWidth="400.0" text="My Profile">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Label fx:id="summaryLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Summary Label" />
+            <Label fx:id="sessionLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Session label" />
         </VBox>
-   </center>
+    </center>
 </BorderPane>
