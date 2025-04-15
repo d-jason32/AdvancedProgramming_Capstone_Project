@@ -4,38 +4,63 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane style="-fx-background-color: POWDERBLUE; -fx-border-color: GREEN; -fx-border-width: 4;" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="body-background" stylesheets="@main_page_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+    <bottom>
+        <Label styleClass="footer-label" text="Made in NYC." BorderPane.alignment="CENTER" />
+    </bottom>
     <top>
-        <Label styleClass="title-label" text="AI Whiteboard Teaching Tool" textAlignment="CENTER" BorderPane.alignment="CENTER" />
+        <ImageView fitHeight="356.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+            <image>
+                <Image url="@final_logo.png" />
+            </image>
+        </ImageView>
     </top>
     <center>
-        <VBox alignment="CENTER" spacing="15">
+        <VBox alignment="CENTER" prefHeight="577.0" prefWidth="1280.0" spacing="15" BorderPane.alignment="CENTER">
             <padding>
                 <Insets bottom="20" left="20" right="20" top="20" />
             </padding>
-            <HBox spacing="10">
-                <Button onAction="#startNewCall" text="Start New Call" />
-                <Label fx:id="sessionLabel" styleClass="info-label" />
-                <Button onAction="#goToProfile" text="My Profile" />
-            </HBox>
-            <HBox spacing="10">
-                <TextField fx:id="joinSessionField" promptText="Enter session code to join" />
-                <Button onAction="#joinCall" text="Join Call" />
-            </HBox>
-            <HBox spacing="10">
-                <Button onAction="#getSummary" text="Get Summary" />
-                <Label fx:id="summaryLabel" styleClass="info-label" />
-            </HBox>
-            <HBox spacing="10">
-                <Button onAction="#openTranscriptionWindow" text="Live Transcription" />
-            </HBox>
+            <TextField fx:id="joinSessionField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="400.0" promptText="Enter session code to join">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </TextField>
+            <Button onAction="#joinCall" prefHeight="25.0" prefWidth="400.0" text="Join Call">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#startNewCall" prefHeight="25.0" prefWidth="400.0" text="Start New Call">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#openTranscriptionWindow" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
+                <VBox.margin>
+                    <Insets />
+                </VBox.margin>
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#getSummary" prefHeight="25.0" prefWidth="400.0" text="Get Summary">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Button onAction="#goToProfile" prefHeight="25.0" prefWidth="400.0" text="My Profile">
+                <font>
+                    <Font size="20.0" />
+                </font>
+            </Button>
+            <Label fx:id="summaryLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Summary Label" />
+            <Label fx:id="sessionLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Session label" />
         </VBox>
     </center>
-    <bottom>
-        <Label styleClass="footer-label" text="Use the controls above to manage sessions, video chat, transcription, and summaries." BorderPane.alignment="CENTER" />
-    </bottom>
 </BorderPane>

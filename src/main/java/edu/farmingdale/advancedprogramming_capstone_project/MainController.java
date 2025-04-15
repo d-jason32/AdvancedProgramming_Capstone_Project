@@ -20,14 +20,9 @@ import java.util.UUID;
  */
 public class MainController {
 
-    @FXML
-    private Label sessionLabel;           // Displays the generated session code.
-
-    @FXML
-    private TextField joinSessionField;   // Field for user to enter session code.
-
-    @FXML
-    private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private Label sessionLabel;           // Displays the generated session code.
+    @FXML private TextField joinSessionField;     // Field for user to enter session code.
+    @FXML private TextField transcriptionArea;    // Field for live transcription.
 
     /**
      * Called when the "Start New Call" button is pressed.
@@ -39,11 +34,11 @@ public class MainController {
         String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         sessionLabel.setText("Session Code: " + sessionCode);
 
-        // Build the call URL using the HTTP endpoint of your ASP.NET Core app.
         String callUrl = "http://localhost:5186/peerjs_call.html?room=" + sessionCode;
         CapstoneApp.getStaticHostServices().showDocument(callUrl);
 
-        // Optionally, open the transcription window if needed.
+
+        // Open the transcription window if needed.
         openTranscriptionWindow();
     }
 
@@ -62,9 +57,10 @@ public class MainController {
             }
             System.out.println("Joining Session: " + sessionCode);
 
-            // Build the call URL with the session code parameter.
             String callUrl = "http://localhost:5186/peerjs_call.html?room=" + sessionCode;
             CapstoneApp.getStaticHostServices().showDocument(callUrl);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
