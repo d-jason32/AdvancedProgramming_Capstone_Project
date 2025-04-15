@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.web.WebView?>
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.VideoCallController">
-    <WebView fx:id="webView" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
-</AnchorPane>
