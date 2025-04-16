@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.stage.Modality;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -112,11 +113,33 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("profilePage.fxml"));
             Parent profilePage = loader.load();
+
+            // --- reference to the main (owner) window ---
+            Stage primaryStage = (Stage) ((javafx.scene.Node) event.getSource())
+                                            .getScene()
+                                            .getWindow();
+
             Stage profileStage = new Stage();
-            Scene scene = new Scene(profilePage, 600, 450);
-            profileStage.setScene(scene);
             profileStage.setTitle("Profile");
+
+            // Scene sized to match the main window
+            Scene scene = new Scene(profilePage,
+                                    primaryStage.getWidth(),
+                                    primaryStage.getHeight());
+            profileStage.setScene(scene);
+
+            // Mirror position & size
+            profileStage.setX(primaryStage.getX());
+            profileStage.setY(primaryStage.getY());
+            profileStage.setWidth(primaryStage.getWidth());
+            profileStage.setHeight(primaryStage.getHeight());
+
+            // Optional: block main window while profile is open
+            profileStage.initOwner(primaryStage);
+            profileStage.initModality(Modality.WINDOW_MODAL);
+
             profileStage.show();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

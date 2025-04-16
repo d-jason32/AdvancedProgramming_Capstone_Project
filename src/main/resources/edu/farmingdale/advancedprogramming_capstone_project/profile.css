@@ -1,0 +1,82 @@
+/* ---------- Base ---------- */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #1d2330 0%, #202a3f 100%);
+    -fx-font-family: "Inter", "Helvetica", "SansSerif";
+}
+
+/* ---------- Typography ---------- */
+.title {
+    -fx-text-fill: white;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-text-fill: #cfd4e4;
+    -fx-font-size: 14px;
+}
+
+/* ---------- Avatar circle ---------- */
+.avatar {
+    -fx-fill: transparent;
+    -fx-stroke: #0d6efd;
+    -fx-stroke-width: 3;
+}
+
+/* ---------- Buttons ---------- */
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 8 28 8 28;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+}
+
+.primary-button {
+    -fx-background-color: #0d6efd;
+    -fx-text-fill: white;
+}
+
+.primary-button:hover { -fx-background-color: derive(#0d6efd, 15%); }
+
+.secondary-button {
+    -fx-background-color: #3a4659;
+    -fx-text-fill: #cfd4e4;
+}
+
+.secondary-button:hover { -fx-background-color: derive(#3a4659, 15%); }
+
+/* ---------- Text / text‑area ---------- */
+/* ---------- Inputs: single‑line ---------- */
+.custom-textfield {
+    -fx-background-color: #2b3444;
+    -fx-text-fill: #dfe6f8;
+    -fx-prompt-text-fill: #7b869a;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 8 18 8 18;
+    -fx-min-height: 40;
+}
+
+/* ---------- Inputs: multi‑line (Bio) ---------- */
+.custom-textarea {
+    -fx-background-color: white;
+    -fx-text-fill: #1e1e1e;
+    -fx-prompt-text-fill: #7b869a;
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+    -fx-background-insets: 0;
+    -fx-border-color: transparent;
+    -fx-padding: 8 18 8 18;
+    -fx-min-height: 40;
+}
+
+.custom-textfield:focused,
+.custom-textarea:focused {
+    -fx-border-color: #0d6efd;
+    -fx-border-width: 1;
+    -fx-border-radius: 30;
+}
+
+
