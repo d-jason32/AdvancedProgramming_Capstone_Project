@@ -28,11 +28,4 @@ public class AI_Helper {
         return properties.getProperty("API_KEY", "");
     }
 
-    public static String getSpeechSubscriptionKey() {
-        return properties.getProperty("SPEECH_SUBSCRIPTION_KEY", "");
-    }
-
-    public static String getSpeechRegion() {
-        return properties.getProperty("SPEECH_REGION", "");
-    }
 }

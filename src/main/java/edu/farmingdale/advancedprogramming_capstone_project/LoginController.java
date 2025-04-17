@@ -1,6 +1,5 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
-import com.microsoft.aad.msal4j.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
