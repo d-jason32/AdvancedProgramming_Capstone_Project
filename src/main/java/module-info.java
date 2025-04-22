@@ -5,7 +5,13 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires client.sdk;
     requires java.desktop;
     requires java.prefs;
+    requires jdk.httpserver;
+    requires com.google.gson;
+    requires com.microsoft.aad.msal4j;
+    requires jbcrypt;
 
-    opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml;
+    opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml, com.microsoft.aad.msal4j;
     exports edu.farmingdale.advancedprogramming_capstone_project;
 }
+
+

@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 import java.util.Objects;
 import static javafx.stage.StageStyle.UNDECORATED;
 
@@ -19,7 +21,6 @@ public class CapstoneApp extends Application {
 
     // This static field holds the HostServices reference for opening URLs.
     private static HostServices hostServices;
-    public Scene loginScene;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,15 +42,38 @@ public class CapstoneApp extends Application {
         splashStage.show();
 
         // When the splash loading is finished, close it and load the login screen.
+        // If the login screen authenticates, the main screen loads.
         splashController.setLoadingBarFinished(() -> {
             Platform.runLater(() -> {
                 try {
                     splashStage.close();
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("login-screen.fxml")));
-                    loginScene = new Scene(root);
+                    FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("login-screen.fxml"));
+                    Parent loginRoot = loginLoader.load();
+                    LoginController loginController = loginLoader.getController();
+
+                    loginController.setHostServices(hostServices);
+                    loginController.setOnLoginSuccess(() -> {
+                        Platform.runLater(() -> {
+                            try {
+                                // Load main screen when login succeeds
+                                FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+                                Parent mainRoot = mainLoader.load();
+
+
+                                // Switch to main screen
+                                primaryStage.setScene(new Scene(mainRoot, 1280, 800));
+                                primaryStage.setTitle("AI Whiteboard Program");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    });
+
+                    // Show login screen
+                    primaryStage.setScene(new Scene(loginRoot));
                     primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
-                    primaryStage.setScene(loginScene);
                     primaryStage.show();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
