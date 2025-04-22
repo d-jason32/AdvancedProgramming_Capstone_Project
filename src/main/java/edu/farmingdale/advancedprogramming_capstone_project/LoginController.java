@@ -27,6 +27,9 @@ import com.microsoft.aad.msal4j.*;
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
 
+//env support
+import io.github.cdimascio.dotenv.Dotenv;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -46,9 +49,11 @@ import java.util.function.Consumer;
 public class LoginController {
 
     private List<testUser> testDB = new ArrayList<>();
-
     public HostServices hostServices;
     private Runnable onLoginSuccess;
+
+    private static Dotenv dotenv = Dotenv.load();
+
 
     // FXML components
     @FXML
@@ -56,15 +61,13 @@ public class LoginController {
     @FXML
     public Label stateText;
     @FXML
-    private Button enterButton;
-    @FXML
     private TextField passwordField;
     @FXML
     private TextField usernameField;
     @FXML
     private Text errorTextPlaceholder;
 
-
+//Tester Code
     @FXML private TextField resetEmailField;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
@@ -75,19 +78,26 @@ public class LoginController {
 
     private int state = 0;
 
+
+
     public void initializeTestDB() {
         testDB.add(new testUser("tester", "12345"));
         testDB.add(new testUser("admin", "admin123"));
     }
 
+    //Bypass Login for Testing
     @FXML
     void onDevButtonPressed(ActionEvent event) {
         // Bypass authentication and load the main program
+        dotenv.entries().forEach(entry ->
+                System.out.println(entry.getKey() + "=" + entry.getValue())
+        );
         if (onLoginSuccess != null) {
             Platform.runLater(onLoginSuccess); // Ensure JavaFX thread safety
         }
     }
 
+    //Reads input from email and password input fields and preforms operations to ensure it works
     @FXML
     void onEnterButtonPress(ActionEvent event) {
         initializeTestDB();
@@ -127,16 +137,17 @@ public class LoginController {
         }
     }
 
+    //Sets up the web page functionality
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 
+    //Starts authentication via Microsoft
     @FXML
     private void onMicrosoftButtonPress(ActionEvent event) {
         // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
-            return;
         }
 
         new MicrosoftAuthHandler(
@@ -151,12 +162,12 @@ public class LoginController {
         ).startAuthentication();
     }
 
+    //Starts authentication via Google
     @FXML
     private void onGoogleButtonPress(ActionEvent event) {
         // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
-            return;
         }
 
         new GoogleAuthHandler(
@@ -171,11 +182,11 @@ public class LoginController {
         ).startAuthentication();
     }
 
+    //Starts authentication via Github
     @FXML
     private void onGithubButtonPress(ActionEvent event) throws IOException {
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
-            return;
         }
 
         new GithubAuthHandler(
@@ -189,25 +200,6 @@ public class LoginController {
         ).startAuthentication();
     }
 
-    @FXML
-    private void onFacebookButtonPress(ActionEvent event) throws IOException {
-        // Add null check for hostServices
-        if (hostServices == null) {
-            errorTextPlaceholder.setText("Browser services not available");
-            return;
-        }
-
-        new FacebookAuthHandler(
-                () -> {
-                    // This runs when authentication succeeds
-                    if (onLoginSuccess != null) {
-                        Platform.runLater(onLoginSuccess);
-                    }
-                },
-                error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
-                hostServices
-        ).startAuthentication();
-    }
 
     @FXML
     public void onSignInTextPressed(MouseEvent event) {
@@ -262,8 +254,8 @@ public class LoginController {
     }
 
     public class GoogleAuthHandler {
-        private static final String CLIENT_ID = "151935163365-p9vjl4p76hrse93oear89lediber9l45.apps.googleusercontent.com";
-        private static final String CLIENT_SECRET = "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";
+        private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
+        private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/google/callback";
         private static final String SCOPE = "email profile";
         private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
@@ -422,8 +414,8 @@ public class LoginController {
     }
 
     public class MicrosoftAuthHandler {
-        private static final String CLIENT_ID = "395068cb-ce9c-484a-b2cb-ff12ad9a7ae7";
-        private static final String AUTHORITY = "https://login.microsoftonline.com/9e4341d9-236d-4377-a13b-819911255480";
+        private static final String CLIENT_ID = dotenv.get("MICROSOFT_CLIENT_ID");
+        private static final String AUTHORITY = dotenv.get("MICROSOFT_AUTHORITY_ID");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/microsoft/callback";
         private static final String[] SCOPES = {"User.Read"};
 
@@ -560,8 +552,8 @@ public class LoginController {
     }
 
     public class GithubAuthHandler {
-        private static final String CLIENT_ID = "Ov23li4s0C8RqT2jvFP9";
-        private static final String CLIENT_SECRET = "10cd7753198a170ed59c408ee041b9abe8fe0905";
+        private static final String CLIENT_ID = dotenv.get("GITHUB_CLIENT_ID");
+        private static final String CLIENT_SECRET = dotenv.get("GITHUB_CLIENT_SECRET");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/github/callback";
         private static final String SCOPE = "user:email";
         private static final String AUTH_URL = "https://github.com/login/oauth/authorize";
@@ -689,149 +681,6 @@ public class LoginController {
 
         private void sendSuccessResponse(HttpExchange exchange) throws IOException {
             String response = "<html><body>GitHub login successful! You can close this window.</body></html>";
-            exchange.sendResponseHeaders(200, response.length());
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
-            }
-        }
-
-        private void sendErrorResponse(HttpExchange exchange, String message) throws IOException {
-            String response = "<html><body>Error: " + message + "</body></html>";
-            exchange.sendResponseHeaders(400, response.length());
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(response.getBytes());
-            }
-        }
-    }
-
-    public class FacebookAuthHandler {
-        private static final String CLIENT_ID = "YOUR_FACEBOOK_APP_ID";
-        private static final String CLIENT_SECRET = "YOUR_FACEBOOK_APP_SECRET";
-        private static final String REDIRECT_URI = "http://localhost:8080/auth/facebook/callback";
-        private static final String SCOPE = "email";
-        private static final String AUTH_URL = "https://www.facebook.com/v12.0/dialog/oauth";
-        private static final String TOKEN_URL = "https://graph.facebook.com/v12.0/oauth/access_token";
-        private static final String USER_API_URL = "https://graph.facebook.com/v12.0/me?fields=id,name,email";
-
-        private final Runnable onSuccess;
-        private final Consumer<String> onError;
-        private final HostServices hostServices;
-
-        public FacebookAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
-            this.onSuccess = onSuccess;
-            this.onError = onError;
-            this.hostServices = hostServices;
-        }
-
-        public void startAuthentication() {
-            try {
-                String authUrl = buildAuthUrl();
-                openBrowser(authUrl);
-                startCallbackServer();
-            } catch (Exception e) {
-                onError.accept("Facebook login error: " + e.getMessage());
-            }
-        }
-
-        private String buildAuthUrl() throws UnsupportedEncodingException {
-            return AUTH_URL + "?client_id=" + CLIENT_ID +
-                    "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8) +
-                    "&scope=" + URLEncoder.encode(SCOPE, StandardCharsets.UTF_8) +
-                    "&response_type=code";
-        }
-
-        private void openBrowser(String url) {
-            hostServices.showDocument(url);
-        }
-
-        private void startCallbackServer() {
-            new Thread(() -> {
-                try {
-                    HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-                    server.createContext("/auth/facebook/callback", exchange -> {
-                        try {
-                            handleCallback(exchange);
-                        } finally {
-                            exchange.close();
-                            server.stop(0);
-                        }
-                    });
-                    server.start();
-                } catch (IOException e) {
-                    onError.accept("Failed to start callback server: " + e.getMessage());
-                }
-            }).start();
-        }
-
-        private void handleCallback(HttpExchange exchange) throws IOException {
-            String query = exchange.getRequestURI().getQuery();
-            Map<String, String> params = parseQuery(query);
-            String code = params.get("code");
-
-            if (code == null) {
-                sendErrorResponse(exchange, "No authorization code received");
-                onError.accept("Facebook login failed: No authorization code received");
-                return;
-            }
-
-            try {
-                String accessToken = exchangeCodeForToken(code);
-                String userInfo = getUserInfo(accessToken);
-                JsonObject userJson = JsonParser.parseString(userInfo).getAsJsonObject();
-
-                System.out.println("Logged in as Facebook user: " + userJson.get("name").getAsString());
-                sendSuccessResponse(exchange);
-                onSuccess.run();
-            } catch (Exception e) {
-                sendErrorResponse(exchange, "Authentication failed");
-                onError.accept("Facebook login failed: " + e.getMessage());
-            }
-        }
-
-        private String exchangeCodeForToken(String code) throws IOException, InterruptedException {
-            String params = "client_id=" + CLIENT_ID +
-                    "&client_secret=" + CLIENT_SECRET +
-                    "&code=" + code +
-                    "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8);
-
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(TOKEN_URL))
-                    .header("Content-Type", "application/x-www-form-urlencoded")
-                    .POST(HttpRequest.BodyPublishers.ofString(params))
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            JsonObject tokenJson = JsonParser.parseString(response.body()).getAsJsonObject();
-            return tokenJson.get("access_token").getAsString();
-        }
-
-        private String getUserInfo(String accessToken) throws IOException, InterruptedException {
-            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(USER_API_URL + "&access_token=" + accessToken))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            return response.body();
-        }
-
-        private Map<String, String> parseQuery(String query) {
-            Map<String, String> params = new HashMap<>();
-            if (query != null) {
-                for (String param : query.split("&")) {
-                    String[] pair = param.split("=");
-                    if (pair.length > 1) {
-                        params.put(pair[0], pair[1]);
-                    }
-                }
-            }
-            return params;
-        }
-
-        private void sendSuccessResponse(HttpExchange exchange) throws IOException {
-            String response = "<html><body>Facebook login successful! You can close this window.</body></html>";
             exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());

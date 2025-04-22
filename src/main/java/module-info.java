@@ -9,6 +9,7 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires com.google.gson;
     requires com.microsoft.aad.msal4j;
     requires jbcrypt;
+    requires java.dotenv;
 
     opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml, com.microsoft.aad.msal4j;
     exports edu.farmingdale.advancedprogramming_capstone_project;
