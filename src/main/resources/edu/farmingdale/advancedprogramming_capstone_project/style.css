@@ -3,6 +3,11 @@
     -fx-font-family: Arial, sans-serif;
 }
 
+.body-background {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1a1f2b, #3a4254);
+    -fx-font-family: Arial, sans-serif;
+}
+
 .border-pane {
     -fx-background-color: #B8E3E9;
     -fx-border-color: 006400;
@@ -33,9 +38,9 @@
 }
 
 .progress-bar .track {
-    -fx-background-color: #AEB7CF;
+    -fx-background-color: white;
 }
 
 .progress-bar .bar {
-    -fx-background-color: #F7D600;
+    -fx-background-color: #2c0f45;
 }

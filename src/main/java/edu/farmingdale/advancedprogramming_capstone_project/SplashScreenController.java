@@ -1,5 +1,6 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,14 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import java.net.URL;
 import java.util.ResourceBundle;
-
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 public class SplashScreenController implements Initializable {
 
     /**
      * initializes four classes for splash screen:
      * splashLabel | loadingBar | checkLoadingBarFinished | progressText
      */
-    @FXML private Label splashLabel;
+    @FXML private Label loadingLabel;
     @FXML private ProgressBar loadingBar;
     @FXML private Label progressText;
     private Runnable checkLoadingBarFinished;
@@ -37,7 +39,7 @@ public class SplashScreenController implements Initializable {
                             progressText.setText(progressValue + "%"); // update text label
                         }
                     });
-                    Thread.sleep(35); // adjust speed as needed
+                    Thread.sleep(55); // adjust speed as needed
 
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
@@ -67,6 +69,22 @@ public class SplashScreenController implements Initializable {
     }
 
     /**
+     * method for labelFlash
+     * makes loadingLabel fade in and out of opacity like an animation
+     * autoreserving that lasts the length until splash screen finishes loading
+     */
+    private void labelFlash() {
+        FadeTransition labelFlash = new FadeTransition(javafx.util.Duration.millis(1000), loadingLabel);
+        labelFlash.setFromValue(1.0);
+        labelFlash.setToValue(0.0);
+        labelFlash.setCycleCount(FadeTransition.INDEFINITE);
+        labelFlash.setAutoReverse(true);
+        labelFlash.play();
+    }
+
+
+
+    /**
      * @param callFunction
      * calls the function for loading bar when it finishes (100%)
      */
@@ -85,9 +103,11 @@ public class SplashScreenController implements Initializable {
      */
     @Override
     public void initialize(URL location, ResourceBundle resource) {
-        splashLabel.setText("Whiteboard Teaching Tool");
         progressText.setText("0%");
+        progressText.setTextFill(Color.WHITE);
+        loadingLabel.setTextFill(Color.LIGHTGRAY);
         loadingBar.setProgress(0.0); // always starts from 0%
         startLoadingBar(); // calls function
+        labelFlash();
     }
 }

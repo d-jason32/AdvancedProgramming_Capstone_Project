@@ -32,7 +32,7 @@ public class CapstoneApp extends Application {
         SplashScreenController splashController = splashLoader.getController();
 
         // Create and set up the splash screen scene.
-        Scene splashScene = new Scene(splashRoot, 600, 450);
+        Scene splashScene = new Scene(splashRoot, 600, 480);
         splashScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
         Stage splashStage = new Stage();
         splashStage.setScene(splashScene);
