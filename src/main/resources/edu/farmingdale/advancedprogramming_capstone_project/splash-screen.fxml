@@ -11,55 +11,59 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.SplashScreenController">
-    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" style="-fx-background-color: POWDERBLUE; -fx-border-color: DARKGREEN; -fx-border-width: 6;">
+<AnchorPane styleClass="body-background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.SplashScreenController">
+    <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="600.0" style="-fx-border-width: 4;" styleClass="body-background" stylesheets="@style.css">
         <bottom>
-            <ProgressBar fx:id="loadingBar" prefHeight="40.0" prefWidth="485.0" style="-fx-border-color: DARKGREEN; -fx-border-width: 4; -fx-border-radius: 4;" translateX="-35.0" BorderPane.alignment="CENTER">
+            <ProgressBar fx:id="loadingBar" prefHeight="40.0" prefWidth="470.0" style="-fx-border-color: BLUE; -fx-border-width: 3; -fx-border-radius: 4;" translateX="-50.0" translateY="-30.0" BorderPane.alignment="CENTER">
                 <opaqueInsets>
                     <Insets />
                 </opaqueInsets>
                 <BorderPane.margin>
-                    <Insets bottom="8.0" />
+                    <Insets bottom="-15.0" />
                 </BorderPane.margin>
             </ProgressBar>
         </bottom>
         <center>
-            <ImageView fitHeight="330.0" fitWidth="350.0" pickOnBounds="true" preserveRatio="true" translateX="38.0" BorderPane.alignment="CENTER">
+            <ImageView fitHeight="253.0" fitWidth="287.0" pickOnBounds="true" preserveRatio="true" translateX="20.0" translateY="-40.0" BorderPane.alignment="CENTER">
                 <BorderPane.margin>
-                    <Insets bottom="5.0" top="-14.0" />
+                    <Insets />
                 </BorderPane.margin>
                 <Image url="@SUNY_Farmingdale_seal.svg.png" />
             </ImageView>
         </center>
-        <top>
-            <Label fx:id="splashLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="60.0" prefWidth="550.0" text="WHITEBOARD TEACH TOOL" textAlignment="CENTER" textFill="#757c12" BorderPane.alignment="CENTER">
-                <font>
-                    <Font name="Georgia Bold Italic" size="36.0" />
-                </font>
-                <BorderPane.margin>
-                    <Insets bottom="5.0" />
-                </BorderPane.margin>
-            </Label>
-        </top>
         <cursor>
             <Cursor fx:constant="NONE" />
         </cursor>
         <right>
-            <ImageView fitHeight="75.0" fitWidth="75.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true"
-                       translateX="-12.0" translateY="125.0" BorderPane.alignment="CENTER_LEFT">
-                <Image url="@fsclogo.png"/>
+            <ImageView fitHeight="35.0" fitWidth="35.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" translateX="-3.0" translateY="145.0" BorderPane.alignment="CENTER_LEFT">
+                <Image url="@fsclogo.png" />
             </ImageView>
         </right>
+      <top>
+         <ImageView fitHeight="175.0" fitWidth="557.0" pickOnBounds="true" preserveRatio="true" translateY="-10.0" BorderPane.alignment="CENTER">
+            <image>
+               <Image url="@final_logo.png" />
+            </image>
+            <BorderPane.margin>
+               <Insets />
+            </BorderPane.margin>
+         </ImageView>
+      </top>
     </BorderPane>
-    <Label fx:id="progressText" alignment="CENTER" text="0%" textAlignment="CENTER" translateX="518.0" translateY="400.0" wrapText="true">
+    <Label fx:id="progressText" text="0%" textFill="WHITE" translateX="490.0" translateY="430.0" wrapText="true">
         <opaqueInsets>
             <Insets />
         </opaqueInsets>
         <font>
-            <Font name="Verdana Bold" size="25.0" />
+            <Font name="Verdana Bold" size="24.0" />
         </font>
         <effect>
             <Glow level="0.35" />
         </effect>
     </Label>
+   <Label fx:id="loadingLabel" layoutX="285.0" layoutY="442.0" stylesheets="@style.css" text="Loading . . ." translateX="-90.0" translateY="-15.0">
+      <font>
+         <Font name="Avenir Black Oblique" size="22.0" />
+      </font>
+   </Label>
 </AnchorPane>
