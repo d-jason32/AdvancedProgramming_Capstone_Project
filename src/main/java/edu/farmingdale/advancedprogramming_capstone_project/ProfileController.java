@@ -17,6 +17,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.prefs.Preferences;
+import java.util.regex.Pattern;
 
 /**
  * Controller for profilePage.fxml.
@@ -54,6 +55,18 @@ public class ProfileController implements Initializable {
 
         /* Hook up Save button */
         saveBtn.setOnAction(e -> saveProfile());
+
+        TextField[] fields = { firstNameField, lastNameField, emailField, passwordField};
+
+        /*
+        After each text field is clicked on, every
+        field will be checked if it is correct.
+         */
+        for (TextField field : fields) {
+            field.setOnMouseClicked(e -> {
+                checkIfCorrect();
+            });
+        }
     }
 
     /* ------------ avatar logic ------------ */
@@ -83,6 +96,47 @@ public class ProfileController implements Initializable {
         prefs.put("email",     emailField.getText());
         prefs.put("password",  passwordField.getText());
         prefs.put("bio",       bioArea.getText());
+    }
+
+    Pattern firstNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
+    Pattern lastNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
+    Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9._%+-]{1,25}@farmingdale\\.edu$");
+    Pattern passwordPattern = Pattern.compile("^[a-zA-Z]{2,25}$");
+
+    /**
+     * Checks if every text field is valid.
+     */
+    void checkIfCorrect(){
+        if (firstNamePattern.matcher(firstNameField.getText()).matches()){
+            firstNameField.setStyle("-fx-border-color:#6dff7c; -fx-border-width:2px;");
+        }
+        else {
+            firstNameField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
+        }
+        if (lastNamePattern.matcher(lastNameField.getText()).matches()){
+            lastNameField.setStyle("-fx-border-color:#6dff7c; -fx-border-width:2px;");
+        }
+        else {
+            lastNameField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
+        }
+        if (lastNamePattern.matcher(lastNameField.getText()).matches()){
+            lastNameField.setStyle("-fx-border-color:#6dff7c; -fx-border-width:2px;");
+        }
+        else {
+            lastNameField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
+        }
+        if (emailPattern.matcher(emailField.getText()).matches()){
+            emailField.setStyle("-fx-border-color:#6dff7c; -fx-border-width:2px;");
+        }
+        else {
+            emailField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
+        }
+        if (passwordPattern.matcher(passwordField.getText()).matches()){
+            passwordField.setStyle("-fx-border-color:#6dff7c; -fx-border-width:2px;");
+        }
+        else {
+            passwordField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
+        }
     }
 
 }
