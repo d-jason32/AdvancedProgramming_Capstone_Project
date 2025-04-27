@@ -49,18 +49,51 @@
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
 - [❓FAQ](#faq)
+- [📄Documentation](#documentation)
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
 ## 💬 Introduction
+**ColaBoard** is an online learning collaborative platform that allows users to video chat and collaborate in
+real time on a shared whiteboard. This product is designed to enhance learning in virtual classrooms and 
+tutoring sessions. Users are also able to generate summarize of their learning session using Artificial Intelligence
+and pay attention to real time speech to text captions. 
 
 ## 🚀 Features
+- Real-time video chat between users	
+- Interactive shared whiteboard	
+- Simultaneous drawing, annotating, and text editing
+- AI-powered session summaries
+- Real-time speech-to-text transcription	
+- User authentication with session codes	
+- Teacher and student controls 	
+- Chat messaging system	
+- Modern user interface	
+- Splash screen loading
+- Profile creation and personalization	
+- Azure database connectivity
+- Log in with Google or Facebook (OAuth integration)
 
 ## ▶️ Demo
 
 !!! INSERT YOUTUBE VIDEO HERE
 
 ## 🧰 Tech Stack
+![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
+
+![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+
+![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
+
+![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
+
+![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
+
+![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
+
+![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
 ## 🛠️ Installation
 
@@ -77,6 +110,9 @@
 Feel free to use, modify, and distribute it as permitted.
 
 ## ❓FAQ
+
+## 📄Documentation
+[View the Documentation](https://docs.google.com/document/d/10x_jZji7rmwwhs27weYpYTUSRJXgX1Xg6gUanK9Tav0/edit?usp=sharing)
 
 ## 👥 Contributors
 
