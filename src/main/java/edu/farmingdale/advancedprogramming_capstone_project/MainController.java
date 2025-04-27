@@ -20,7 +20,6 @@ import java.util.UUID;
  * - Getting a summary and live transcription
  */
 public class MainController {
-
     @FXML
     private Label sessionLabel;           // Displays the generated session code.
     @FXML
@@ -148,5 +147,20 @@ public class MainController {
         stage.setTitle(title);
         stage.setScene(new Scene(root, width, height));
         stage.show();
+    }
+
+    /**
+     * Method to open the database.
+     * @param event
+     */
+    @FXML
+    void goToDatabase(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("database.fxml"));
+            Parent root = loader.load();
+            launchNewWindow("Live Transcription", root, 1280, 800);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -62,6 +62,11 @@
                     <Font size="20.0" />
                 </font>
             </Button>
+         <Button fx:id="databaseButton" layoutX="450.0" layoutY="346.0" onAction="#goToDatabase" prefHeight="25.0" prefWidth="400.0" text="Profile Database">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
         </VBox>
     </center>
 </BorderPane>
