@@ -19,6 +19,9 @@
             <image>
                 <Image url="@final_logo.png" />
             </image>
+         <BorderPane.margin>
+            <Insets top="60.0" />
+         </BorderPane.margin>
         </ImageView>
     </top>
     <center>
@@ -59,8 +62,6 @@
                     <Font size="20.0" />
                 </font>
             </Button>
-            <Label fx:id="summaryLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Summary Label" />
-            <Label fx:id="sessionLabel" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Session label" />
         </VBox>
     </center>
 </BorderPane>
