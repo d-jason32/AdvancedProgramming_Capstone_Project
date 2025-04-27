@@ -1,0 +1,104 @@
+.nav_btn {
+    -fx-background-color:#444;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-font-size:14px;
+    -fx-text-alignment: center;
+    -fx-text-fill:#fff;
+    -fx-alignment:CENTER;
+    -fx-background-radius:10;
+    -fx-pref-width:150px;
+    -fx-pref-height:40px;
+}
+
+.left_pane {
+    -fx-background-color: #1E2025;
+    -fx-pref-width:150px;
+    -fx-pref-height:600px;
+}
+
+.bottom_pane {
+    -fx-background-color: #1E2025;
+}
+.profile_pic{
+    -fx-stroke: #dedddc;
+    -fx-stroke-width: 2;
+}
+
+
+
+#button1, button2, button3 {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+#button2 {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+#button3 {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+    -fx-padding: 8 16;
+}
+
+#loginBox {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.16), 10, 0.2, 0, 4);
+}
+
+#loginButton {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+#registerButton {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+#backButton {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+#themeButton {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+#logoutButton {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+.button {
+    -fx-background-color: #007ACC;
+    -fx-text-fill: white;
+}
+
+.button:hover {
+    -fx-background-color: #1284D3;
+}
+
+#borderPane {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e0f7ff, #007ACC);
+}
+
+.text-field {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #333333;
+    -fx-border-color: #007ACC;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+}
+
+#hboxArea{
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1E2025, #005A99);
+}

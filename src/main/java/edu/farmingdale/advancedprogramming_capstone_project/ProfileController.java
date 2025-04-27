@@ -1,5 +1,6 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -83,4 +84,5 @@ public class ProfileController implements Initializable {
         prefs.put("password",  passwordField.getText());
         prefs.put("bio",       bioArea.getText());
     }
+
 }
