@@ -73,6 +73,8 @@
 ## 📁 Project Structure
 
 ## 📝 License
+- This project is licensed under the [MIT License](LICENSE).  
+Feel free to use, modify, and distribute it as permitted.
 
 ## ❓FAQ
 
