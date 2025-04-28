@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -35,6 +36,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -46,14 +48,16 @@ import java.util.function.Consumer;
 
 
 
-public class LoginController {
-
+public class LoginController implements Initializable  {
+    private ProfileConnDbOps cdbop;
+    private List<String> databaseLoginInfo;
     private List<testUser> testDB = new ArrayList<>();
     public HostServices hostServices;
     private Runnable onLoginSuccess;
 
     private static Dotenv dotenv = Dotenv.load();
 
+    // testertester tester123456
 
     // FXML components
     @FXML
@@ -79,10 +83,21 @@ public class LoginController {
     private int state = 0;
 
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        cdbop = new ProfileConnDbOps();
+        cdbop.connectToDatabase();
+        databaseLoginInfo = cdbop.displayAllUsers();
+    }
 
     public void initializeTestDB() {
         testDB.add(new testUser("tester", "12345"));
         testDB.add(new testUser("admin", "admin123"));
+        for (int i = 0; i < databaseLoginInfo.size(); i += 2) {
+            String username = databaseLoginInfo.get(i);
+            String password = databaseLoginInfo.get(i + 1);
+            testDB.add(new testUser(username, password));
+        }
     }
 
     //Bypass Login for Testing
@@ -100,6 +115,7 @@ public class LoginController {
     //Reads input from email and password input fields and preforms operations to ensure it works
     @FXML
     void onEnterButtonPress(ActionEvent event) {
+        databaseLoginInfo = cdbop.displayAllUsers();
         initializeTestDB();
         String username = usernameField.getText().trim();
         String password = passwordField.getText().trim();
@@ -117,6 +133,12 @@ public class LoginController {
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).{8,}$")) {
 
             errorTextPlaceholder.setText("Password must be 8+ characters with at least one letter and one number");
+            return;
+        }
+
+        if (state == 1){
+            cdbop.insertUser(usernameField.getText(), passwordField.getText());
+            errorTextPlaceholder.setText("Successfully created Username and Password.");
             return;
         }
 
@@ -207,6 +229,7 @@ public class LoginController {
             stateLink.setText("Already have an account? Sign in!");
             stateText.setText("Sign up");
             state = 1;
+            System.out.println(state);
         } else {
             stateLink.setText("Don't have an account? Sign up!");
             stateText.setText("Sign in");
@@ -226,6 +249,8 @@ public class LoginController {
 
     public void onPasswordResetPressed(MouseEvent mouseEvent) {
     }
+
+
 
 
     private static class testUser {
