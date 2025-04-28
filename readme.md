@@ -9,6 +9,8 @@
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
 ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![OAuth2.0](https://img.shields.io/badge/OAuth2.0-k?style=for-the-badge&logo=oauth)
 ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
 ![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
@@ -63,7 +65,7 @@ and pay attention to real time speech to text captions.
 - Real-time video chat between users	
 - Interactive shared whiteboard	
 - Simultaneous drawing, annotating, and text editing
-- AI-powered session summaries
+- AI-powered session summaries using Google Gemini
 - Real-time speech-to-text transcription	
 - User authentication with session codes	
 - Teacher and student controls 	
@@ -73,7 +75,10 @@ and pay attention to real time speech to text captions.
 - Profile creation and personalization	
 - Azure database connectivity
 - Log in with Google or Facebook (OAuth integration)
+- User database with full CRUD application
 - Database storage of account usernames and passwords
+- Regular Expression Field Validation
+- JSON parsing and serialization/deserialization
 
 ## ▶️ Demo
 
@@ -89,6 +94,8 @@ and pay attention to real time speech to text captions.
 ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
 
 ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
+
+![OAuth2.0](https://img.shields.io/badge/OAuth2.0-k?style=for-the-badge&logo=oauth)
 
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
