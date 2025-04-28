@@ -17,11 +17,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1024.0" styleClass="body-background" stylesheets="@login_page_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="665.0" prefWidth="1024.0" styleClass="body-background" stylesheets="@styling/login_page_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.LoginController">
    <left>
       <ImageView fitHeight="666.0" fitWidth="479.0" BorderPane.alignment="CENTER">
          <image>
-            <Image url="@loginGraphic.png" />
+            <Image url="@images/loginGraphic.png" />
          </image>
          <BorderPane.margin>
             <Insets right="45.0" />
@@ -33,7 +33,7 @@
          <children>
             <ImageView fitHeight="196.0" fitWidth="601.0">
                <image>
-                  <Image url="@final_logo.png" />
+                  <Image url="@images/final_logo.png" />
                </image>
                <VBox.margin>
                   <Insets right="65.0" top="55.0" />
@@ -44,7 +44,7 @@
             </ImageView>
             <HBox alignment="CENTER" prefHeight="70.0" prefWidth="666.0">
                <children>
-                  <Label fx:id="stateText" alignment="TOP_LEFT" prefHeight="74.0" prefWidth="180.0" stylesheets="@login_page_styles.css" text="Sign in" textFill="#569eff">
+                  <Label fx:id="stateText" alignment="TOP_LEFT" prefHeight="74.0" prefWidth="180.0" stylesheets="@styling/login_page_styles.css" text="Sign in" textFill="#569eff">
                      <font>
                         <Font name="Kohinoor Gujarati Bold" size="40.0" />
                      </font>
@@ -56,7 +56,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="666.0">
                <children>
-                  <TextField fx:id="usernameField" prefHeight="52.0" prefWidth="360.0" promptText="Email" stylesheets="@login_page_styles.css">
+                  <TextField fx:id="usernameField" prefHeight="52.0" prefWidth="360.0" promptText="Email" stylesheets="@styling/login_page_styles.css">
                      <font>
                         <Font name="Kohinoor Gujarati Medium" size="58.0" />
                      </font>
@@ -97,7 +97,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="666.0">
                <children>
-                  <Button fx:id="enterButton" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onEnterButtonPress" prefHeight="52.0" prefWidth="72.0" stylesheets="@login_page_styles.css" textFill="#000000fc">
+                  <Button fx:id="enterButton" alignment="BASELINE_LEFT" contentDisplay="CENTER" graphicTextGap="0.0" mnemonicParsing="false" onAction="#onEnterButtonPress" prefHeight="52.0" prefWidth="72.0" stylesheets="@styling/login_page_styles.css" textFill="#000000fc">
                      <HBox.margin>
                         <Insets bottom="13.0" right="55.0" />
                      </HBox.margin>
@@ -114,7 +114,7 @@
                            </font>
                         </Text>
                      </graphic></Button>
-                  <Button fx:id="devButton" mnemonicParsing="false" onAction="#onDevButtonPressed" prefHeight="36.0" prefWidth="101.0" styleClass="button-oauth" stylesheets="@login_page_styles.css" text="Dev Skip" textFill="#0025ff">
+                  <Button fx:id="devButton" mnemonicParsing="false" onAction="#onDevButtonPressed" prefHeight="36.0" prefWidth="101.0" styleClass="button-oauth" stylesheets="@styling/login_page_styles.css" text="Dev Skip" textFill="#0025ff">
                      <padding>
                         <Insets right="15.0" />
                      </padding>
@@ -147,11 +147,11 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="70.0" prefWidth="666.0">
                <children>
-                  <Button fx:id="microsoftButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMicrosoftButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@login_page_styles.css">
+                  <Button fx:id="microsoftButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onMicrosoftButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@styling/login_page_styles.css">
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                            <image>
-                              <Image url="@microsoft_icon.png" />
+                              <Image url="@images/microsoft_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -169,7 +169,7 @@
                         <Insets right="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="googleButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onGoogleButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@login_page_styles.css" wrapText="true">
+                  <Button fx:id="googleButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onGoogleButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@styling/login_page_styles.css" wrapText="true">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -183,12 +183,12 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                            <image>
-                              <Image url="@google_icon.png" />
+                              <Image url="@images/google_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
                   </Button>
-                  <Button fx:id="githubButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onGithubButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@login_page_styles.css" wrapText="true">
+                  <Button fx:id="githubButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onGithubButtonPress" prefHeight="60.0" prefWidth="60.0" styleClass="button-oauth" stylesheets="@styling/login_page_styles.css" wrapText="true">
                      <HBox.margin>
                         <Insets right="10.0" />
                      </HBox.margin>
@@ -202,7 +202,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
                            <image>
-                              <Image url="@github_icon.png" />
+                              <Image url="@images/github_icon.png" />
                            </image>
                         </ImageView>
                      </graphic>
