@@ -73,6 +73,7 @@ and pay attention to real time speech to text captions.
 - Profile creation and personalization	
 - Azure database connectivity
 - Log in with Google or Facebook (OAuth integration)
+- Database storage of account usernames and passwords
 
 ## ▶️ Demo
 
