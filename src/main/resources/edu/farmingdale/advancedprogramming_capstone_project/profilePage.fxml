@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane fx:id="root" prefHeight="640.0" prefWidth="806.0" stylesheets="@profile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.ProfileController">
+<AnchorPane fx:id="root" prefHeight="640.0" prefWidth="806.0" stylesheets="@styling/profile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.ProfileController">
 
     <children>
         <VBox alignment="TOP_CENTER" spacing="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
@@ -61,13 +61,13 @@
                 <!-- Bio -->
                 <Label text="Bio:" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                 <TextArea fx:id="bioArea" prefRowCount="4" promptText="Tell us about yourself…" styleClass="custom-textarea" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
             </GridPane>
 
             <!-- Save button -->

@@ -57,6 +57,7 @@ public class LoginController implements Initializable  {
 
     private static Dotenv dotenv = Dotenv.load();
 
+    // testertester tester123456
 
     // FXML components
     @FXML
@@ -719,7 +720,6 @@ public class LoginController implements Initializable  {
             }
         }
     }
-
 
 }
 
