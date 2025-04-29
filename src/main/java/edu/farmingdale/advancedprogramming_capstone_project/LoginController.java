@@ -71,7 +71,7 @@ public class LoginController implements Initializable  {
     @FXML
     private Text errorTextPlaceholder;
 
-//Tester Code
+    //Tester Code
     @FXML private TextField resetEmailField;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
@@ -722,4 +722,3 @@ public class LoginController implements Initializable  {
     }
 
 }
-

@@ -33,8 +33,7 @@ public class MainController {
     @FXML
     public void startNewCall() {
         // Generate a unique session code.
-        String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
-        sessionLabel.setText("Session Code: " + sessionCode);
+        String sessionCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 
         // Build the call URL (update the file name if needed).
         String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
@@ -42,8 +41,6 @@ public class MainController {
         // Open the URL using HostServices.
         CapstoneApp.getStaticHostServices().showDocument(callUrl);
 
-        // Optionally, open the transcription window if needed.
-        openTranscriptionWindow();
     }
 
     /**
@@ -110,16 +107,16 @@ public class MainController {
 
             // --- reference to the main (owner) window ---
             Stage primaryStage = (Stage) ((javafx.scene.Node) event.getSource())
-                                            .getScene()
-                                            .getWindow();
+                    .getScene()
+                    .getWindow();
 
             Stage profileStage = new Stage();
             profileStage.setTitle("Profile");
 
             // Scene sized to match the main window
             Scene scene = new Scene(profilePage,
-                                    primaryStage.getWidth(),
-                                    primaryStage.getHeight());
+                    primaryStage.getWidth(),
+                    primaryStage.getHeight());
             profileStage.setScene(scene);
 
             // Mirror position & size

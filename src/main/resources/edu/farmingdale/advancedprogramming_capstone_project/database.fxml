@@ -47,7 +47,7 @@
                             <children>
                                 <ImageView fx:id="img_view" fitHeight="116.0" fitWidth="116.0" layoutX="16.0" layoutY="14.0" onMouseClicked="#showImage" pickOnBounds="true" preserveRatio="true" styleClass="profile_pic">
                                     <image>
-                                        <Image url="@profilepic.jpg" />
+                                        <Image url="@images/profilepic.jpg" />
                                     </image></ImageView>
                             </children>
                         </AnchorPane>
@@ -56,7 +56,7 @@
             <center>
                 <HBox fx:id="hboxArea" BorderPane.alignment="CENTER">
                     <children>
-                        <VBox alignment="CENTER" prefHeight="741.0" prefWidth="447.0" stylesheets="@database_styles.css">
+                        <VBox alignment="CENTER" prefHeight="741.0" prefWidth="447.0" stylesheets="@styling/database_styles.css">
                             <children>
                                 <TextField fx:id="id" layoutX="97.0" layoutY="185.0" maxWidth="-Infinity" prefHeight="26.0" prefWidth="200.0" promptText="ID">
                                     <VBox.margin>
@@ -133,6 +133,6 @@
         </BorderPane>
     </children>
     <stylesheets>
-        <URL value="@database_styles.css" />
+        <URL value="@styling/database_styles.css" />
     </stylesheets>
 </AnchorPane>
