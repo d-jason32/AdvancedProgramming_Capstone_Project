@@ -16,21 +16,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.application.HostServices;
-
-//Google Cloud Service Imports
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-//Microsoft Entra ID Imports
 import com.microsoft.aad.msal4j.*;
-
-//Password Hashing
 import javafx.stage.Stage;
 import org.mindrot.jbcrypt.BCrypt;
-
-//env support
 import io.github.cdimascio.dotenv.Dotenv;
-
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -45,9 +36,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
 
-
-
-
+/**
+ * Controller for the login screen.
+ */
 public class LoginController implements Initializable  {
     private ProfileConnDbOps cdbop;
     private List<String> databaseLoginInfo;
@@ -71,17 +62,16 @@ public class LoginController implements Initializable  {
     @FXML
     private Text errorTextPlaceholder;
 
-//Tester Code
+    // --- Tester Code ---
     @FXML private TextField resetEmailField;
     @FXML private PasswordField newPasswordField;
     @FXML private PasswordField confirmPasswordField;
     @FXML private Text resetMessage;
     @FXML private Button resetButton;
     @FXML private Button backToLoginButton;
-
+    // --- Tester Code ---
 
     private int state = 0;
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -89,7 +79,7 @@ public class LoginController implements Initializable  {
         cdbop.connectToDatabase();
         databaseLoginInfo = cdbop.displayAllUsers();
     }
-
+    
     public void initializeTestDB() {
         testDB.add(new testUser("tester", "12345"));
         testDB.add(new testUser("admin", "admin123"));
@@ -100,19 +90,23 @@ public class LoginController implements Initializable  {
         }
     }
 
-    //Bypass Login for Testing
+    // Bypass Login for Testing
+    /**
+     * @param event Bypasses Login For Testing [Devs Only]
+     */
     @FXML
     void onDevButtonPressed(ActionEvent event) {
-        // Bypass authentication and load the main program
         dotenv.entries().forEach(entry ->
                 System.out.println(entry.getKey() + "=" + entry.getValue())
         );
         if (onLoginSuccess != null) {
-            Platform.runLater(onLoginSuccess); // Ensure JavaFX thread safety
+            Platform.runLater(onLoginSuccess);
         }
     }
 
-    //Reads input from email and password input fields and preforms operations to ensure it works
+    /**
+     * @param event Handles Login Button Press
+     */
     @FXML
     void onEnterButtonPress(ActionEvent event) {
         databaseLoginInfo = cdbop.displayAllUsers();
@@ -124,12 +118,10 @@ public class LoginController implements Initializable  {
             errorTextPlaceholder.setText("Username and password cannot be empty");
             return;
         }
-
         if (!username.matches("^[a-zA-Z0-9]{4,20}$")) {
             errorTextPlaceholder.setText("Username must be 4-20 alphanumeric characters");
             return;
         }
-
         if (!password.matches("^(?=.*[A-Za-z])(?=.*\\d).{8,}$")) {
 
             errorTextPlaceholder.setText("Password must be 8+ characters with at least one letter and one number");
@@ -159,70 +151,92 @@ public class LoginController implements Initializable  {
         }
     }
 
-    //Sets up the web page functionality
+    /**
+     * @param hostServices Sets Services for Browser
+     */
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 
-    //Starts authentication via Microsoft
+    // Starts authentication via Microsoft
+    /**
+     * @param event Handles Microsoft Button Press
+     */
     @FXML
     private void onMicrosoftButtonPress(ActionEvent event) {
-        // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
         }
-
-        new MicrosoftAuthHandler(
-                () -> {
-                    // This runs when authentication succeeds
-                    if (onLoginSuccess != null) {
-                        Platform.runLater(onLoginSuccess);
-                    }
-                },
-                error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
-                hostServices
-        ).startAuthentication();
+        try {
+            new MicrosoftAuthHandler(
+                    () -> {
+                        if (onLoginSuccess != null) {
+                            Platform.runLater(onLoginSuccess);
+                        }
+                    },
+                    error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
+                    hostServices
+            ).startAuthentication();
+        } catch (Exception e) {
+            errorTextPlaceholder.setText("Microsoft Login Error: " + e.getMessage());
+        }
     }
 
-    //Starts authentication via Google
+    // Starts authentication via Google
+
+    /**
+     * @param event Handles Google Button Press
+     */
     @FXML
     private void onGoogleButtonPress(ActionEvent event) {
-        // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
         }
 
-        new GoogleAuthHandler(
-                () -> {
-                    // This runs when authentication succeeds
-                    if (onLoginSuccess != null) {
-                        Platform.runLater(onLoginSuccess);
-                    }
-                },
-                error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
-                hostServices
-        ).startAuthentication();
+        try {
+            new GoogleAuthHandler(
+                    () -> {
+                        if (onLoginSuccess != null) {
+                            Platform.runLater(onLoginSuccess);
+                        }
+                    },
+                    error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
+                    hostServices
+            ).startAuthentication();
+        } catch (Exception e) {
+            errorTextPlaceholder.setText("Google Login Error: " + e.getMessage());
+        }
     }
 
-    //Starts authentication via Github
+    //Starts authentication via GitHub
+
+    /**
+     * @param event Handles GitHub Button Press
+     */
     @FXML
-    private void onGithubButtonPress(ActionEvent event) throws IOException {
+    private void onGithubButtonPress(ActionEvent event) {
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
         }
 
-        new GithubAuthHandler(
-                () -> {
-                    if (onLoginSuccess != null) {
-                        Platform.runLater(onLoginSuccess);
-                    }
-                },
-                error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
-                hostServices
-        ).startAuthentication();
+        try {
+            new GithubAuthHandler(
+                    () -> {
+                        if (onLoginSuccess != null) {
+                            Platform.runLater(onLoginSuccess);
+                        }
+                    },
+                    error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
+                    hostServices
+            ).startAuthentication();
+        } catch (Exception e) {
+            errorTextPlaceholder.setText("GitHub Login Error: " + e.getMessage());
+        }
     }
 
-
+    /**
+     * @param event Handles Sign In Text Press
+     */
     @FXML
     public void onSignInTextPressed(MouseEvent event) {
         if(state == 0) {
@@ -237,27 +251,47 @@ public class LoginController implements Initializable  {
         }
     }
 
+    /**
+     * @param callback Handles Login Success
+     */
     public void setOnLoginSuccess(Runnable callback){
         this.onLoginSuccess = callback;
     }
 
-
+    /**
+     * @param mouseEvent Handles Sign-Up Text Press
+     */
     @FXML
     public void onSignUpTextPressed(MouseEvent mouseEvent) {
     }
 
+    // Move this method outside GoogleAuthHandler class and into LoginController class
+    /**
+     * @param event Handles Password Reset Button Press
+     * @throws IOException Handles Password Reset Button Press Error
+     */
+    @FXML
+    public void onPasswordResetPressed(MouseEvent event) throws IOException {
+        FXMLLoader passwordResetLoader = new FXMLLoader(getClass().getResource("password-reset-screen.fxml"));
+        Parent mainRoot = passwordResetLoader.load();
 
-    public void onPasswordResetPressed(MouseEvent mouseEvent) {
+        // Switch to the main screen
+        Stage passwordResetStage = new Stage();
+        passwordResetStage.setScene(new Scene(mainRoot, 1280, 800));
+        passwordResetStage.setTitle("AI Whiteboard Program - Reset Password");
+        passwordResetStage.show(); // Add this line to show the stage
     }
 
-
-
-
+    /**
+     * Represents a user with authentication and password management.
+     * This private static class provides methods to authenticate users,
+     * reset their passwords, and retrieve their email addresses.
+     */
     private static class testUser {
-        private String username;
+        private final String username;
         private String passwordHash;
-        private String email;
-
+        private final String email;
+        
         public testUser(String username, String password) {
             this.username = username;
             this.passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
@@ -278,7 +312,14 @@ public class LoginController implements Initializable  {
         }
     }
 
-    public class GoogleAuthHandler {
+    /**
+     * Handles OAuth2 authentication flow with Google.
+     * 1. User is redirected to Google login page
+     * 2. After successful login, Google redirects to callback URL
+     * 3. Authorization code is exchanged for access token
+     * 4. Access token is used to retrieve user profile information
+     */
+    public static class GoogleAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/google/callback";
@@ -325,8 +366,7 @@ public class LoginController implements Initializable  {
             FXMLLoader passwordResetLoader = new FXMLLoader(getClass().getResource("password-reset-screen.fxml"));
             Parent mainRoot = passwordResetLoader.load();
 
-
-            // Switch to main screen
+            // Switch to the main screen
             Stage passwordResetStage = new Stage();
             passwordResetStage.setScene(new Scene(mainRoot, 1280, 800));
             passwordResetStage.setTitle("AI Whiteboard Program - Reset Password");
@@ -337,10 +377,9 @@ public class LoginController implements Initializable  {
                 try {
                     HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
                     server.createContext("/auth/google/callback", exchange -> {
-                        try {
+                        try (exchange) {
                             handleCallback(exchange);
                         } finally {
-                            exchange.close();
                             server.stop(0);
                         }
                     });
@@ -438,7 +477,10 @@ public class LoginController implements Initializable  {
         }
     }
 
-    public class MicrosoftAuthHandler {
+    /**
+     * Handles OAuth2 authentication flow with Microsoft.
+     */
+    public static class MicrosoftAuthHandler {
         private static final String CLIENT_ID = dotenv.get("MICROSOFT_CLIENT_ID");
         private static final String AUTHORITY = dotenv.get("MICROSOFT_AUTHORITY_ID");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/microsoft/callback";
@@ -457,22 +499,20 @@ public class LoginController implements Initializable  {
 
         public void startAuthentication() {
             try {
-                // Start server first
                 startCallbackServer();
 
                 PublicClientApplication pca = PublicClientApplication.builder(CLIENT_ID)
                         .authority(AUTHORITY)
                         .build();
 
-                // Generate the authorization URL
                 String authUrl = pca.getAuthorizationRequestUrl(
                         AuthorizationRequestUrlParameters
                                 .builder(REDIRECT_URI, Collections.singleton(SCOPES[0]))
-                                .responseMode(ResponseMode.QUERY) // Explicitly set response mode
+                                .responseMode(ResponseMode.QUERY)
                                 .build()
                 ).toString();
 
-                System.out.println("Authorization URL: " + authUrl); // Debug logging
+                System.out.println("Authorization URL: " + authUrl);
                 hostServices.showDocument(authUrl);
 
             } catch (Exception e) {
@@ -485,7 +525,7 @@ public class LoginController implements Initializable  {
                 try {
                     server = HttpServer.create(new InetSocketAddress(8080), 0);
                     server.createContext("/auth/microsoft/callback", this::handleCallback);
-                    server.setExecutor(null); // Use default executor
+                    server.setExecutor(null);
                     server.start();
                     System.out.println("Callback server started on port 8080");
                 } catch (IOException e) {
@@ -497,7 +537,7 @@ public class LoginController implements Initializable  {
         private void handleCallback(HttpExchange exchange) throws IOException {
             try {
                 String query = exchange.getRequestURI().getQuery();
-                System.out.println("Received callback with query: " + query); // Debug logging
+                System.out.println("Received callback with query: " + query);
 
                 if (query == null) {
                     sendResponse(exchange, 400, "Missing query parameters");
@@ -524,11 +564,10 @@ public class LoginController implements Initializable  {
                 sendResponse(exchange, 200, "Authentication successful! You may close this window.");
                 exchange.close();
 
-                // Process the authorization code
                 acquireToken(code);
 
             } finally {
-                server.stop(0); // Ensure server stops after handling the request
+                server.stop(0);
             }
         }
 
@@ -576,7 +615,10 @@ public class LoginController implements Initializable  {
         }
     }
 
-    public class GithubAuthHandler {
+    /**
+     * Handles OAuth2 authentication flow with GitHub.
+     */
+    public static class GithubAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GITHUB_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GITHUB_CLIENT_SECRET");
         private static final String REDIRECT_URI = "http://localhost:8080/auth/github/callback";
@@ -720,6 +762,4 @@ public class LoginController implements Initializable  {
             }
         }
     }
-
 }
-

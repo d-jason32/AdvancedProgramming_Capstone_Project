@@ -9,7 +9,7 @@ import java.util.Properties;
  * Ensure that config.properties is placed in src/main/resources.
  */
 public class AI_Helper {
-    private static Properties properties = new Properties();
+    private static final Properties properties = new Properties();
 
     static {
         // Try loading the file using a leading slash.
