@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -164,7 +165,7 @@ public class MainController {
                 alert.initOwner(ownerStage);
                 alert.initModality(Modality.WINDOW_MODAL);
             } else {
-                logInfo("Could not find owner stage for alert: " + title);
+                System.out.println("Could not find owner stage for alert: " + title);
             }
 
             alert.showAndWait();
