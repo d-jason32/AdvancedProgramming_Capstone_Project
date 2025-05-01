@@ -10,9 +10,6 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires com.microsoft.aad.msal4j;
     requires jbcrypt;
     requires java.dotenv;
-    requires assemblyai.java;
-    requires com.fasterxml.jackson.databind;
-    requires annotations;
     requires java.sql;
 
     opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml, com.microsoft.aad.msal4j;
