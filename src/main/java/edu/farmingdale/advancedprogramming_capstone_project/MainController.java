@@ -147,6 +147,46 @@ public class MainController {
     }
 
     /**
+     * Helper method to show a standard error alert dialog.
+     * Ensures the alert is shown on the JavaFX Application Thread.
+     * @param title The title of the alert window.
+     * @param content The main message text of the alert.
+     */
+    private void showErrorAlert(String title, String content) {
+        Runnable alertTask = () -> {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(content);
+
+            Stage ownerStage = findCurrentStage();
+            if (ownerStage != null) {
+                alert.initOwner(ownerStage);
+                alert.initModality(Modality.WINDOW_MODAL);
+            } else {
+                logInfo("Could not find owner stage for alert: " + title);
+            }
+
+            alert.showAndWait();
+        };
+        if (Platform.isFxApplicationThread()) {
+            alertTask.run();
+        } else {
+            Platform.runLater(alertTask);
+        }
+    }
+
+    private Stage findCurrentStage() {
+        if (sessionLabel != null && sessionLabel.getScene() != null) {
+            return (Stage) sessionLabel.getScene().getWindow();
+        } else if (joinSessionField != null && joinSessionField.getScene() != null) {
+            return (Stage) joinSessionField.getScene().getWindow();
+        }
+        return null;
+    }
+
+    /**
+
      * Method to open the database.
      * @param event
      */
