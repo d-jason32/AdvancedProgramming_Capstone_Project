@@ -44,7 +44,7 @@
                     <Font size="20.0" />
                 </font>
             </Button>
-            <Button onAction="#openTranscriptionWindow" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
+            <Button onAction="#openTranscriptionWindowManually" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
                 <VBox.margin>
                     <Insets />
                 </VBox.margin>
