@@ -44,7 +44,7 @@
                     <Font size="20.0" />
                 </font>
             </Button>
-            <Button onAction="#openTranscriptionWindowManually" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
+            <Button onAction="#openTranscriptionWindow" prefHeight="25.0" prefWidth="400.0" text="Live Transcription">
                 <VBox.margin>
                     <Insets />
                 </VBox.margin>
@@ -62,8 +62,6 @@
                     <Font size="20.0" />
                 </font>
             </Button>
-            <Label fx:id="summaryLabel" alignment="CENTER" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Summary Label" />
-            <Label fx:id="sessionLabel" alignment="CENTER" prefHeight="17.0" prefWidth="190.0" styleClass="info-label" text="Session label" />
             <Button fx:id="databaseButton" layoutX="450.0" layoutY="346.0" onAction="#goToDatabase" prefHeight="25.0" prefWidth="400.0" text="Profile Database">
                 <font>
                     <Font size="20.0" />
