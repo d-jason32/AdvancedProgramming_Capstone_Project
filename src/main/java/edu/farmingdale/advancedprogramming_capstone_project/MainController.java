@@ -361,6 +361,7 @@ public class MainController {
             return (Stage) joinSessionField.getScene().getWindow();
         }
         return null;
+    }
 
     /**
      * Method to open the database.
