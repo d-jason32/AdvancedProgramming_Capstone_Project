@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="KotlinNotebookOptionsProvider">
+    <option name="extraEnvironmentVariables">
+      <map>
+        <entry key="AZURE_SPEECH_KEY" value="03vTYwgGjsoNzzn9b2iD1KTb9pHbatnkHeLBglE2fO4fCRpZg3qtJQQJ99BDACYeBjFXJ3w3AAAYACOGOQY8" />
+        <entry key="AZURE_SPEECH_REGION" value="eastus" />
+      </map>
+    </option>
+  </component>
+</project>
