@@ -1,0 +1,396 @@
+/* Global Styles & Dark Theme */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #f0f0f0;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Top Bar */
+header {
+    background: #0b132b;
+    padding: 5px 10px;
+    border-bottom: 2px solid #1f4068;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.top-bar img {
+    height: 60px;
+}
+
+/* Session Code Display in Header */
+.session-code {
+    font-size: 0.9rem;
+    color: #fff;  /* White for clear visibility */
+    margin-left: 10px;
+}
+
+/* Session Code Overlay on Video Call */
+#sessionCodeOverlay {
+    position: absolute;
+    top: 80px; /* Position below header */
+    right: 20px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 5px 10px;
+    color: #fff;
+    font-size: 16px;
+    border-radius: 4px;
+    z-index: 120;
+}
+
+/* Dropdown Toggle Button (Hamburger) */
+.dropdown-toggle {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #f0f0f0;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+/* App Container (Video Area Only) */
+.app-container {
+    display: flex;
+    height: calc(100vh - 70px);
+}
+
+/* Video Area */
+.video-area {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.95); /* Nearly black background */
+    backdrop-filter: blur(12px); /* Strong blur effect */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    border-right: 1px solid #1f4068;
+}
+
+/* Video Tile / Container */
+.video-tile, .video-container {
+    position: relative;
+    width: 300px;
+    height: 220px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid #444;
+}
+
+.video-tile video, .video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Video Overlay / Label */
+.video-overlay, .video-label {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    pointer-events: none;
+    color: #fff;
+}
+
+.video-label {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* Dropdown Panel for Chat/Whiteboard */
+.dropdown-panel {
+    position: fixed;
+    top: 70px;
+    right: 0;
+    width: 500px;
+    max-height: calc(100vh - 70px);
+    background: #0b132b;
+    border-left: 2px solid #1f4068;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    box-shadow: -2px 0 6px rgba(0, 0, 0, 0.6);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+    overflow-y: auto;
+    z-index: 150;
+}
+
+.dropdown-panel.open {
+    transform: translateX(0);
+}
+
+/* Drag-Handle for Panel Resizing */
+.panel-resize-handle {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 8px;
+    height: 100%;
+    cursor: ew-resize;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 200;
+}
+
+/* Tabs inside Panel */
+.dropdown-panel .tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #1f4068;
+    background: #162447;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.tab-btn {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1rem;
+    padding: 10px 0;
+    flex: 1;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn:hover {
+    background: #1f4068;
+}
+
+.tab-btn.active {
+    background: #1f4068;
+    color: #f0f0f0;
+    font-weight: bold;
+}
+
+/* Panel Content */
+.panel-content {
+    display: none;
+    padding: 15px;
+    height: 600px;
+    overflow-y: auto;
+}
+
+.panel-content.active {
+    display: block;
+}
+
+/* Chat Panel Styles */
+.chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.chat-box {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    background: #1e1e1e;
+    border-top: 1px solid #444;
+    border-bottom: 1px solid #444;
+    color: #fff;
+    font-size: 14px;
+}
+
+.chat-box p {
+    margin: 5px 0;
+    word-wrap: break-word;
+}
+
+.chat-input {
+    display: flex;
+    border-top: 1px solid #444;
+    background: #111;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    background: #222;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+}
+
+.chat-input input:focus {
+    outline: none;
+}
+
+.chat-input button {
+    padding: 10px 20px;
+    background: #1f4068;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+}
+
+.chat-input button:hover {
+    background: #1f4068;
+}
+
+/* Whiteboard Container */
+.whiteboard-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: #0e0e0e;
+    resize: both;
+    overflow: auto;
+    min-width: 300px;
+    min-height: 300px;
+}
+
+.wt-container {
+    background-color: #0e0e0e;
+    border: 2px solid #1f4068;
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Virtual Background */
+.virtual-bg {
+    filter: blur(20px);
+    background: url('https://via.placeholder.com/1280x720?text=Virtual+Background') center center / cover no-repeat;
+}
+
+/* Bottom Toolbar */
+.bottom-toolbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #0b132b;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    border-top: 2px solid #1f4068;
+    z-index: 100;
+}
+
+.bottom-toolbar button {
+    background: #1f4068;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    color: #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.bottom-toolbar button:hover {
+    background: #3a539b;
+}
+
+/* Status Indicator */
+#statusIndicator {
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    background: #1f4068;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #f0f0f0;
+    font-size: 0.9rem;
+    z-index: 150;
+}
+
+/* Hand Indicator */
+.hand-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #FF0000;
+    color: #000;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    z-index: 200;
+    animation: fadeout 5s forwards;
+}
+@keyframes fadeout {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Username Modal Styling */
+#usernameModal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 250;
+}
+#usernameModal .modal-content {
+    background: #162447;
+    padding: 30px;
+    border-radius: 8px;
+    text-align: center;
+    width: 350px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+#usernameModal .modal-content h2 {
+    margin-bottom: 15px;
+    color: #f0f0f0;
+}
+#usernameModal .modal-content p {
+    margin-bottom: 15px;
+    color: #ccc;
+}
+#usernameModal .modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #1f4068;
+    border-radius: 8px;
+    background: #000;
+    color: #f0f0f0;
+}
+#usernameModal .modal-content button {
+    padding: 12px 30px;
+    background: #1f4068;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#usernameModal .modal-content button:hover {
+    background: #3a539b;
+}

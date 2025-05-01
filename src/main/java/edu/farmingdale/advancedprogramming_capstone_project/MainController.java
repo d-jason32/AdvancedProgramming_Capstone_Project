@@ -25,7 +25,6 @@ import java.util.concurrent.CompletableFuture;
  * - Navigating to the profile page
  */
 public class MainController {
-
     @FXML
     public Label summaryLabel;
     @FXML
@@ -102,10 +101,11 @@ public class MainController {
      */
     @FXML
     public void startNewCall() {
-        String sessionCode = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+        String sessionCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         sessionLabel.setText("Session Code: " + sessionCode);
 
         String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
+
         try {
             CapstoneApp.getStaticHostServices().showDocument(callUrl);
             openTranscriptionWindowAndStart();
@@ -249,14 +249,30 @@ public class MainController {
     public void goToProfile(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("profilePage.fxml"));
-            Parent profilePageRoot = loader.load();
+            Parent profilePage = loader.load();
 
-            Stage ownerStage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            // --- reference to the main (owner) window ---
+            Stage primaryStage = (Stage) ((javafx.scene.Node) event.getSource())
+                    .getScene()
+                    .getWindow();
 
-            Stage profileStage = createProfileStage(profilePageRoot, ownerStage);
+            Stage profileStage = new Stage();
+            profileStage.setTitle("Profile");
 
-            // blocks main scene
-            profileStage.initOwner(ownerStage);
+            // Scene sized to match the main window
+            Scene scene = new Scene(profilePage,
+                    primaryStage.getWidth(),
+                    primaryStage.getHeight());
+            profileStage.setScene(scene);
+
+            // Mirror position & size
+            profileStage.setX(primaryStage.getX());
+            profileStage.setY(primaryStage.getY());
+            profileStage.setWidth(primaryStage.getWidth());
+            profileStage.setHeight(primaryStage.getHeight());
+
+            // Optional: block main window while profile is open
+            profileStage.initOwner(primaryStage);
             profileStage.initModality(Modality.WINDOW_MODAL);
 
             profileStage.show();
@@ -345,5 +361,19 @@ public class MainController {
             return (Stage) joinSessionField.getScene().getWindow();
         }
         return null;
+
+    /**
+     * Method to open the database.
+     * @param event
+     */
+    @FXML
+    void goToDatabase(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("database.fxml"));
+            Parent root = loader.load();
+            launchNewWindow("Live Transcription", root, 1280, 800);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

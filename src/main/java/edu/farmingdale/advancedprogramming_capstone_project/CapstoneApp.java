@@ -37,7 +37,7 @@ public class CapstoneApp extends Application {
         SplashScreenController splashController = splashLoader.getController();
 
         Scene splashScene = new Scene(splashRoot, 600, 480);
-        splashScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("style.css")).toExternalForm());
+        splashScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styling/style.css")).toExternalForm());
         Stage splashStage = new Stage();
         splashStage.setScene(splashScene);
         splashStage.setResizable(false);
@@ -57,7 +57,7 @@ public class CapstoneApp extends Application {
                         FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
                         Parent mainRoot = mainLoader.load();
 
-                        primaryStage.setScene(new Scene(mainRoot, 1280, 800));
+                        primaryStage.setScene(new Scene(mainRoot, 1000, 800));
                         primaryStage.setTitle("AI Whiteboard Program");
                     } catch (IOException e) {
                         e.printStackTrace();
