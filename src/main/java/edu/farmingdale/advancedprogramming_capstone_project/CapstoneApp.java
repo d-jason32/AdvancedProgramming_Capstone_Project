@@ -22,6 +22,13 @@ public class CapstoneApp extends Application {
     // This static field holds the HostServices reference for opening URLs.
     private static HostServices hostServices;
 
+    /**
+     * @param primaryStage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws Exception if it fails to load the splash screen or login screen
+     */
     @Override
     public void start(Stage primaryStage) throws Exception {
         // Save the HostServices reference for use in controllers.

@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
 // Testing
 /**
  * MainController handles the main menu actions:
@@ -41,6 +43,8 @@ public class MainController {
 
         // Open the URL using HostServices.
         CapstoneApp.getStaticHostServices().showDocument(callUrl);
+        openTranscriptionWindowAndStart();
+
 
     }
 
@@ -58,30 +62,10 @@ public class MainController {
             System.out.println("Joining Session: " + sessionCode);
             String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
             CapstoneApp.getStaticHostServices().showDocument(callUrl);
+            openTranscriptionWindowAndStart();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Called when the "Get Summary" button is pressed.
-     */
-    @FXML
-    public void getSummary() {
-        String prompt = "Sample whiteboard and chat content.";
-        GeminiService.getSummaryAsync(prompt).thenAccept(summary -> {
-            Platform.runLater(() -> {
-                try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryView.fxml"));
-                    Parent root = loader.load();
-                    SummaryController summaryController = loader.getController();
-                    summaryController.setSummary(summary);
-                    launchNewWindow("Session Summary", root, 600, 400);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            });
-        });
     }
 
     /**
@@ -187,7 +171,6 @@ public class MainController {
     }
 
     /**
-
      * Method to open the database.
      * @param event
      */
@@ -201,4 +184,104 @@ public class MainController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Opens the transcription window and automatically starts the transcription process.
+     * Called by startNewCall() and joinCall().
+     */
+    private void openTranscriptionWindowAndStart() {
+        openTranscriptionWindowInternal(true);
+    }
+
+    /**
+     * Called when the "Live Transcription" button is pressed.
+     * Opens the dedicated window for transcription without automatically starting.
+     */
+    @FXML
+    public void openTranscriptionWindowManually() {
+        openTranscriptionWindowInternal(false);
+    }
+
+    /**
+     * Internal helper method to load and show the transcription window.
+     * @param autoStart If true, calls startTranscribing() on the controller after loading.
+     */
+    private void openTranscriptionWindowInternal(boolean autoStart) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("TranscriptionView.fxml"));
+            Parent root = loader.load();
+
+            TranscriptionController controller = loader.getController();
+            if (controller == null) {
+                System.out.println("Failed to get TranscriptionController after loading FXML.");
+                return;
+            }
+
+            Stage stage = new Stage();
+            stage.setTitle("Live Transcription");
+            stage.setScene(new Scene(root, 600, 450));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnCloseRequest(_ -> {
+                System.out.println("Transcription window close requested. Shutting down controller.");
+                controller.shutDown();
+            });
+
+            stage.show();
+            if (autoStart) {
+                System.out.println("Auto-starting transcription...");
+                controller.startTranscribing();
+            } else {
+                System.out.println("Opened transcription window manually (no auto-start).");
+            }
+
+        } catch (IOException e) {
+            System.out.println("Failed to load TranscriptionView.fxml" + e);
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred opening transcription window" + e);
+        }
+    }
+
+    /**
+     * Called when the "Get Summary" button is pressed.
+     * NOTE: This currently uses a placeholder prompt. The source of content to summarize
+     * needs to be determined (e.g., from a file, previous session data, etc.).
+     * It requests a summary from the GeminiService and displays it in a new window.
+     */
+    @FXML
+    public void getSummary() {
+        // FIXME: Replace placeholder prompt with actual content source
+        String prompt = "Sample whiteboard and chat content.";
+        System.out.println("Requesting summary for placeholder content...");
+
+        CompletableFuture<String> summaryFuture = GeminiService.getSummaryAsync(prompt);
+
+        summaryFuture.thenAcceptAsync(summary -> {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("SummaryView.fxml"));
+                        Parent root = loader.load();
+                        SummaryController loadedSummaryController = loader.getController();
+
+                        if (loadedSummaryController != null) {
+                            loadedSummaryController.displaySummary(summary);
+                            launchNewWindow("Session Summary", root, 600, 400);
+                        } else {
+                            System.out.println("Failed to load SummaryController from SummaryView.fxml. Cannot display summary window.");
+                            showErrorAlert("Error", "Could not load the summary display component.");
+                        }
+                    } catch (IOException e) {
+                        System.out.println("Failed to load SummaryView.fxml: " + e.getMessage() + e);
+                        showErrorAlert("Error", "Could not open the Summary window due to an FXML loading error.");
+                    } catch (Exception e) {
+                        System.out.println("An unexpected error occurred while preparing summary window: " + e.getMessage() + e);
+                        showErrorAlert("Error", "An unexpected error occurred while trying to show the summary.");
+                    }
+                }, Platform::runLater)
+                .exceptionally(ex -> {
+                    System.out.println("Error occurred while getting summary from Gemini: " + ex.getMessage() + ex);
+                    Platform.runLater(() -> showErrorAlert("Summary Failed", "Failed to generate summary: " + ex.getMessage()));
+                    return null;
+                });
+    }
+
 }
