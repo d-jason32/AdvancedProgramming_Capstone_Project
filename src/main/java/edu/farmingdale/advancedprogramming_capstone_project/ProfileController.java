@@ -1,6 +1,5 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -50,10 +49,10 @@ public class ProfileController implements Initializable {
         passwordField.setText (prefs.get("password" , ""));
         bioArea.setText       (prefs.get("bio"      , ""));
 
-        /* Hook up Change button */
+        /* Hook up the Change button */
         changeAvatarBtn.setOnAction(e -> chooseNewAvatar());
 
-        /* Hook up Save button */
+        /* Hook up the Save button */
         saveBtn.setOnAction(e -> saveProfile());
 
         TextField[] fields = { firstNameField, lastNameField, emailField, passwordField};
@@ -63,9 +62,7 @@ public class ProfileController implements Initializable {
         field will be checked if it is correct.
          */
         for (TextField field : fields) {
-            field.setOnMouseClicked(e -> {
-                checkIfCorrect();
-            });
+            field.setOnMouseClicked(e -> checkIfCorrect());
         }
     }
 
@@ -85,6 +82,7 @@ public class ProfileController implements Initializable {
         setAvatar(img);
     }
 
+    /// Sets Avatar
     private void setAvatar(Image img) {
         avatarCircle.setFill(new ImagePattern(img));
     }
@@ -138,5 +136,4 @@ public class ProfileController implements Initializable {
             passwordField.setStyle("-fx-border-color:red; -fx-border-width:2px;");
         }
     }
-
 }

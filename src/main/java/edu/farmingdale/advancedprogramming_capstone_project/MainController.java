@@ -26,7 +26,7 @@ public class MainController {
     @FXML
     private Label sessionLabel;           // Displays the generated session code.
     @FXML
-    private TextField joinSessionField;   // Field for user to enter session code.
+    private TextField joinSessionField;   // Field for a user to enter session code.
     @FXML
     private TextField transcriptionArea;  // Field for live transcription.
 
@@ -110,7 +110,7 @@ public class MainController {
             profileStage.setWidth(primaryStage.getWidth());
             profileStage.setHeight(primaryStage.getHeight());
 
-            // Optional: block main window while profile is open
+            // Optional: block the main window while profile is open
             profileStage.initOwner(primaryStage);
             profileStage.initModality(Modality.WINDOW_MODAL);
 

@@ -15,7 +15,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -50,8 +49,8 @@ public class DatabaseController implements Initializable {
 
     /**
      * Initializes table view.
-     * @param url
-     * @param resourceBundle
+     * @param url Pointer To Resource File
+     * @param resourceBundle Resource Bundle
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,9 +79,7 @@ public class DatabaseController implements Initializable {
         field will be checked if it is correct.
          */
         for (TextField field : fields) {
-            field.setOnMouseClicked(e -> {
-                checkIfCorrect();
-            });
+            field.setOnMouseClicked(e -> checkIfCorrect());
         }
     }
 
@@ -99,7 +96,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Allows you to select an item in a table.
-     * @param mouseEvent
+     * @param mouseEvent Mouse Event
      */
     @FXML
     protected void selectedItemTV(MouseEvent mouseEvent) {
@@ -113,7 +110,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Method to connect to a database.
-     * @param event
+     * @param event Event
      */
     @FXML
     void connectButton(ActionEvent event) {
@@ -128,7 +125,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Method to enter student id and delete it from the database.
-     * @param event
+     * @param event Event
      */
     @FXML
     void deleteByID(ActionEvent event) {
@@ -139,7 +136,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Assigns display to the display button.
-     * @param event
+     * @param event Event
      */
     @FXML
     void displayButton(ActionEvent event) {
@@ -147,7 +144,7 @@ public class DatabaseController implements Initializable {
     }
 
     /**
-     * Adds database to the table view.
+     * Adds a database to the table view.
      */
     void display(){
         data.clear();
@@ -157,8 +154,8 @@ public class DatabaseController implements Initializable {
 
     /**
      * Edit a student record based on their id.
-     * @param event
-     * @throws SQLException
+     * @param event Event
+     * @throws SQLException SQL Exception
      */
     @FXML
     void editButton(ActionEvent event) throws SQLException {
@@ -175,8 +172,8 @@ public class DatabaseController implements Initializable {
     }
 
     /**
-     * Insert student into the database.
-     * @param event
+     * Insert a student into the database.
+     * @param event Event
      */
     @FXML
     void insertButton(ActionEvent event) {
@@ -194,7 +191,7 @@ public class DatabaseController implements Initializable {
     /**
      * Query button gets the id from the text field, searches the database
      * and displays the entire Person.
-     * @param event
+     * @param event Event
      */
     @FXML
     void queryButton(ActionEvent event) {
@@ -243,5 +240,4 @@ public class DatabaseController implements Initializable {
             password.setStyle("-fx-border-color:red; -fx-border-width:2px;");
         }
     }
-
 }

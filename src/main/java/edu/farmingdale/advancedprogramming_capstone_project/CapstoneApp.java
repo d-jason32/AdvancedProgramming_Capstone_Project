@@ -62,12 +62,12 @@ public class CapstoneApp extends Application {
                     loginController.setOnLoginSuccess(() -> {
                         Platform.runLater(() -> {
                             try {
-                                // Load main screen when login succeeds
+                                // Load the main screen when login succeeds
                                 FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
                                 Parent mainRoot = mainLoader.load();
 
 
-                                // Switch to main screen
+                                // Switch to the main screen
                                 primaryStage.setScene(new Scene(mainRoot, 1000, 800));
                                 primaryStage.setTitle("AI Whiteboard Program");
                             } catch (IOException e) {
@@ -95,6 +95,9 @@ public class CapstoneApp extends Application {
         return hostServices;
     }
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String[] args) {
         launch(args);
     }

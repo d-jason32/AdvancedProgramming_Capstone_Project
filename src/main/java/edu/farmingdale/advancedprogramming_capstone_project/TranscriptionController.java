@@ -98,7 +98,7 @@ public class TranscriptionController {
         if (summaryBtn != null) summaryBtn.setDisable(true);
 
         new Thread(() -> {
-            boolean started = false;
+            boolean started;
             try {
                 started = speechToTextService.startRealtimeTranscription();
 
@@ -205,7 +205,6 @@ public class TranscriptionController {
     /**
      * Callback method triggered by SpeechToTextService when a full session transcript is ready.
      * Initiates the call to GeminiService for summarization and opens the summary window.
-     *
      * @param fullTranscript The complete text transcribed during the session.
      */
     private void requestAndDisplaySummary(String fullTranscript) {

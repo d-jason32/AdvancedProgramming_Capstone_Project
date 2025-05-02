@@ -26,6 +26,7 @@ import com.microsoft.aad.msal4j.*;
 
 //Password Hashing
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 import org.mindrot.jbcrypt.BCrypt;
 
 //env support
@@ -45,9 +46,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
 
-
-
-
+/**
+ * The LoginController class is responsible for managing the login process in the application.
+ * It handles user interaction for login, sign-up, password reset, and supports login
+ * via third-party providers like Microsoft, Google, and GitHub. This class also facilitates
+ * database interaction and manages state changes related to authentication.
+ */
 public class LoginController implements Initializable  {
     private ProfileConnDbOps cdbop;
     private List<String> databaseLoginInfo;
@@ -57,7 +61,8 @@ public class LoginController implements Initializable  {
 
     private static Dotenv dotenv = Dotenv.load();
 
-    // testertester tester123456
+    // Username: 'testertester' 
+    // Password: 'tester123456'
 
     // FXML components
     @FXML
@@ -83,6 +88,14 @@ public class LoginController implements Initializable  {
     private int state = 0;
 
 
+    /**
+     * @param url
+     * The location used to resolve relative paths for the root object, or
+     * {@code null} if the location is not known.
+     * @param resourceBundle
+     * The resources used to localize the root object, or {@code null} if
+     * the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cdbop = new ProfileConnDbOps();
@@ -90,6 +103,9 @@ public class LoginController implements Initializable  {
         databaseLoginInfo = cdbop.displayAllUsers();
     }
 
+    /**
+     * Tester Initializer
+     */
     public void initializeTestDB() {
         testDB.add(new testUser("tester", "12345"));
         testDB.add(new testUser("admin", "admin123"));
@@ -101,6 +117,9 @@ public class LoginController implements Initializable  {
     }
 
     //Bypass Login for Testing
+    /**
+     * @param event ActionEvent
+     */
     @FXML
     void onDevButtonPressed(ActionEvent event) {
         // Bypass authentication and load the main program
@@ -113,6 +132,9 @@ public class LoginController implements Initializable  {
     }
 
     //Reads input from email and password input fields and preforms operations to ensure it works
+    /**
+     * @param event ActionEvent
+     */
     @FXML
     void onEnterButtonPress(ActionEvent event) {
         databaseLoginInfo = cdbop.displayAllUsers();
@@ -160,11 +182,18 @@ public class LoginController implements Initializable  {
     }
 
     //Sets up the web page functionality
+
+    /**
+     * @param hostServices HostServices
+     */
     public void setHostServices(HostServices hostServices) {
         this.hostServices = hostServices;
     }
 
     //Starts authentication via Microsoft
+    /**
+     * @param event ActionEvent
+     */
     @FXML
     private void onMicrosoftButtonPress(ActionEvent event) {
         // Add null check for hostServices
@@ -185,6 +214,9 @@ public class LoginController implements Initializable  {
     }
 
     //Starts authentication via Google
+    /**
+     * @param event ActionEvent
+     */
     @FXML
     private void onGoogleButtonPress(ActionEvent event) {
         // Add null check for hostServices
@@ -204,7 +236,10 @@ public class LoginController implements Initializable  {
         ).startAuthentication();
     }
 
-    //Starts authentication via Github
+    //Starts authentication via GitHub
+    /**
+     * @param event ActionEvent
+     */
     @FXML
     private void onGithubButtonPress(ActionEvent event) throws IOException {
         if (hostServices == null) {
@@ -221,8 +256,10 @@ public class LoginController implements Initializable  {
                 hostServices
         ).startAuthentication();
     }
-
-
+    
+    /**
+     * @param event MouseEvent
+     */
     @FXML
     public void onSignInTextPressed(MouseEvent event) {
         if(state == 0) {
@@ -237,22 +274,31 @@ public class LoginController implements Initializable  {
         }
     }
 
+    /**
+     * @param callback Runnable
+     */
     public void setOnLoginSuccess(Runnable callback){
         this.onLoginSuccess = callback;
     }
 
-
+    /**
+     * @param mouseEvent MouseEvent
+     */
     @FXML
     public void onSignUpTextPressed(MouseEvent mouseEvent) {
     }
 
-
+    /**
+     * @param mouseEvent MouseEvent
+     */
     public void onPasswordResetPressed(MouseEvent mouseEvent) {
     }
 
-
-
-
+    /**
+     * Represents a user for authentication purposes.
+     * This class handles storing a hashed password, providing authentication functionality, 
+     * and managing user email generation and password resets.
+     */
     private static class testUser {
         private String username;
         private String passwordHash;
@@ -278,6 +324,12 @@ public class LoginController implements Initializable  {
         }
     }
 
+    /**
+     * Handles Google OAuth 2.0 authentication flow for an application. 
+     * It manages the process of constructing authentication URLs, opening a browser
+     * for user login, handling the callback from the Google OAuth server, and
+     * getting access tokens and user information.
+     */
     public class GoogleAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
@@ -290,12 +342,20 @@ public class LoginController implements Initializable  {
         private final Consumer<String> onError;
         private final HostServices hostServices;
 
+        /**
+         * @param onSuccess Runnable
+         * @param onError Consumer<String>
+         * @param hostServices HostServices
+         */
         public GoogleAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
             this.onSuccess = onSuccess;
             this.onError = onError;
             this.hostServices = hostServices;
         }
 
+        /**
+         * Starts the Google OAuth 2.0 authentication flow.
+         */
         public void startAuthentication() {
             try {
                 String authUrl = buildAuthUrl();
@@ -305,7 +365,11 @@ public class LoginController implements Initializable  {
                 onError.accept("Google login error: " + e.getMessage());
             }
         }
-
+        
+        /**
+         * @return String
+         */
+        @NotNull
         private String buildAuthUrl() throws UnsupportedEncodingException {
             return "https://accounts.google.com/o/oauth2/v2/auth?" +
                     "client_id=" + CLIENT_ID + "&" +
@@ -316,22 +380,32 @@ public class LoginController implements Initializable  {
                     "prompt=select_account";
         }
 
+        /**
+         * @param url String
+         */
         private void openBrowser(String url) {
             hostServices.showDocument(url);
         }
 
+        /**
+         * @param event ActionEvent
+         * @throws IOException IOException
+         */
         @FXML
         void onPasswordResetPressed(ActionEvent event) throws IOException {
             FXMLLoader passwordResetLoader = new FXMLLoader(getClass().getResource("password-reset-screen.fxml"));
             Parent mainRoot = passwordResetLoader.load();
 
 
-            // Switch to main screen
+            // Switch to the main screen
             Stage passwordResetStage = new Stage();
             passwordResetStage.setScene(new Scene(mainRoot, 1280, 800));
             passwordResetStage.setTitle("AI Whiteboard Program - Reset Password");
         }
 
+        /**
+         * Calls Server Starter
+         */
         private void startCallbackServer() {
             new Thread(() -> {
                 try {
@@ -351,7 +425,11 @@ public class LoginController implements Initializable  {
             }).start();
         }
 
-        private void handleCallback(HttpExchange exchange) throws IOException {
+        /**
+         * @param exchange HttpExchange
+         * @throws IOException IOException
+         */
+        private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
             String query = exchange.getRequestURI().getQuery();
             Map<String, String> params = parseQuery(query);
             String code = params.get("code");
@@ -379,6 +457,13 @@ public class LoginController implements Initializable  {
             }
         }
 
+        /**
+         * Exchanges an authorization code for access tokens by making a POST request to Google's token endpoint.
+         * @param code The authorization code received from Google OAuth
+         * @return Response string containing access token and other token information
+         * @throws IOException If a network request fails
+         * @throws InterruptedException If a token request is interrupted
+         */
         private String exchangeCodeForTokens(String code) throws IOException, InterruptedException {
             String params = "code=" + code +
                     "&client_id=" + CLIENT_ID +
@@ -397,6 +482,12 @@ public class LoginController implements Initializable  {
             return response.body();
         }
 
+        /**
+         * @param accessToken String
+         * @return Response string containing user information
+         * @throws IOException If a network request fails
+         * @throws InterruptedException If a token request is interrupted
+         */
         private String getUserInfo(String accessToken) throws IOException, InterruptedException {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -408,6 +499,11 @@ public class LoginController implements Initializable  {
             return response.body();
         }
 
+        /**
+         * @param query String
+         * @return Map<String, String>
+         */
+        @NotNull
         private Map<String, String> parseQuery(String query) {
             Map<String, String> params = new HashMap<>();
             if (query != null) {
@@ -421,7 +517,11 @@ public class LoginController implements Initializable  {
             return params;
         }
 
-        private void sendSuccessResponse(HttpExchange exchange) throws IOException {
+        /**
+         * @param exchange HttpExchange
+         * @throws IOException IOException
+         */
+        private void sendSuccessResponse(@NotNull HttpExchange exchange) throws IOException {
             String response = "<html><body>Login successful! You can close this window.</body></html>";
             exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -429,7 +529,13 @@ public class LoginController implements Initializable  {
             }
         }
 
-        private void sendErrorResponse(HttpExchange exchange, String message) throws IOException {
+        /**
+         * Sends an error response with the specified message to the client in an HTTP exchange.
+         * @param exchange The HTTP exchange object that represents the incoming request and allows sending responses.
+         * @param message  A string containing the error message to be included in the response body.
+         * @throws IOException If an I/O error occurs while sending the response.
+         */
+        private void sendErrorResponse(@NotNull HttpExchange exchange, String message) throws IOException {
             String response = "<html><body>Error: " + message + "</body></html>";
             exchange.sendResponseHeaders(400, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -438,6 +544,9 @@ public class LoginController implements Initializable  {
         }
     }
 
+    /**
+     * Microsoft OAuth 2.0 Authentication Handler.
+     */
     public class MicrosoftAuthHandler {
         private static final String CLIENT_ID = dotenv.get("MICROSOFT_CLIENT_ID");
         private static final String AUTHORITY = dotenv.get("MICROSOFT_AUTHORITY_ID");
@@ -449,15 +558,25 @@ public class LoginController implements Initializable  {
         private final HostServices hostServices;
         private HttpServer server;
 
+        /**
+         * Creates a new instance of MicrosoftAuthHandler to manage Microsoft authentication.
+         * @param onSuccess A {@code Runnable} that will be executed when authentication succeeds.
+         * @param onError A {@code Consumer<String>} that will handle errors during the authentication process.
+         * The error message will be passed to the consumer.
+         * @param hostServices A {@code HostServices} instance to help with OS-level operations, such as opening the default web browser.
+         */
         public MicrosoftAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
             this.onSuccess = onSuccess;
             this.onError = onError;
             this.hostServices = hostServices;
         }
 
+        /**
+         * Starts the authentication process.
+         */
         public void startAuthentication() {
             try {
-                // Start server first
+                // Start the server first
                 startCallbackServer();
 
                 PublicClientApplication pca = PublicClientApplication.builder(CLIENT_ID)
@@ -480,6 +599,9 @@ public class LoginController implements Initializable  {
             }
         }
 
+        /**
+         * Starts the callback server.
+         */
         private void startCallbackServer() {
             new Thread(() -> {
                 try {
@@ -494,7 +616,12 @@ public class LoginController implements Initializable  {
             }).start();
         }
 
-        private void handleCallback(HttpExchange exchange) throws IOException {
+        /**
+         * Handles the callback received from the authentication server.
+         * @param exchange The HTTP exchange object containing the request and response data.
+         * @throws IOException If there is an error while handling the HTTP exchange or sending the response.
+         */
+        private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
             try {
                 String query = exchange.getRequestURI().getQuery();
                 System.out.println("Received callback with query: " + query); // Debug logging
@@ -528,10 +655,13 @@ public class LoginController implements Initializable  {
                 acquireToken(code);
 
             } finally {
-                server.stop(0); // Ensure server stops after handling the request
+                server.stop(0); // Ensure the server stops after handling the request
             }
         }
 
+        /**
+         * Acquires an access token using the provided authorization code.
+         */
         private void acquireToken(String code) {
             try {
                 PublicClientApplication pca = PublicClientApplication.builder(CLIENT_ID)
@@ -554,6 +684,13 @@ public class LoginController implements Initializable  {
             }
         }
 
+        /**
+         * Parses a query string into a map of key-value pairs.
+         * The query string is expected to be in the format of URL query parameters.
+         * @param query the query string to parse; can be null or empty
+         * @return a map containing the parsed key-value pairs from the query string
+         */
+        @NotNull
         private Map<String, String> parseQuery(String query) {
             Map<String, String> params = new HashMap<>();
             if (query != null) {
@@ -567,7 +704,10 @@ public class LoginController implements Initializable  {
             return params;
         }
 
-        private void sendResponse(HttpExchange exchange, int statusCode, String message) throws IOException {
+        /**
+         * Sends a response to the client.
+         */
+        private void sendResponse(@NotNull HttpExchange exchange, int statusCode, String message) throws IOException {
             String response = "<html><body>" + message + "</body></html>";
             exchange.sendResponseHeaders(statusCode, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -576,6 +716,9 @@ public class LoginController implements Initializable  {
         }
     }
 
+    /**
+     * GitHub OAuth 2.0 Authentication Handler.
+     */
     public class GithubAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GITHUB_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GITHUB_CLIENT_SECRET");
@@ -589,12 +732,18 @@ public class LoginController implements Initializable  {
         private final Consumer<String> onError;
         private final HostServices hostServices;
 
+        /**
+         * Creates a new instance of GithubAuthHandler to manage the GitHub authentication.
+         */
         public GithubAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
             this.onSuccess = onSuccess;
             this.onError = onError;
             this.hostServices = hostServices;
         }
 
+        /**
+         * Starts the authentication process.
+         */
         public void startAuthentication() {
             try {
                 String authUrl = buildAuthUrl();
@@ -605,6 +754,10 @@ public class LoginController implements Initializable  {
             }
         }
 
+        /**
+         * Builds the authentication URL for GitHub.
+         */
+        @NotNull
         private String buildAuthUrl() throws UnsupportedEncodingException {
             return AUTH_URL + "?client_id=" + CLIENT_ID +
                     "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8) +
@@ -612,10 +765,16 @@ public class LoginController implements Initializable  {
                     "&response_type=code";
         }
 
+        /**
+         * Opens the specified URL in the default web browser.
+         */
         private void openBrowser(String url) {
             hostServices.showDocument(url);
         }
 
+        /**
+         * Starts the callback server.
+         */
         private void startCallbackServer() {
             new Thread(() -> {
                 try {
@@ -635,7 +794,10 @@ public class LoginController implements Initializable  {
             }).start();
         }
 
-        private void handleCallback(HttpExchange exchange) throws IOException {
+        /**
+         * Handles the callback received from the authentication server.
+         */
+        private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
             String query = exchange.getRequestURI().getQuery();
             Map<String, String> params = parseQuery(query);
             String code = params.get("code");
@@ -660,6 +822,9 @@ public class LoginController implements Initializable  {
             }
         }
 
+        /**
+         * Exchanges an authorization code for an access token.
+         */
         private String exchangeCodeForToken(String code) throws IOException, InterruptedException {
             String params = "client_id=" + CLIENT_ID +
                     "&client_secret=" + CLIENT_SECRET +
@@ -679,6 +844,10 @@ public class LoginController implements Initializable  {
             return tokenJson.get("access_token").getAsString();
         }
 
+        /**
+         * @param accessToken String
+         * @return Response string containing user information
+         */
         private String getUserInfo(String accessToken) throws IOException, InterruptedException {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -691,6 +860,10 @@ public class LoginController implements Initializable  {
             return response.body();
         }
 
+        /**
+         * Parses a query string into a map of key-value pairs.
+         */
+        @NotNull
         private Map<String, String> parseQuery(String query) {
             Map<String, String> params = new HashMap<>();
             if (query != null) {
@@ -704,7 +877,10 @@ public class LoginController implements Initializable  {
             return params;
         }
 
-        private void sendSuccessResponse(HttpExchange exchange) throws IOException {
+        /**
+         * Sends a success response to the client.
+         */
+        private void sendSuccessResponse(@NotNull HttpExchange exchange) throws IOException {
             String response = "<html><body>GitHub login successful! You can close this window.</body></html>";
             exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -712,7 +888,10 @@ public class LoginController implements Initializable  {
             }
         }
 
-        private void sendErrorResponse(HttpExchange exchange, String message) throws IOException {
+        /**
+         * Sends an error response to the client.
+         */
+        private void sendErrorResponse(@NotNull HttpExchange exchange, String message) throws IOException {
             String response = "<html><body>Error: " + message + "</body></html>";
             exchange.sendResponseHeaders(400, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -720,6 +899,4 @@ public class LoginController implements Initializable  {
             }
         }
     }
-
 }
-

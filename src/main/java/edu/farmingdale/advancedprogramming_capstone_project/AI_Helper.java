@@ -23,9 +23,11 @@ public class AI_Helper {
             e.printStackTrace();
         }
     }
-
+    
+    /**
+     * @return The API Key from config.properties.
+     */
     public static String getApiKey() {
         return properties.getProperty("API_KEY", "");
     }
-
 }

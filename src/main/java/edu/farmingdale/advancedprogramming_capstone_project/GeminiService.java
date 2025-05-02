@@ -28,7 +28,6 @@ public class GeminiService {
     /**
      * Sends a prompt to the Gemini API asynchronously and returns a CompletableFuture with the summary.
      * Includes basic JSON escaping and HTTP status code checking.
-     *
      * @param prompt The text to summarize.
      * @return A CompletableFuture containing the summary response as a string, or an error message.
      */

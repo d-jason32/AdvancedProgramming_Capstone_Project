@@ -15,21 +15,21 @@ import java.util.List;
  */
 public class ProfileConnDbOps {
     final String MYSQL_SERVER_URL = "jdbc:mysql://csc311serverjason.mysql.database.azure.com";
-    final String DB_URL = MYSQL_SERVER_URL + "/" + "profile_table1";;
+    final String DB_URL = MYSQL_SERVER_URL + "/" + "profile_table1";
     final String USERNAME = "eagle";
     final String PASSWORD = "usxCi90RWtiwtt";
 
     /**
      * Method to connect to a database.
-     * @return
+     * @return boolean
      */
-    public  boolean connectToDatabase() {
-        boolean hasRegistredUsers = false;
+    public boolean connectToDatabase() {
+        boolean hasRegisteredUsers = false;
 
         //Class.forName("com.mysql.jdbc.Driver");
         try {
             System.out.println("Trying to connect.");
-            //First, connect to MYSQL server and create the database if not created
+            //First, connect to the MYSQL server and create the database if not created
             Connection conn = DriverManager.getConnection(MYSQL_SERVER_URL, USERNAME, PASSWORD);
             System.out.println("Connected.");
             Statement statement = conn.createStatement();
@@ -54,7 +54,7 @@ public class ProfileConnDbOps {
             if (resultSet.next()) {
                 int numUsers = resultSet.getInt(1);
                 if (numUsers > 0) {
-                    hasRegistredUsers = true;
+                    hasRegisteredUsers = true;
                 }
             }
             statement.close();
@@ -63,16 +63,12 @@ public class ProfileConnDbOps {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return hasRegistredUsers;
+        return hasRegisteredUsers;
     }
-
-
-
-
 
     /**
      * Method to delete a user.
-     * @param id
+     * @param id Person to delete
      */
     public void delete(String id) {
 
@@ -90,8 +86,6 @@ public class ProfileConnDbOps {
             e.printStackTrace();
         }
     }
-
-
 
     /**
      * Method to return a list that contains all users in the database.
@@ -146,15 +140,15 @@ public class ProfileConnDbOps {
 
     /**
      * Edits a student in the database if given the id number.
-     * @param idNum
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
-     * @throws SQLException
+     * @param idNum Unique Identifier
+     * @param firstName User's First Name
+     * @param lastName User's Last Name
+     * @param email User's Email
+     * @param password User's Password
+     * @throws SQLException SQLException
      */
     public void editUser(String idNum, String firstName, String lastName, String email, String password) throws SQLException {
-        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";;
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         try{
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);

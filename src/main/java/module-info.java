@@ -11,6 +11,7 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires java.dotenv;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires annotations;
 
     opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml, com.microsoft.aad.msal4j;
     exports edu.farmingdale.advancedprogramming_capstone_project;

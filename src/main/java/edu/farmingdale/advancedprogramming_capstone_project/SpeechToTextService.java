@@ -4,6 +4,8 @@ import com.microsoft.cognitiveservices.speech.*;
 import com.microsoft.cognitiveservices.speech.audio.AudioConfig;
 import javafx.application.Platform;
 import javafx.scene.control.TextArea;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.concurrent.Future;
 import java.util.function.Consumer;
 
@@ -72,7 +74,6 @@ public class SpeechToTextService {
             updateLocalTextArea("WARNING: The callback for the full session transcript was set to null.");
         }
     }
-
 
     /**
      * Allows updating the individual utterance callback function after initialization if needed.
@@ -214,9 +215,9 @@ public class SpeechToTextService {
     /**
      * Retrieves the accumulated transcript since the last start
      * and clears the internal buffer. Called internally by stopRealtimeTranscriptionInternal.
-     *
      * @return The full transcript accumulated during the session.
      */
+    @NotNull
     private String consumeFullTranscript() {
         synchronized (fullTranscriptBuilder) {
             String transcript = fullTranscriptBuilder.toString().trim();

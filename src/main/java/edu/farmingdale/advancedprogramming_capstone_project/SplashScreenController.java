@@ -9,11 +9,10 @@ import javafx.scene.control.ProgressBar;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 public class SplashScreenController implements Initializable {
 
     /**
-     * initializes four classes for splash screen:
+     * initializes four classes for the splash screen:
      * splashLabel | loadingBar | checkLoadingBarFinished | progressText
      */
     @FXML private Label loadingLabel;
@@ -24,8 +23,8 @@ public class SplashScreenController implements Initializable {
     /**
      * method for progressBar on Splash Screen
      * the bar will start from 0% and progress until 100%
-     * when it completes, it will close and main fxml file will launch
-     * takes estimated time of 4 seconds to complete
+     * when it completes, it will close, and the main fxml file will launch
+     * takes an estimated time of 4 seconds to complete
      */
     private void startLoadingBar() {
         Thread barLoad = new Thread(() -> {
@@ -71,7 +70,7 @@ public class SplashScreenController implements Initializable {
     /**
      * method for labelFlash
      * makes loadingLabel fade in and out of opacity like an animation
-     * autoreserving that lasts the length until splash screen finishes loading
+     * auto reserving that lasts the length until the splash screen finishes loading
      */
     private void labelFlash() {
         FadeTransition labelFlash = new FadeTransition(javafx.util.Duration.millis(1000), loadingLabel);
@@ -81,8 +80,6 @@ public class SplashScreenController implements Initializable {
         labelFlash.setAutoReverse(true);
         labelFlash.play();
     }
-
-
 
     /**
      * @param callFunction
@@ -96,7 +93,6 @@ public class SplashScreenController implements Initializable {
      * @param location
      * The location used to resolve relative paths for the root object, or
      * {@code null} if the location is not known.
-     *
      * @param resource
      * The resources used to localize the root object, or {@code null} if
      * the root object was not localized.

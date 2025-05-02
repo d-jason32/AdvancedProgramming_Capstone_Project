@@ -15,21 +15,21 @@ import java.util.List;
  */
 public class ConnDbOps {
     final String MYSQL_SERVER_URL = "jdbc:mysql://csc311serverjason.mysql.database.azure.com";
-    final String DB_URL = MYSQL_SERVER_URL + "/" + "new_table";;
+    final String DB_URL = MYSQL_SERVER_URL + "/" + "new_table";
     final String USERNAME = "eagle";
     final String PASSWORD = "usxCi90RWtiwtt";
 
     /**
      * Method to connect to a database.
-     * @return
+     * @return Registered users
      */
     public  boolean connectToDatabase() {
-        boolean hasRegistredUsers = false;
+        boolean hasRegisteredUsers = false;
 
         //Class.forName("com.mysql.jdbc.Driver");
         try {
             System.out.println("Trying to connect.");
-            //First, connect to MYSQL server and create the database if not created
+            //First, connect to the MYSQL server and create the database if not created
             Connection conn = DriverManager.getConnection(MYSQL_SERVER_URL, USERNAME, PASSWORD);
             System.out.println("Connected.");
             Statement statement = conn.createStatement();
@@ -57,7 +57,7 @@ public class ConnDbOps {
             if (resultSet.next()) {
                 int numUsers = resultSet.getInt(1);
                 if (numUsers > 0) {
-                    hasRegistredUsers = true;
+                    hasRegisteredUsers = true;
                 }
             }
             statement.close();
@@ -66,12 +66,12 @@ public class ConnDbOps {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return hasRegistredUsers;
+        return hasRegisteredUsers;
     }
 
     /**
      * Method to search for a student using an id number.
-     * @param id
+     * @param id Person object
      */
     public  void queryUserById(String id) {
         try {
@@ -100,8 +100,8 @@ public class ConnDbOps {
 
     /**
      * Method to search for a student using an id number.
-     * @param id
-     * @return
+     * @param id Person object
+     * @return String
      */
     public String queryUser(String id) {
         String completeString = "";
@@ -133,7 +133,7 @@ public class ConnDbOps {
 
     /**
      * Method to delete a user.
-     * @param id
+     * @param id Person object
      */
     public void delete(String id) {
 
@@ -155,7 +155,7 @@ public class ConnDbOps {
     /**
      * Method to list all the users.
      */
-    public  void listAllUsers() {
+    public void listAllUsers() {
         try {
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             String sql = "SELECT * FROM users ";
@@ -211,11 +211,11 @@ public class ConnDbOps {
 
     /**
      * Inserts a user into the database.
-     * @param id
-     * @param first_name
-     * @param last_name
-     * @param email
-     * @param password
+     * @param id The unique identifier for the user
+     * @param first_name The user's first name
+     * @param last_name The user's last name
+     * @param email The user's email address
+     * @param password The user's password
      */
     public  void insertUser(String id, String first_name, String last_name, String email, String password) {
         try {
@@ -241,15 +241,15 @@ public class ConnDbOps {
 
     /**
      * Edits a student in the database if given the id number.
-     * @param idNum
-     * @param firstName
-     * @param lastName
-     * @param email
-     * @param password
-     * @throws SQLException
+     * @param idNum Unique Identifier For Person
+     * @param firstName User's First Name
+     * @param lastName User's Last Name
+     * @param email User's Email
+     * @param password User's Password
+     * @throws SQLException SQL Exception For Errors
      */
     public void editUser(String idNum, String firstName, String lastName, String email, String password) throws SQLException {
-        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";;
+        String sql = "UPDATE users SET first_name = ?, last_name = ?, email = ?, password = ? WHERE id = ?";
         try{
             Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
