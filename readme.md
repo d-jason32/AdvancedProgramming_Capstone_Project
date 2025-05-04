@@ -6,6 +6,7 @@
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+![Javascript](https://shields.io/badge/JavaScript-F7DF1E?logo=JavaScript&logoColor=000&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
 ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
@@ -92,6 +93,7 @@ and pay attention to real time speech to text captions.
 
 - **Java** – Core programming language for the application
 - **JavaFX** – GUI framework used to build the user interface
+- **Javascript** - Creates webpage for SignalR and WhiteBoardTeam API
 - **CSS3** – Stylesheets for customizing the JavaFX user interface
 - **Google Gemini** – AI model used to generate session summaries
 - **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
@@ -102,6 +104,9 @@ and pay attention to real time speech to text captions.
 - **Java-doten** - Loads environmental variables from .env file
 - **iText 7** - Creates PDF file of generated summary
 - **Microsoft Authentication Library for Java** - Allows authentication with microsoft accounts 
+- **WhiteBoard Team API** - Creates collaborative whiteboard interface
+- **Azure SignalR** - Establishes real-time video chatting feature and learning session management
+- **Azure Websites** - Allows for hosting of learning session
 
 
 ## 📸 Images
