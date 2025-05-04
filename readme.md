@@ -38,7 +38,7 @@
 
 
 <p align="center">
-  <img src="/assets/demo_gif.gif" alt="Demo GIF" />
+  <img src="/assets/new_demo.gif" alt="Demo GIF" />
 </p>
 
 ## 📚 Table of Contents
