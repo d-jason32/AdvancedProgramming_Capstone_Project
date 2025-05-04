@@ -46,9 +46,9 @@
 - [🚀 Features](#-features)
 - [▶️ Demo](#-demo)
 - [🧰 Tech Stack](#-tech-stack)
+- [📸 Images](#images)
 - [🛠️ Installation](#-installation)
 - [🧪 Usage](#-usage)
-- [👨‍💻 Code Examples](#-code-examples)
 - [⚙️ Configuration](#-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
@@ -109,6 +109,8 @@ and pay attention to real time speech to text captions.
 
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
+## 📸 Images
+Testing
 
 ## 🛠️ Installation
 ### 1. Clone the repository
