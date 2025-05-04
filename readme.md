@@ -76,7 +76,7 @@ and pay attention to real time speech to text captions.
 - Splash screen loading
 - Profile creation and personalization	
 - Azure database connectivity
-- Log in with Google or Facebook (OAuth integration)
+- User Authentication with Google, Microsoft, or GitHub (OAuth integration)
 - User database with full CRUD application
 - Database storage of account usernames and passwords
 - Regular Expression Field Validation
@@ -89,25 +89,20 @@ and pay attention to real time speech to text captions.
 !!! INSERT YOUTUBE VIDEO HERE
 
 ## 🧰 Tech Stack
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 
-![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+- **Java** – Core programming language for the application
+- **JavaFX** – GUI framework used to build the user interface
+- **CSS3** – Stylesheets for customizing the JavaFX user interface
+- **Google Gemini** – AI model used to generate session summaries
+- **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
+- **Microsoft Azure Speech Services** – Converts real-time to text
+- **OAuth 2.0** – Authentication protocol used for secure user login and session authorization
+- **MySQL** – Relational database for storing user profiles, transcripts, and session data
+- **JBCrypt** - Adds secure password hashing
+- **Java-doten** - Loads environmental variables from .env file
+- **iText 7** - Creates PDF file of generated summary
+- **Microsoft Authentication Library for Java** - Allows authentication with microsoft accounts 
 
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
-
-![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
-
-![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
-
-![OAuth2.0](https://img.shields.io/badge/OAuth2.0-k?style=for-the-badge&logo=oauth)
-
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
-
-![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
-
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
 ## 📸 Images
 ![img.png](assets/img.png)
@@ -178,44 +173,44 @@ After installing the project, update API Keys:
 ```plaintext
 advancedprogramming_capstone_project/                        
 ├── src/
-│   └── main/
-│       ├── java/
-│       │   └── edu/farmingdale/advancedprogramming_capstone_project/
-│       │       ├── AI_Helper.java
-│       │       ├── CapstoneApp.java
-│       │       ├── ConnDbOps.java
-│       │       ├── DatabaseController.java
-│       │       ├── GeminiService.java
-│       │       ├── LoginController.java
-│       │       ├── MainController.java
-│       │       ├── Person.java
-│       │       ├── ProfileConnDbOps.java
-│       │       ├── ProfileController.java
-│       │       ├── SpeechToTextService.java
-│       │       ├── SplashScreenController.java
-│       │       ├── SummaryController.java
-│       │       └── TranscriptionController.java
-│       └── resources/
-│           └── edu/farmingdale/advancedprogramming_capstone_project/
-│               ├── fonts/                  
-│               ├── images/               
-│               ├── styling/               
-│               │   ├── database_styles.css
-│               │   ├── light_mode.css
-│               │   ├── login_page_styles.css
-│               │   ├── main_page_styles.css
-│               │   ├── profile.css
-│               │   ├── style.css
-│               │   └── video-style.css
-│               ├── config.properties      
-│               ├── database.fxml
-│               ├── login-screen.fxml
-│               ├── main.fxml
-│               ├── password-reset-screen.fxml
-│               ├── profilePage.fxml
-│               ├── splash-screen.fxml
-│               ├── SummaryView.fxml
-│               └── TranscriptionView.fxml
+    └── main/
+        ├── java/
+        │   └── edu/farmingdale/advancedprogramming_capstone_project/
+        │       ├── AI_Helper.java
+        │       ├── CapstoneApp.java
+        │       ├── ConnDbOps.java
+        │       ├── DatabaseController.java
+        │       ├── GeminiService.java
+        │       ├── LoginController.java
+        │       ├── MainController.java
+        │       ├── Person.java
+        │       ├── ProfileConnDbOps.java
+        │       ├── ProfileController.java
+        │       ├── SpeechToTextService.java
+        │       ├── SplashScreenController.java
+        │       ├── SummaryController.java
+        │       └── TranscriptionController.java
+        └── resources/
+            └── edu/farmingdale/advancedprogramming_capstone_project/
+                ├── fonts/                  
+                ├── images/               
+                ├── styling/               
+                │   ├── database_styles.css
+                │   ├── light_mode.css
+                │   ├── login_page_styles.css
+                │   ├── main_page_styles.css
+                │   ├── profile.css
+                │   ├── style.css
+                │   └── video-style.css
+                ├── config.properties      
+                ├── database.fxml
+                ├── login-screen.fxml
+                ├── main.fxml
+                ├── password-reset-screen.fxml
+                ├── profilePage.fxml
+                ├── splash-screen.fxml
+                ├── SummaryView.fxml
+                └── TranscriptionView.fxml
 ```
 ## 📝 License
 - This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as permitted.
