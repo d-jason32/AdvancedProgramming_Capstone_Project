@@ -79,6 +79,7 @@ and pay attention to real time speech to text captions.
 - Database storage of account usernames and passwords
 - Regular Expression Field Validation
 - JSON parsing and serialization/deserialization
+- PDF Generation of AI-powered summaries
 
 ## ▶️ Demo
 
