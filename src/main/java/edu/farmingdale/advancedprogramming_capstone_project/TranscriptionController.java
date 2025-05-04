@@ -1,5 +1,9 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -241,6 +245,12 @@ public class TranscriptionController {
                         updateStatus("Summary received.");
                         if (summaryBtn != null) summaryBtn.setDisable(false);
                         openSummaryWindow(summary);
+                        // Turns azure summary into a pdf.
+                        try {
+                            pdfGeneration(summary);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 }, Platform::runLater)
                 .exceptionally(ex -> {
@@ -439,5 +449,18 @@ public class TranscriptionController {
             }
             alert.showAndWait();
         });
+    }
+
+    /**
+     * Method to generate a pdf report of the azure summary.
+     * summaryDoc The document that contains the summary
+     * @throws IOException the exception if it cannot output a summary
+     */
+    void pdfGeneration(String summaryDoc) throws IOException {
+        try (PdfWriter w = new PdfWriter("Azure_Summary.pdf");
+             PdfDocument pdf = new PdfDocument(w);
+             Document doc = new Document(pdf)) {
+            doc.add(new Paragraph(summaryDoc));
+        }
     }
 }
