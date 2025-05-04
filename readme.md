@@ -111,12 +111,45 @@ and pay attention to real time speech to text captions.
 
 
 ## 🛠️ Installation
+### 1. Clone the repository
+```bash
+git clone https://github.com/d-jason32/AdvancedProgramming_Capstone_Project.git
+cd your-repo
+```
+### 2. Set up your environment
+
+- Java JDK 24
+- JavaFX SDK
+- Mavern
+- Azure Flexible MySQL server
+- Azure Speech Services
+
+### 3. Run the project
+
+```bash
+mvn clean install
+mvn javafx:run
+```
 
 ## 🧪 Usage
 
 ## 👨‍💻 Code Examples
 
 ## ⚙️ Configuration
+After installing the project, update API Keys:
+
+### Required keys:
+| Key                | Description                         |
+|--------------------|-------------------------------------|
+| `MYSQL_SERVER_URL` | JDBC URL to your MySQL database     |
+| `DB_URL`           | Database name                       |
+| `USERNAME`         | Your database username              |
+| `PASSWORD`         | Your database password              |
+| `AZURE_SPEECH_KEY` | Key for Azure Speech API            |
+| `API_KEY`          | Google Gemini API Key               |
+| `SIGNAL_R_API KEY` | Key for SignalR video chat          |
+
+
 
 ## 📁 Project Structure
 ```plaintext
