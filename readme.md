@@ -37,7 +37,9 @@
 </div>
 
 
-# !!!!INSERT DEMO GIF HERE
+<p align="center">
+  <img src="/assets/demo_gif.gif" alt="Demo GIF" />
+</p>
 
 ## 📚 Table of Contents
 - [💬 Introduction](#-introduction)
@@ -80,6 +82,7 @@ and pay attention to real time speech to text captions.
 - Regular Expression Field Validation
 - JSON parsing and serialization/deserialization
 - PDF Generation of AI-powered summaries
+- Dark mode and light mode
 
 ## ▶️ Demo
 
@@ -116,10 +119,50 @@ and pay attention to real time speech to text captions.
 ## ⚙️ Configuration
 
 ## 📁 Project Structure
-
+```plaintext
+advancedprogramming_capstone_project/                        
+├── src/
+│   └── main/
+│       ├── java/
+│       │   └── edu/farmingdale/advancedprogramming_capstone_project/
+│       │       ├── AI_Helper.java
+│       │       ├── CapstoneApp.java
+│       │       ├── ConnDbOps.java
+│       │       ├── DatabaseController.java
+│       │       ├── GeminiService.java
+│       │       ├── LoginController.java
+│       │       ├── MainController.java
+│       │       ├── Person.java
+│       │       ├── ProfileConnDbOps.java
+│       │       ├── ProfileController.java
+│       │       ├── SpeechToTextService.java
+│       │       ├── SplashScreenController.java
+│       │       ├── SummaryController.java
+│       │       └── TranscriptionController.java
+│       └── resources/
+│           └── edu/farmingdale/advancedprogramming_capstone_project/
+│               ├── fonts/                  
+│               ├── images/               
+│               ├── styling/               
+│               │   ├── database_styles.css
+│               │   ├── light_mode.css
+│               │   ├── login_page_styles.css
+│               │   ├── main_page_styles.css
+│               │   ├── profile.css
+│               │   ├── style.css
+│               │   └── video-style.css
+│               ├── config.properties      
+│               ├── database.fxml
+│               ├── login-screen.fxml
+│               ├── main.fxml
+│               ├── password-reset-screen.fxml
+│               ├── profilePage.fxml
+│               ├── splash-screen.fxml
+│               ├── SummaryView.fxml
+│               └── TranscriptionView.fxml
+```
 ## 📝 License
-- This project is licensed under the [MIT License](LICENSE).  
-Feel free to use, modify, and distribute it as permitted.
+- This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as permitted.
 
 ## ❓FAQ
 
