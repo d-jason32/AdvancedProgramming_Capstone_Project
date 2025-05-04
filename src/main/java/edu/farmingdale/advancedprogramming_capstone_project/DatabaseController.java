@@ -203,7 +203,7 @@ public class DatabaseController implements Initializable {
     Pattern firstNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
     Pattern lastNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
     Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9._%+-]{1,25}@farmingdale\\.edu$");
-    Pattern passwordPattern = Pattern.compile("^[a-zA-Z]{2,25}$");
+    Pattern passwordPattern = Pattern.compile("^[a-zA-Z0-9._%+-]{2,25}$");
 
     /**
      * Checks if every text field is valid.

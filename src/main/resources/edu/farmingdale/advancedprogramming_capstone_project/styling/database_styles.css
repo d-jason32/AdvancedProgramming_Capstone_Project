@@ -11,15 +11,8 @@
     -fx-pref-height:40px;
 }
 
-.left_pane {
-    -fx-background-color: #1E2025;
-    -fx-pref-width:150px;
-    -fx-pref-height:600px;
-}
 
-.bottom_pane {
-    -fx-background-color: #1E2025;
-}
+
 .profile_pic{
     -fx-stroke: #dedddc;
     -fx-stroke-width: 2;
@@ -45,7 +38,7 @@
     -fx-padding: 8 16;
 }
 
-#loginBox {
+#box1 {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 8;
     -fx-padding: 20;
@@ -87,7 +80,7 @@
 }
 
 #borderPane {
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #e0f7ff, #007ACC);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1e1e1e, #0d47a1);
 }
 
 .text-field {
@@ -101,4 +94,16 @@
 
 #hboxArea{
     -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1E2025, #005A99);
+}
+
+.nested-column-header {
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #1E2025, #005A99);
+}
+
+.nested-column-header .label {
+    -fx-text-fill: white;
+}
+
+.column-header {
+    -fx-background-color: transparent;
 }
