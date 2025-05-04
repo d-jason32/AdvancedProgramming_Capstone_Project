@@ -1,6 +1,7 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.io.IOException;
@@ -29,6 +31,10 @@ public class MainController {
     private TextField joinSessionField;   // Field for a user to enter session code.
     @FXML
     private TextField transcriptionArea;  // Field for live transcription.
+    boolean isLightMode = false;           // Keeps track of light or dark mode.
+    @FXML
+    private BorderPane borderPane1;
+
 
     /**
      * Called when the "Start New Call" button is pressed.
@@ -282,6 +288,26 @@ public class MainController {
                     Platform.runLater(() -> showErrorAlert("Summary Failed", "Failed to generate summary: " + ex.getMessage()));
                     return null;
                 });
+    }
+
+    /**
+     * Method to change the theme from dark to light and vice versa.
+     * @param event
+     */
+    @FXML
+    void changeTheme(ActionEvent event) {
+        ObservableList<String> stylesheets = borderPane1.getStylesheets();
+        System.out.println("good");
+        stylesheets.clear();
+        /*
+        If the stylesheet is in dark mode, change it to light mode.
+         */
+        if (isLightMode) {
+            stylesheets.add(getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/main_page_styles.css").toExternalForm());
+        } else {
+            stylesheets.add(getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/light_mode.css").toExternalForm());
+        }
+        isLightMode = !isLightMode;
     }
 
 }
