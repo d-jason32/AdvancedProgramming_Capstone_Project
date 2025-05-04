@@ -97,7 +97,7 @@ and pay attention to real time speech to text captions.
 - **CSS3** – Stylesheets for customizing the JavaFX user interface
 - **Google Gemini** – AI model used to generate session summaries
 - **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
-- **Microsoft Azure Speech Services** – Converts real-time to text
+- **Microsoft Azure Speech Services** – Converts real-time speech to text
 - **OAuth 2.0** – Authentication protocol used for secure user login and session authorization
 - **MySQL** – Relational database for storing user profiles, transcripts, and session data
 - **JBCrypt** - Adds secure password hashing
