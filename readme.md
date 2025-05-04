@@ -6,6 +6,7 @@
 
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 ![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+![Javascript](https://shields.io/badge/JavaScript-F7DF1E?logo=JavaScript&logoColor=000&style=for-the-badge)
 ![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 ![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
 ![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
@@ -46,14 +47,14 @@
 - [🚀 Features](#-features)
 - [▶️ Demo](#-demo)
 - [🧰 Tech Stack](#-tech-stack)
+- [📸 Images](#-images)
 - [🛠️ Installation](#-installation)
 - [🧪 Usage](#-usage)
-- [👨‍💻 Code Examples](#-code-examples)
 - [⚙️ Configuration](#-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
 - [❓FAQ](#faq)
-- [📄Documentation](#documentation)
+- [📄 Documentation](#documentation)
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
@@ -76,7 +77,7 @@ and pay attention to real time speech to text captions.
 - Splash screen loading
 - Profile creation and personalization	
 - Azure database connectivity
-- Log in with Google or Facebook (OAuth integration)
+- User Authentication with Google, Microsoft, or GitHub (OAuth integration)
 - User database with full CRUD application
 - Database storage of account usernames and passwords
 - Regular Expression Field Validation
@@ -89,34 +90,89 @@ and pay attention to real time speech to text captions.
 !!! INSERT YOUTUBE VIDEO HERE
 
 ## 🧰 Tech Stack
-![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 
-![JavaFX](https://img.shields.io/badge/javafx-%23FF0000.svg?style=for-the-badge&logo=javafx&logoColor=white)
+- **Java** – Core programming language for the application
+- **JavaFX** – GUI framework used to build the user interface
+- **Javascript** - Creates webpage for SignalR and WhiteBoardTeam API
+- **CSS3** – Stylesheets for customizing the JavaFX user interface
+- **Google Gemini** – AI model used to generate session summaries
+- **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
+- **Microsoft Azure Speech Services** – Converts real-time speech to text
+- **OAuth 2.0** – Authentication protocol used for secure user login and session authorization
+- **MySQL** – Relational database for storing user profiles, transcripts, and session data
+- **JBCrypt** - Adds secure password hashing
+- **Java-doten** - Loads environmental variables from .env file
+- **iText 7** - Creates PDF file of generated summary
+- **Microsoft Authentication Library for Java** - Allows authentication with microsoft accounts 
+- **WhiteBoard Team API** - Creates collaborative whiteboard interface
+- **Azure SignalR** - Establishes real-time video chatting feature and learning session management
+- **Azure Websites** - Allows for hosting of learning session
 
-![CSS3](https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white)
 
-![Google Gemini](https://img.shields.io/badge/google%20gemini-8E75B2?style=for-the-badge&logo=google%20gemini&logoColor=white)
-
-![Azure](https://img.shields.io/badge/azure-%230072C6.svg?style=for-the-badge&logo=microsoftazure&logoColor=white)
-
-![OAuth2.0](https://img.shields.io/badge/OAuth2.0-k?style=for-the-badge&logo=oauth)
-
-![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
-
-![IntelliJ IDEA](https://img.shields.io/badge/IntelliJIDEA-000000.svg?style=for-the-badge&logo=intellij-idea&logoColor=white)
-
-![macOS](https://img.shields.io/badge/mac%20os-000000?style=for-the-badge&logo=macos&logoColor=F0F0F0)
-
-![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
-
+## 📸 Images
+![img.png](assets/img.png)
+![img.png](assets/img2.png)
+![img.png](main_menu.png)
+![img_1.png](assets/img_1.png)
+![img_2.png](assets/img_2.png)
+![img_3.png](assets/img_3.png)
+![img_4.png](assets/img_4.png)
 
 ## 🛠️ Installation
+### 1. Clone the repository
+```bash
+git clone https://github.com/d-jason32/AdvancedProgramming_Capstone_Project.git
+cd your-repo
+```
+### 2. Set up your environment
+
+- Java JDK 24
+- JavaFX SDK
+- Mavern
+- Azure Flexible MySQL server
+- Azure Speech Services
+- SignalR
+- Google Gemini
+
+### 3. Run the project
+
+```bash
+mvn clean install
+mvn javafx:run
+```
 
 ## 🧪 Usage
+### 1. Launch the application
+Run this command:
+```bash
+mvn javafx:run
+```
+### 2. Log in or register
+Use your credentials or create a new account to enter the system.
 
-## 👨‍💻 Code Examples
+### 3. Join a session
+Create a new learning session or enter a session code provided by the instructor.
+
+### 4. Use core features
+- Transcription: Speak while in a session to see real-time text
+- AI Summary: After a learning session is over, use Google Gemini to generate a summary of the session
+- Profile Database: Check the database to see all registered profiles
 
 ## ⚙️ Configuration
+After installing the project, update API Keys:
+
+### Required keys:
+| Key                | Description                         |
+|--------------------|-------------------------------------|
+| `MYSQL_SERVER_URL` | JDBC URL to your MySQL database     |
+| `DB_URL`           | Database name                       |
+| `USERNAME`         | Your database username              |
+| `PASSWORD`         | Your database password              |
+| `AZURE_SPEECH_KEY` | Key for Azure Speech API            |
+| `API_KEY`          | Google Gemini API Key               |
+| `SIGNAL_R_API_KEY` | Key for SignalR video chat          |
+
+
 
 ## 📁 Project Structure
 ```plaintext
@@ -194,7 +250,6 @@ follow the instructions for account creation.
   <br>
   Yes. Teachers can create sessions and students can join using a session code. 
 </details>
-
 
 
 

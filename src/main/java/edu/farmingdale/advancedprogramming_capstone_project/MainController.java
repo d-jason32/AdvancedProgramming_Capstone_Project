@@ -297,7 +297,6 @@ public class MainController {
     @FXML
     void changeTheme(ActionEvent event) {
         ObservableList<String> stylesheets = borderPane1.getStylesheets();
-        System.out.println("good");
         stylesheets.clear();
         /*
         If the stylesheet is in dark mode, change it to light mode.

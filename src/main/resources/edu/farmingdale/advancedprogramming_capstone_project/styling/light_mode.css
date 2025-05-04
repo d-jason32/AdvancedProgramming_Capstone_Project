@@ -1,9 +1,15 @@
 .body-background{
-    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #75c0f6, #ffffff);
+    /*-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #75c0f6, #ffffff);*/
+    -fx-background-color: linear-gradient(
+            to bottom,
+            #75c0f6,
+            #aab6fb,
+            #ffffff
+    );
 }
 
 .button {
-    -fx-background-color: #007ACC;
+    -fx-background-color: #0070F3;
     -fx-border-radius: 20px;
     -fx-text-fill: #FFFFFF;
     -fx-background-radius: 20px;
