@@ -46,14 +46,14 @@
 - [🚀 Features](#-features)
 - [▶️ Demo](#-demo)
 - [🧰 Tech Stack](#-tech-stack)
-- [📸 Images](#images)
+- [📸 Images](#-images)
 - [🛠️ Installation](#-installation)
 - [🧪 Usage](#-usage)
 - [⚙️ Configuration](#-configuration)
 - [📁 Project Structure](#-project-structure)
 - [📝 License](#-license)
 - [❓FAQ](#faq)
-- [📄Documentation](#documentation)
+- [📄 Documentation](#documentation)
 - [👥 Contributors](#-contributors)
 - [🙏 Acknowledgments](#-acknowledgments)
 
@@ -110,7 +110,13 @@ and pay attention to real time speech to text captions.
 ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white)
 
 ## 📸 Images
-Testing
+![img.png](assets/img.png)
+![img.png](assets/img2.png)
+![img.png](main_menu.png)
+![img_1.png](assets/img_1.png)
+![img_2.png](assets/img_2.png)
+![img_3.png](assets/img_3.png)
+![img_4.png](assets/img_4.png)
 
 ## 🛠️ Installation
 ### 1. Clone the repository
