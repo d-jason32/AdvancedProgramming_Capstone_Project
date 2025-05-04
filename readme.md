@@ -122,49 +122,81 @@ and pay attention to real time speech to text captions.
 ```plaintext
 advancedprogramming_capstone_project/                        
 ├── src/
-│   └── main/
-│       ├── java/
-│       │   └── edu/farmingdale/advancedprogramming_capstone_project/
-│       │       ├── AI_Helper.java
-│       │       ├── CapstoneApp.java
-│       │       ├── ConnDbOps.java
-│       │       ├── DatabaseController.java
-│       │       ├── GeminiService.java
-│       │       ├── LoginController.java
-│       │       ├── MainController.java
-│       │       ├── Person.java
-│       │       ├── ProfileConnDbOps.java
-│       │       ├── ProfileController.java
-│       │       ├── SpeechToTextService.java
-│       │       ├── SplashScreenController.java
-│       │       ├── SummaryController.java
-│       │       └── TranscriptionController.java
-│       └── resources/
-│           └── edu/farmingdale/advancedprogramming_capstone_project/
-│               ├── fonts/                  
-│               ├── images/               
-│               ├── styling/               
-│               │   ├── database_styles.css
-│               │   ├── light_mode.css
-│               │   ├── login_page_styles.css
-│               │   ├── main_page_styles.css
-│               │   ├── profile.css
-│               │   ├── style.css
-│               │   └── video-style.css
-│               ├── config.properties      
-│               ├── database.fxml
-│               ├── login-screen.fxml
-│               ├── main.fxml
-│               ├── password-reset-screen.fxml
-│               ├── profilePage.fxml
-│               ├── splash-screen.fxml
-│               ├── SummaryView.fxml
-│               └── TranscriptionView.fxml
+    └── main/
+        ├── java/
+        │   └── edu/farmingdale/advancedprogramming_capstone_project/
+        │       ├── AI_Helper.java
+        │       ├── CapstoneApp.java
+        │       ├── ConnDbOps.java
+        │       ├── DatabaseController.java
+        │       ├── GeminiService.java
+        │       ├── LoginController.java
+        │       ├── MainController.java
+        │       ├── Person.java
+        │       ├── ProfileConnDbOps.java
+        │       ├── ProfileController.java
+        │       ├── SpeechToTextService.java
+        │       ├── SplashScreenController.java
+        │       ├── SummaryController.java
+        │       └── TranscriptionController.java
+        └── resources/
+            └── edu/farmingdale/advancedprogramming_capstone_project/
+                ├── fonts/                  
+                ├── images/               
+                ├── styling/               
+                │   ├── database_styles.css
+                │   ├── light_mode.css
+                │   ├── login_page_styles.css
+                │   ├── main_page_styles.css
+                │   ├── profile.css
+                │   ├── style.css
+                │   └── video-style.css
+                ├── config.properties      
+                ├── database.fxml
+                ├── login-screen.fxml
+                ├── main.fxml
+                ├── password-reset-screen.fxml
+                ├── profilePage.fxml
+                ├── splash-screen.fxml
+                ├── SummaryView.fxml
+                └── TranscriptionView.fxml
 ```
 ## 📝 License
 - This project is licensed under the [MIT License](LICENSE). Feel free to use, modify, and distribute it as permitted.
 
 ## ❓FAQ
+<details>
+  <summary><strong>What does this project do?</strong></summary>
+  <br>
+  This project is a real-time collaboration tool for classrooms, allowing users to join sessions,
+follow along with real time transcriptions, and generate session summaries. 
+</details>
+
+<details>
+  <summary><strong>Does it support dark mode?</strong></summary>
+  <br>
+  Yes! Click the toggle in the main menu.
+</details>
+
+<details>
+  <summary><strong>How do I sign in or make an account?</strong></summary>
+  <br>
+  In the login screen, you can sign in with GitHub or Google. To make an account,
+follow the instructions for account creation.
+</details>
+<details>
+  <summary><strong>How does the speech-to-text feature work?</strong></summary>
+  <br>
+  The app uses Azure Speech Services to convert microphone input into text in real time.
+</details>
+<details>
+  <summary><strong>Is there support for multiple users?</strong></summary>
+  <br>
+  Yes. Teachers can create sessions and students can join using a session code. 
+</details>
+
+
+
 
 ## 📄Documentation
 [View the Documentation](https://docs.google.com/document/d/10x_jZji7rmwwhs27weYpYTUSRJXgX1Xg6gUanK9Tav0/edit?usp=sharing)
