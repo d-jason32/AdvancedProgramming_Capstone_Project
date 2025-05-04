@@ -123,6 +123,8 @@ cd your-repo
 - Mavern
 - Azure Flexible MySQL server
 - Azure Speech Services
+- SignalR
+- Google Gemini
 
 ### 3. Run the project
 
@@ -132,8 +134,21 @@ mvn javafx:run
 ```
 
 ## 🧪 Usage
+### 1. Launch the application
+Run this command:
+```bash
+mvn javafx:run
+```
+### 2. Log in or register
+Use your credentials or create a new account to enter the system.
 
-## 👨‍💻 Code Examples
+### 3. Join a session
+Create a new learning session or enter a session code provided by the instructor.
+
+### 4. Use core features
+- Transcription: Speak while in a session to see real-time text
+- AI Summary: After a learning session is over, use Google Gemini to generate a summary of the session
+- Profile Database: Check the database to see all registered profiles
 
 ## ⚙️ Configuration
 After installing the project, update API Keys:
@@ -147,7 +162,7 @@ After installing the project, update API Keys:
 | `PASSWORD`         | Your database password              |
 | `AZURE_SPEECH_KEY` | Key for Azure Speech API            |
 | `API_KEY`          | Google Gemini API Key               |
-| `SIGNAL_R_API KEY` | Key for SignalR video chat          |
+| `SIGNAL_R_API_KEY` | Key for SignalR video chat          |
 
 
 
