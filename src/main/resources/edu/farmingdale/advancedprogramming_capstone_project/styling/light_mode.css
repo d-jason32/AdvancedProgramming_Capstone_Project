@@ -9,9 +9,10 @@
 }
 
 .button {
-    -fx-background-color: #0070F3;
+    -fx-background-color: transparent;
+    -fx-border-color: #444444;
     -fx-border-radius: 20px;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #444444;
     -fx-background-radius: 20px;
     -fx-padding: 8px 16px;
     -fx-font-size: 16px;
@@ -25,7 +26,8 @@
 }
 
 .button:hover {
-    -fx-background-color: #1495e0;
+    -fx-background-color: #d6ecff;
+    -fx-text-fill: #004b9b;
 }
 
 .text-field{
