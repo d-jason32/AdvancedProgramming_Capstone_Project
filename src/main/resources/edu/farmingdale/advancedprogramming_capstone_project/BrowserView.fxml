@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane xmlns="http://javafx.com/javafx/23.0.2"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="edu.farmingdale.advancedprogramming_capstone_project.BrowserViewController"
+           fx:id="browserContainer"
+           prefWidth="1024" prefHeight="600">
+</StackPane>
