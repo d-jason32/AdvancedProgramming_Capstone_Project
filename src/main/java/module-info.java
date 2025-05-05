@@ -11,6 +11,8 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires java.dotenv;
     requires com.fasterxml.jackson.databind;
     requires java.sql;
+    requires jxbrowser.javafx;
+    requires jxbrowser;
     requires annotations;
     requires kernel;
     requires layout;

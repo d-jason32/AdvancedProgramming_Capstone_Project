@@ -25,53 +25,68 @@ import java.util.concurrent.CompletableFuture;
  * - Getting a summary and live transcription
  */
 public class MainController {
-    @FXML
-    private Label sessionLabel;           // Displays the generated session code.
-    @FXML
-    private TextField joinSessionField;   // Field for a user to enter session code.
-    @FXML
-    private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private Label sessionLabel;           // Displays the generated session code.
+    @FXML private TextField joinSessionField;   // Field for a user to enter session code.
+    @FXML private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private BorderPane borderPane1;
+
     boolean isLightMode = false;           // Keeps track of light or dark mode.
-    @FXML
-    private BorderPane borderPane1;
+
 
 
     /**
-     * Called when the "Start New Call" button is pressed.
+     * Handles the "Start New Call" button action.
+     * <p>
+     * Generates a unique session code, constructs the Collaboard URL,
+     * and opens a new browser window for the session. Afterwards,
+     * it launches the transcription UI.
      */
     @FXML
     public void startNewCall() {
-        // Generate a unique session code.
-        String sessionCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        // Generate an 8-character uppercase session identifier
+        String sessionCode = UUID.randomUUID()
+                .toString()
+                .substring(0, 8)
+                .toUpperCase();
 
-        // Build the call URL (update the file name if needed).
-        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
+        // Build the Collaboard room URL using the session code
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
+                + sessionCode;
 
-        // Open the URL using HostServices.
-        CapstoneApp.getStaticHostServices().showDocument(callUrl);
+        // Open the Collaboard session in a separate window
+        BrowserViewController.open(callUrl);
+
+        // After opening the browser, start the live transcription feature
         openTranscriptionWindowAndStart();
-
-
     }
 
     /**
-     * Called when the "Join Call" button is pressed.
+     * Handles the "Join Call" button action.
+     * <p>
+     * Reads the session code from the input field, validates it,
+     * constructs the Collaboard URL, and opens the session window.
+     * If the input is empty, it logs a prompt to the console.
      */
     @FXML
     public void joinCall() {
-        try {
-            String sessionCode = joinSessionField.getText().trim();
-            if (sessionCode.isEmpty()) {
-                System.out.println("Please enter a valid session code.");
-                return;
-            }
-            System.out.println("Joining Session: " + sessionCode);
-            String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
-            CapstoneApp.getStaticHostServices().showDocument(callUrl);
-            openTranscriptionWindowAndStart();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Retrieve and trim the entered session code
+        String sessionCode = joinSessionField.getText().trim();
+
+        // Validate that the user provided a non-empty code
+        if (sessionCode.isEmpty()) {
+            System.out.println("Please enter a valid session code.");
+            return;
         }
+
+        // Build the Collaboard room URL using the provided session code
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
+                + sessionCode;
+
+        // Open the Collaboard session in a separate window
+        BrowserViewController.open(callUrl);
+
+        // After opening the browser, start the live transcription feature
+        openTranscriptionWindowAndStart();
     }
 
     /**

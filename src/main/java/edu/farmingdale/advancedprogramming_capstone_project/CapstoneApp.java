@@ -1,5 +1,12 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
+import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.engine.Engine;
+import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.media.callback.SelectMediaDeviceCallback;
+import com.teamdev.jxbrowser.permission.PermissionType;
+import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback;
+import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.application.Application;
 import javafx.application.HostServices;
 import javafx.application.Platform;
@@ -10,6 +17,8 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Objects;
+
+import static com.teamdev.jxbrowser.engine.RenderingMode.HARDWARE_ACCELERATED;
 import static javafx.stage.StageStyle.UNDECORATED;
 
 /**
@@ -22,6 +31,11 @@ public class CapstoneApp extends Application {
     // This static field holds the HostServices reference for opening URLs.
     private static HostServices hostServices;
 
+    // JxBrowser shared engine/browser/view
+    private static Engine engine;
+    private static Browser browser;
+    private static BrowserView browserView;
+
     /**
      * @param primaryStage the primary stage for this application, onto which
      * the application scene can be set.
@@ -31,8 +45,41 @@ public class CapstoneApp extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
-        // Save the HostServices reference for use in controllers.
-        hostServices = getHostServices();
+
+        // Initialize JxBrowser
+        engine = Engine.newInstance(
+                EngineOptions.newBuilder(HARDWARE_ACCELERATED)
+                        .licenseKey("OK6AEKNYF3G5C6P2KP1QRPO105XCS6S5IVNLC5U02BUMZ4OJXBF58C6AYSQIEUMOEYPB17697RPSTGNXO6PCBJN615NC6X2L0KRP13YNL1ZZBS5I8CGSBTLVRSDQPPHNI30ARV6V65Z2KMLF8")
+                        .build()
+        );
+
+        engine.permissions().set(RequestPermissionCallback.class, (params, tell) -> {
+            if (params.permissionType() == PermissionType.VIDEO_CAPTURE ||
+                    params.permissionType() == PermissionType.AUDIO_CAPTURE) {
+                tell.grant();
+            } else {
+                tell.deny();
+            }
+        });
+
+        engine.permissions().set(RequestPermissionCallback.class, (params, tell) -> {
+            switch (params.permissionType()) {
+                case PermissionType.VIDEO_CAPTURE:
+                case PermissionType.AUDIO_CAPTURE:
+                    tell.grant();  // Allow camera & mic
+                    break;
+                default:
+                    tell.deny();   // Deny other permissions
+            }
+        });
+
+        engine.mediaDevices().set(SelectMediaDeviceCallback.class, params ->
+                SelectMediaDeviceCallback.Response.select(params.mediaDevices().get(0))
+        );
+
+        // Create browser and view
+        browser     = engine.newBrowser();
+        browserView = BrowserView.newInstance(browser);
 
         // Load the splash screen first.
         FXMLLoader splashLoader = new FXMLLoader(getClass().getResource("splash-screen.fxml"));
@@ -62,12 +109,12 @@ public class CapstoneApp extends Application {
                     loginController.setOnLoginSuccess(() -> {
                         Platform.runLater(() -> {
                             try {
-                                // Load the main screen when login succeeds
+                                // Load main screen when login succeeds
                                 FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
                                 Parent mainRoot = mainLoader.load();
 
 
-                                // Switch to the main screen
+                                // Switch to main screen
                                 primaryStage.setScene(new Scene(mainRoot, 1000, 800));
                                 primaryStage.setTitle("AI Whiteboard Program");
                             } catch (IOException e) {
@@ -88,16 +135,15 @@ public class CapstoneApp extends Application {
         });
     }
 
-    /**
-     * Getter to allow other classes to access the HostServices.
-     */
-    public static HostServices getStaticHostServices() {
-        return hostServices;
+    @Override
+    public void stop() {
+        if (browser != null) browser.close();
+        if (engine  != null) engine.close();
     }
 
-    /**
-     * @param args the command line arguments
-     */
+    public static Browser     getBrowser()     { return browser; }
+    public static BrowserView getBrowserView() { return browserView; }
+
     public static void main(String[] args) {
         launch(args);
     }
