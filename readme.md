@@ -61,31 +61,36 @@
 - [🙏 Acknowledgments](#-acknowledgments)
 
 ## 💬 Introduction
-**ColaBoard** is an online learning collaborative platform that allows users to video chat and collaborate in
+**CollaBoard** is an online learning collaborative platform that allows users to video chat and collaborate in
 real time on a shared whiteboard. This product is designed to enhance learning in virtual classrooms and 
 tutoring sessions. Users are also able to generate summarize of their learning session using Artificial Intelligence
 and pay attention to real time speech to text captions. 
 
 ## 🚀 Features
+### Core Features
 - Real-time video chat between users	
 - Interactive shared whiteboard	
 - Simultaneous drawing, annotating, and text editing
+- Chat messaging system
+- Teacher and student controls
+### AI Integration 
 - AI-powered session summaries using Google Gemini
 - Real-time speech-to-text transcription	
+- PDF Generation of AI-powered summaries
+### Authentication & User Management
 - User authentication with session codes	
-- Teacher and student controls 	
-- Chat messaging system	
-- Modern user interface	
-- Splash screen loading
-- Profile creation and personalization	
-- Azure database connectivity
 - User Authentication with Google, Microsoft, or GitHub (OAuth integration)
 - User database with full CRUD application
 - Database storage of account usernames and passwords
+### User Experience
+- Modern user interface	
+- Splash loading screen
+- Profile creation and personalization	
+- Dark mode and light mode
+### Database Versatility
+- Azure database connectivity
 - Regular Expression Field Validation
 - JSON parsing and serialization/deserialization
-- PDF Generation of AI-powered summaries
-- Dark mode and light mode
 
 ## ▶️ Demo
 
