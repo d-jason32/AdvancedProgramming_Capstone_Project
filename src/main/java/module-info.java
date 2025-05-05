@@ -13,6 +13,9 @@ module edu.farmingdale.advancedprogramming_capstone_project {
     requires java.sql;
     requires jxbrowser.javafx;
     requires jxbrowser;
+    requires annotations;
+    requires kernel;
+    requires layout;
 
     opens edu.farmingdale.advancedprogramming_capstone_project to javafx.fxml, com.microsoft.aad.msal4j;
     exports edu.farmingdale.advancedprogramming_capstone_project;

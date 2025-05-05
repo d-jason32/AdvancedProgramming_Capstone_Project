@@ -25,15 +25,13 @@ import java.util.concurrent.CompletableFuture;
  * - Getting a summary and live transcription
  */
 public class MainController {
-    @FXML
-    private Label sessionLabel;           // Displays the generated session code.
-    @FXML
-    private TextField joinSessionField;   // Field for a user to enter session code.
-    @FXML
-    private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private Label sessionLabel;           // Displays the generated session code.
+    @FXML private TextField joinSessionField;   // Field for a user to enter session code.
+    @FXML private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private BorderPane borderPane1;
+
     boolean isLightMode = false;           // Keeps track of light or dark mode.
-    @FXML
-    private BorderPane borderPane1;
+
 
 
     /**

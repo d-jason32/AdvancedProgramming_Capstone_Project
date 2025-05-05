@@ -92,6 +92,25 @@
             <artifactId>jxbrowser-javafx</artifactId>
             <version>8.6.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.4</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>kernel</artifactId>
+            <version>9.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>layout</artifactId>
+            <version>9.1.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
