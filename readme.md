@@ -97,7 +97,7 @@ and pay attention to real time speech to text captions.
 - **JavaFX** – GUI framework used to build the user interface
 - **Javascript** - Creates webpage for SignalR and WhiteBoardTeam API
 - **HTML5** - Creation of video chatting web interface
-- **C#** - Backend integration of Azure SignalR services
+- **.NET/C#** - Backend integration of Azure SignalR services
 - **CSS3** – Stylesheets for customizing the JavaFX user interface
 - **Google Gemini** – AI model used to generate session summaries
 - **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
@@ -111,16 +111,13 @@ and pay attention to real time speech to text captions.
 - **WhiteBoard Team API** - Creates collaborative whiteboard interface
 - **Azure SignalR** - Establishes real-time video chatting feature and learning session management
 - **Azure Websites** - Allows for hosting of learning session
+- **JxBrowser** - Creates for an embedded Chromium browser in JavaFX
+- **PeerJS** - Establishes peer-to-peer video calling
+- **SignalR App created by Saim** - Video chat application [Link](https://github.com/sames007/SignalRChat)
 
 
 ## 📸 Images
-![img.png](assets/img.png)
-![img.png](assets/img2.png)
-![img.png](main_menu.png)
-![img_1.png](assets/img_1.png)
-![img_2.png](assets/img_2.png)
-![img_3.png](assets/img_3.png)
-![img_4.png](assets/img_4.png)
+! Read Images !!!
 
 ## 🛠️ Installation
 ### 1. Clone the repository
