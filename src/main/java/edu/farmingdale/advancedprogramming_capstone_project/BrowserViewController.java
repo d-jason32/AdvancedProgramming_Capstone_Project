@@ -1,6 +1,7 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import com.teamdev.jxbrowser.browser.Browser;
+import com.teamdev.jxbrowser.browser.event.MediaStreamCaptureStarted;
 import com.teamdev.jxbrowser.view.javafx.BrowserView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -12,32 +13,26 @@ import javafx.stage.Stage;
 public class BrowserViewController {
 
     /**
-     * Opens a new Stage (window) which hosts the shared BrowserView.
-     * <p>
-     * This method retrieves the singleton Browser and BrowserView
-     * instances managed by CapstoneApp, navigates to the specified URL,
-     * and displays the content in a new JavaFX Stage.
+     * Opens a new Stage (window) which hosts a fresh BrowserView instance.
      *
      * @param url the URL of the Collaboard room to open
      */
     public static void open(String url) {
-        // Retrieve the shared Browser instance from the main application
-        Browser browser = CapstoneApp.getBrowser();
+        // Create a brand-new Browser tied to the same Engine:
+        Browser sessionBrowser = CapstoneApp.getEngine().newBrowser();
+        BrowserView view = BrowserView.newInstance(sessionBrowser);
 
-        // Retrieve the JavaFX node that wraps the Browser
-        BrowserView view = CapstoneApp.getBrowserView();
+        sessionBrowser.on(MediaStreamCaptureStarted.class, e ->
+                System.out.println("Session capturing: " + e.mediaStreamType())
+        );
+        // (Also set the same single-permission and device-selection callbacks on this browser
+        // if you didn't register them globally on the Engine.)
 
-        // Navigate the browser to the target Collaboard session URL
-        browser.navigation().loadUrl(url);
+        sessionBrowser.navigation().loadUrl(url);
 
-        // Create a new window (Stage) to display the BrowserView
         Stage browserStage = new Stage();
         browserStage.setTitle("Collaboard Session");
-
-        // Set the scene containing the BrowserView, with preferred dimensions
         browserStage.setScene(new Scene(view, 900, 700));
-
-        // Show the window to the user
         browserStage.show();
     }
 }

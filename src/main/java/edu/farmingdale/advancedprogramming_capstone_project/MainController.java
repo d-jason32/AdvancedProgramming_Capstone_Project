@@ -69,23 +69,13 @@ public class MainController {
      */
     @FXML
     public void joinCall() {
-        // Retrieve and trim the entered session code
         String sessionCode = joinSessionField.getText().trim();
-
-        // Validate that the user provided a non-empty code
         if (sessionCode.isEmpty()) {
             System.out.println("Please enter a valid session code.");
             return;
         }
-
-        // Build the Collaboard room URL using the provided session code
-        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
-                + sessionCode;
-
-        // Open the Collaboard session in a separate window
-        BrowserViewController.open(callUrl);
-
-        // After opening the browser, start the live transcription feature
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
+        BrowserViewController.open(callUrl);            // now safe to call repeatedly
         openTranscriptionWindowAndStart();
     }
 
@@ -241,7 +231,7 @@ public class MainController {
             Stage stage = new Stage();
             stage.setTitle("Live Transcription");
             stage.setScene(new Scene(root, 600, 450));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initModality(Modality.NONE);
 
             stage.setOnCloseRequest(_ -> {
                 System.out.println("Transcription window close requested. Shutting down controller.");
