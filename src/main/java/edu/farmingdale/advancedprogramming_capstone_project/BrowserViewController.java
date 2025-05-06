@@ -18,21 +18,28 @@ public class BrowserViewController {
      * @param url the URL of the Collaboard room to open
      */
     public static void open(String url) {
-        // Create a brand-new Browser tied to the same Engine:
+        // 1) Create a fresh Browser & view
         Browser sessionBrowser = CapstoneApp.getEngine().newBrowser();
         BrowserView view = BrowserView.newInstance(sessionBrowser);
 
-        sessionBrowser.on(MediaStreamCaptureStarted.class, e ->
-                System.out.println("Session capturing: " + e.mediaStreamType())
-        );
-        // (Also set the same single-permission and device-selection callbacks on this browser
-        // if you didn't register them globally on the Engine.)
-
+        // 2) Load the Collaboard URL
         sessionBrowser.navigation().loadUrl(url);
 
+        // 3) Create and show the Stage
         Stage browserStage = new Stage();
         browserStage.setTitle("Collaboard Session");
         browserStage.setScene(new Scene(view, 900, 700));
+
+        // 4) On window-close: notify page, then tear down Browser
+        browserStage.setOnCloseRequest(evt -> {
+            // Ask the page to leave the room (you’ll implement this next)
+            sessionBrowser.mainFrame().ifPresent(frame ->
+                    frame.executeJavaScript("window.dispatchEvent(new Event('beforeunload'));")
+            );
+            // Actually close the Browser (stops camera/mic)
+            sessionBrowser.close();
+        });
+
         browserStage.show();
     }
 }

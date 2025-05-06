@@ -32,8 +32,6 @@ public class MainController {
 
     boolean isLightMode = false;           // Keeps track of light or dark mode.
 
-
-
     /**
      * Handles the "Start New Call" button action.
      * <p>
