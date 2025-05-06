@@ -241,7 +241,7 @@ public class MainController {
             Stage stage = new Stage();
             stage.setTitle("Live Transcription");
             stage.setScene(new Scene(root, 600, 450));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initModality(Modality.NONE);
 
             stage.setOnCloseRequest(_ -> {
                 System.out.println("Transcription window close requested. Shutting down controller.");
