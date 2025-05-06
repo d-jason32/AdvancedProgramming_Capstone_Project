@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="800.0" prefWidth="1280.0" styleClass="body-background" stylesheets="@styling/main_page_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
+<BorderPane fx:id="borderPane1" prefHeight="800.0" prefWidth="1280.0" styleClass="body-background" stylesheets="@styling/main_page_styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.farmingdale.advancedprogramming_capstone_project.MainController">
     <bottom>
-        <Label styleClass="footer-label" text="Made in NYC." BorderPane.alignment="CENTER" />
+        <Label fx:id="bottomText" styleClass="footer-label" text="Made in NYC." BorderPane.alignment="CENTER" />
     </bottom>
     <top>
         <ImageView fitHeight="356.0" fitWidth="789.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
@@ -67,6 +67,11 @@
                     <Font size="20.0" />
                 </font>
             </Button>
+         <Button fx:id="databaseButton1" layoutX="450.0" layoutY="372.0" onAction="#changeTheme" prefHeight="25.0" prefWidth="400.0" text="Change Theme">
+            <font>
+               <Font size="20.0" />
+            </font>
+         </Button>
         </VBox>
     </center>
 </BorderPane>

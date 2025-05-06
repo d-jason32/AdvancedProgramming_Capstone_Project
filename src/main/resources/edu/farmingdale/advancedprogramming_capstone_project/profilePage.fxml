@@ -19,46 +19,37 @@
     <children>
         <VBox alignment="TOP_CENTER" spacing="24.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="40.0">
 
-            <!-- Title -->
             <Label styleClass="title" text="My Profile" />
 
-            <!-- Avatar -->
             <StackPane>
-                <!-- Circular placeholder that will clip a selected image -->
                 <Circle fx:id="avatarCircle" radius="60.0" styleClass="avatar" />
                 <Button fx:id="changeAvatarBtn" styleClass="secondary-button" text="Change" />
             </StackPane>
 
-            <!-- Form -->
             <GridPane alignment="CENTER" hgap="22.0" vgap="18.0">
                 <columnConstraints>
                     <ColumnConstraints halignment="RIGHT" minWidth="120.0" />
                     <ColumnConstraints halignment="LEFT" />
                 </columnConstraints>
 
-                <!-- First name -->
                 <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <TextField fx:id="firstNameField" promptText="First name" styleClass="custom-textfield" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                <!-- Last name -->
                 <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <TextField fx:id="lastNameField" promptText="Last name" styleClass="custom-textfield" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                <!-- Email row -->
                 <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <TextField fx:id="emailField" editable="true" prefHeight="40.0" prefWidth="385.0" promptText="you@example.com" styleClass="custom-textfield" />
                     <Button fx:id="changeEmailBtn" styleClass="secondary-button" text="Change" />
                 </HBox>
 
-                <!-- Password row -->
                 <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                 <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <PasswordField fx:id="passwordField" editable="true" prefHeight="40.0" prefWidth="385.0" promptText="••••••••" styleClass="custom-textfield" />
                     <Button fx:id="changePasswordBtn" styleClass="secondary-button" text="Change" />
                 </HBox>
 
-                <!-- Bio -->
                 <Label text="Bio:" GridPane.columnIndex="0" GridPane.rowIndex="4" GridPane.valignment="TOP" />
                 <TextArea fx:id="bioArea" prefRowCount="4" promptText="Tell us about yourself…" styleClass="custom-textarea" wrapText="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                 <rowConstraints>
@@ -70,7 +61,6 @@
                 </rowConstraints>
             </GridPane>
 
-            <!-- Save button -->
             <Button fx:id="saveBtn" styleClass="primary-button" text="Save Changes" />
         </VBox>
     </children>

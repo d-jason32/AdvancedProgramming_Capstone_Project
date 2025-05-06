@@ -1,6 +1,7 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
 import javafx.application.Platform;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.stage.Modality;
 import java.io.IOException;
@@ -23,49 +25,68 @@ import java.util.concurrent.CompletableFuture;
  * - Getting a summary and live transcription
  */
 public class MainController {
-    @FXML
-    private Label sessionLabel;           // Displays the generated session code.
-    @FXML
-    private TextField joinSessionField;   // Field for a user to enter session code.
-    @FXML
-    private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private Label sessionLabel;           // Displays the generated session code.
+    @FXML private TextField joinSessionField;   // Field for a user to enter session code.
+    @FXML private TextField transcriptionArea;  // Field for live transcription.
+    @FXML private BorderPane borderPane1;
+
+    boolean isLightMode = false;           // Keeps track of light or dark mode.
+
+
 
     /**
-     * Called when the "Start New Call" button is pressed.
+     * Handles the "Start New Call" button action.
+     * <p>
+     * Generates a unique session code, constructs the Collaboard URL,
+     * and opens a new browser window for the session. Afterwards,
+     * it launches the transcription UI.
      */
     @FXML
     public void startNewCall() {
-        // Generate a unique session code.
-        String sessionCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        // Generate an 8-character uppercase session identifier
+        String sessionCode = UUID.randomUUID()
+                .toString()
+                .substring(0, 8)
+                .toUpperCase();
 
-        // Build the call URL (update the file name if needed).
-        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
+        // Build the Collaboard room URL using the session code
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
+                + sessionCode;
 
-        // Open the URL using HostServices.
-        CapstoneApp.getStaticHostServices().showDocument(callUrl);
+        // Open the Collaboard session in a separate window
+        BrowserViewController.open(callUrl);
+
+        // After opening the browser, start the live transcription feature
         openTranscriptionWindowAndStart();
-
-
     }
 
     /**
-     * Called when the "Join Call" button is pressed.
+     * Handles the "Join Call" button action.
+     * <p>
+     * Reads the session code from the input field, validates it,
+     * constructs the Collaboard URL, and opens the session window.
+     * If the input is empty, it logs a prompt to the console.
      */
     @FXML
     public void joinCall() {
-        try {
-            String sessionCode = joinSessionField.getText().trim();
-            if (sessionCode.isEmpty()) {
-                System.out.println("Please enter a valid session code.");
-                return;
-            }
-            System.out.println("Joining Session: " + sessionCode);
-            String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
-            CapstoneApp.getStaticHostServices().showDocument(callUrl);
-            openTranscriptionWindowAndStart();
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Retrieve and trim the entered session code
+        String sessionCode = joinSessionField.getText().trim();
+
+        // Validate that the user provided a non-empty code
+        if (sessionCode.isEmpty()) {
+            System.out.println("Please enter a valid session code.");
+            return;
         }
+
+        // Build the Collaboard room URL using the provided session code
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
+                + sessionCode;
+
+        // Open the Collaboard session in a separate window
+        BrowserViewController.open(callUrl);
+
+        // After opening the browser, start the live transcription feature
+        openTranscriptionWindowAndStart();
     }
 
     /**
@@ -282,6 +303,25 @@ public class MainController {
                     Platform.runLater(() -> showErrorAlert("Summary Failed", "Failed to generate summary: " + ex.getMessage()));
                     return null;
                 });
+    }
+
+    /**
+     * Method to change the theme from dark to light and vice versa.
+     * @param event
+     */
+    @FXML
+    void changeTheme(ActionEvent event) {
+        ObservableList<String> stylesheets = borderPane1.getStylesheets();
+        stylesheets.clear();
+        /*
+        If the stylesheet is in dark mode, change it to light mode.
+         */
+        if (isLightMode) {
+            stylesheets.add(getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/main_page_styles.css").toExternalForm());
+        } else {
+            stylesheets.add(getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/light_mode.css").toExternalForm());
+        }
+        isLightMode = !isLightMode;
     }
 
 }
