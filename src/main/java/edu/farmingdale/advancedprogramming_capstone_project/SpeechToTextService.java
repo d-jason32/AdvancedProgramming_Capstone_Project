@@ -143,7 +143,7 @@ public class SpeechToTextService {
             if (e.getResult().getReason() == ResultReason.RecognizingSpeech) {
                 String partialText = e.getResult().getText();
                 if (partialText != null && !partialText.isEmpty()) {
-                    updateLocalTextArea("\nPartial: " + partialText);
+                    // updateLocalTextArea("\nPartial: " + partialText);
                 }
             }
         });
