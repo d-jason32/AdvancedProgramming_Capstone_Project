@@ -49,7 +49,7 @@
 - [🚀 Features](#-features)
 - [▶️ Demo](#-demo)
 - [🧰 Tech Stack](#-tech-stack)
-- [📸 Images](#-images)
+- [🧠 How it Works](#-how-it-works)
 - [🛠️ Installation](#-installation)
 - [🧪 Usage](#-usage)
 - [⚙️ Configuration](#-configuration)
@@ -79,14 +79,15 @@ and pay attention to real time speech to text captions.
 - PDF Generation of AI-powered summaries
 ### Authentication & User Management
 - User authentication with session codes	
-- User Authentication with Google, Microsoft, or GitHub (OAuth integration)
+- User Authentication with Google, Microsoft, or GitHub (OAuth integration) or account creation
 - User database with full CRUD application
 - Database storage of account usernames and passwords
-### User Experience
+### User Experience and Interface
 - Modern user interface	
 - Splash loading screen
 - Profile creation and personalization	
-- Dark mode and light mode
+- Main Menu with dark mode and light mode
+- Login/Register Page
 ### Database Versatility
 - Azure database connectivity
 - Regular Expression Field Validation
@@ -98,14 +99,15 @@ and pay attention to real time speech to text captions.
 
 ## 🧰 Tech Stack
 
-- **Java** – Core programming language for the application
+- **Java JDK 23** – Core programming language for the application
+- **Apache Mavern** - Dependency Management tool
 - **JavaFX** – GUI framework used to build the user interface
 - **Javascript** - Creates webpage for SignalR and WhiteBoardTeam API
 - **HTML5** - Creation of video chatting web interface
 - **.NET/C#** - Backend integration of Azure SignalR services
 - **CSS3** – Stylesheets for customizing the JavaFX user interface
 - **Google Gemini** – AI model used to generate session summaries
-- **Microsoft Azure Flexible Server** – Manages MySQL database hosting 
+- **Microsoft Azure Database for MySQL flexible server** – Manages MySQL database hosting 
 - **Microsoft Azure Speech Services** – Converts real-time speech to text
 - **OAuth 2.0** – Authentication protocol used for secure user login and session authorization
 - **MySQL** – Relational database for storing user profiles, transcripts, and session data
@@ -119,10 +121,63 @@ and pay attention to real time speech to text captions.
 - **JxBrowser** - Creates for an embedded Chromium browser in JavaFX
 - **PeerJS** - Establishes peer-to-peer video calling
 - **SignalR App created by Saim** - Video chat application [Link](https://github.com/sames007/SignalRChat)
+- **IntelliJ Idea** - Main IDE
 
 
-## 📸 Images
-! Read Images !!!
+## 🧠 How it Works
+### Splash Screen
+![img.png](assets/img.png)
+
+After intially running the application, users are presented with a splash screen
+to make startup feel smoother and give the users something to look at. It introduces
+users to the app name and logo. 
+
+### Login Screen with Regular Expression
+![img_1.png](assets/img_1.png)
+
+After the splash screen has finished loading, users can log in with their credentials, or sign in
+with their Google, Microsoft, or GitHub account. Users can also create an account. 
+
+### Main Menu with togglable dark mode
+![img_2.png](assets/img_2.png)
+![img_3.png](assets/img_3.png)
+
+After signing in, users are shown the main menu page. Here, they can enter a session code to join a learning session 
+after clicking on join call and entering a session code. Users can also start a new call by clicking on the start new call button.
+During the learning session, an AI-powered live transcription is formulated. Users can click on the MyProfile button to 
+see and edit their profile. The Profile Database button allows administrators to see an active list of all users including 
+their email and passwords. Users can also change the theme of the app from light mode to dark mode. 
+
+### CollaBoard Learning Session 
+![img_7.png](assets/img_7.png)
+
+During a CollaBoard learning session, users can communicate via voice and video, with options to mute/unmute themselves, 
+toggle their camera, share their screen, enable a virtual background, raise their hand, or start a recording. 
+They can also collaborate on a shared whiteboard and exchange messages through a chat feature.
+
+
+### Azure Text to Speech and AI-powered summary 
+![img_8.png](assets/img_8.png)
+![img_9.png](assets/img_9.png)
+
+During a learning session, audio is transcribed into text in real time using Azure Speech to Text, 
+with the output displayed in a dedicated text area. Once the session ends, an AI-generated summary 
+is created using Google Gemini. 
+This summary is then exported as a PDF file saved to the project root directory.
+
+### Profile Page with Regular Expression
+![img_11.png](assets/img_11.png)
+
+The profile page allows users to upload a profile picture and edit their personal details, including first name, last name, email, password, and bio.
+
+
+### Profile Database with Microsoft Azure
+![img_13.png](assets/img_13.png)
+
+The profile database allows administrators to manage all registered CollaBoard accounts. 
+It provides functions such as connect, display all users, insert new entries, query by ID, delete by ID, 
+and edit user information by ID. It contains text-fields such as ID, first name, 
+last name, email, and password which validated using regular expressions to ensure data integrity and proper formatting.
 
 ## 🛠️ Installation
 ### 1. Clone the repository
@@ -132,7 +187,7 @@ cd your-repo
 ```
 ### 2. Set up your environment
 
-- Java JDK 24
+- Java Development Kit 23
 - JavaFX SDK
 - Mavern
 - Azure Flexible MySQL server
