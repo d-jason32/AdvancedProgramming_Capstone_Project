@@ -73,6 +73,16 @@ and pay attention to real time speech to text captions.
 - Simultaneous drawing, annotating, and text editing
 - Chat messaging system
 - Teacher and student controls
+### Learning Session Features
+- Voice and video chat
+- Realtime collaborative whiteboard
+- Chat messaging system
+- Mute/Unmute button
+- Camera On/Off function 
+- Share screen function
+- Virtual Background
+- Raise hand
+- Record
 ### AI Integration 
 - AI-powered session summaries using Google Gemini
 - Real-time speech-to-text transcription	
