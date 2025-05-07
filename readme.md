@@ -138,7 +138,7 @@ users to the app name and logo.
 After the splash screen has finished loading, users can log in with their credentials, or sign in
 with their Google, Microsoft, or GitHub account. Users can also create an account. 
 
-### Main Menu with togglable dark mode
+### Main Menu with toggleable dark mode
 ![img_2.png](assets/img_2.png)
 ![img_3.png](assets/img_3.png)
 
