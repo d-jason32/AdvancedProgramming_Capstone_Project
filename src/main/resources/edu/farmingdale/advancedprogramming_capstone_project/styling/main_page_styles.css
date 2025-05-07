@@ -15,7 +15,7 @@
 .label{
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
 .button:hover {
@@ -26,7 +26,6 @@
     -fx-font-size: 16px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
     -fx-padding: 8px 16px;
-    -fx-font-size: 16px;
 }
