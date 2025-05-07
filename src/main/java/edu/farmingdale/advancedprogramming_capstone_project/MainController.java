@@ -32,7 +32,12 @@ public class MainController {
 
     boolean isLightMode = false;           // Keeps track of light or dark mode.
 
-
+    @FXML
+    public void initialize() {
+        borderPane1.getStylesheets().add(
+                getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/main_page_styles.css").toExternalForm()
+        );
+    }
 
     /**
      * Handles the "Start New Call" button action.
@@ -241,7 +246,7 @@ public class MainController {
             Stage stage = new Stage();
             stage.setTitle("Live Transcription");
             stage.setScene(new Scene(root, 600, 450));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initModality(Modality.NONE);
 
             stage.setOnCloseRequest(_ -> {
                 System.out.println("Transcription window close requested. Shutting down controller.");
