@@ -30,7 +30,8 @@ import static javafx.stage.StageStyle.UNDECORATED;
 public class CapstoneApp extends Application {
 
     // This static field holds the HostServices reference for opening URLs.
-    private static HostServices hostServices;
+    static HostServices hostServices;
+    private static Runnable mainScreenCallback;
 
     // JxBrowser shared engine/browser/view
     private static Engine engine;
@@ -99,28 +100,33 @@ public class CapstoneApp extends Application {
                     Parent loginRoot = loginLoader.load();
                     LoginController loginController = loginLoader.getController();
 
-                    loginController.setHostServices(hostServices);
-                    loginController.setOnLoginSuccess(() -> {
-                        Platform.runLater(() -> {
-                            try {
-                                // Load main screen when login succeeds
-                                FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
-                                Parent mainRoot = mainLoader.load();
+                    // Create the main screen callback first
+                    mainScreenCallback = () -> {
+                        try {
+                            FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+                            Parent mainRoot = mainLoader.load();
+                            Stage stage = new Stage();
+                            stage.setScene(new Scene(mainRoot, 1000, 800));
+                            stage.setTitle("AI Whiteboard Program");
+                            stage.show();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    };
 
 
-                                // Switch to main screen
-                                primaryStage.setScene(new Scene(mainRoot, 1000, 800));
-                                primaryStage.setTitle("AI Whiteboard Program");
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    });
+                    // Set the callback BEFORE showing the login screen
+                    LoginController.setOnLoginSuccess(CapstoneApp.getMainScreenCallback());
+                    LoginController.setHostServices(hostServices);
 
                     // Show login screen
                     primaryStage.setScene(new Scene(loginRoot));
                     primaryStage.setTitle("AI Whiteboard Teaching Tool Login");
                     primaryStage.show();
+
+                    // Debug output
+                    System.out.println("Main callback set on login controller: " +
+                            (loginController.mainScreenCallback != null));
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -151,6 +157,10 @@ public class CapstoneApp extends Application {
 
     public static BrowserView getBrowserView() {
         return browserView;
+    }
+
+    public static Runnable getMainScreenCallback(){
+        return mainScreenCallback;
     }
 
     public static void main(String[] args) {

@@ -34,6 +34,11 @@ public class Person {
         this.password = password;
     }
 
+    public Person(String email, String password){
+        this.email = email;
+        this.password = password;
+    }
+
 
     /**
      * Gets the person's ID.

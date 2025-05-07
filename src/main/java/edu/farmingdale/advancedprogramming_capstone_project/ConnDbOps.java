@@ -99,6 +99,28 @@ public class ConnDbOps {
     }
 
     /**
+     * Method to search for a student using their email.
+     * @param accEmail Person object
+     */
+    public String queryPasswordByEmail(String accEmail) {
+        try (Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+             PreparedStatement preparedStatement = conn.prepareStatement(
+                     "SELECT password FROM users WHERE email = ?")) {
+
+            preparedStatement.setString(1, accEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println(resultSet.getString("password"));
+                return resultSet.getString("password");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Method to search for a student using an id number.
      * @param id Person object
      * @return String
@@ -178,6 +200,7 @@ public class ConnDbOps {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Method to return a list that contains all users in the database.
@@ -263,6 +286,33 @@ public class ConnDbOps {
         }
         catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public class AuthService {
+        private static List<String> authDB = new ArrayList<>();
+
+        public static List<String> getAuthDB() {
+            return authDB;
+        }
+
+        public void setAuthDB(List<String> authDB) {
+            this.authDB = authDB;
+        }
+
+
+        public static void initializeAuthDB(ConnDbOps cdbop) {
+            authDB.clear();
+            List<Person> users = cdbop.displayAllUsers();
+
+            for (Person user : users) {
+                String email = user.getEmail();
+                if (email != null && !email.trim().isEmpty()) {
+                    authDB.add(email);
+                }
+            }
+
+            System.out.println("Initialized authDB with " + authDB.size() + " emails");
         }
     }
 }

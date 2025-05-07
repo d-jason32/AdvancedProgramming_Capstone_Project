@@ -14,9 +14,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
+
 import java.io.File;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -47,9 +50,11 @@ public class DatabaseController implements Initializable {
 
     private final ObservableList<Person> data = FXCollections.observableArrayList();
 
+
     /**
      * Initializes table view.
-     * @param url Pointer To Resource File
+     *
+     * @param url            Pointer To Resource File
      * @param resourceBundle Resource Bundle
      */
     @Override
@@ -61,7 +66,6 @@ public class DatabaseController implements Initializable {
         tv_password.setCellValueFactory(new PropertyValueFactory<>("password"));
 
         tv.setItems(data);
-
         cdbop = new ConnDbOps();
 
         try {
@@ -72,7 +76,7 @@ public class DatabaseController implements Initializable {
         }
         display();
 
-        TextField[] fields = { id, first_name, last_name, email, password};
+        TextField[] fields = {id, first_name, last_name, email, password};
 
         /*
         After each text field is clicked on, every
@@ -88,19 +92,20 @@ public class DatabaseController implements Initializable {
      */
     @FXML
     protected void showImage() {
-        File file= (new FileChooser()).showOpenDialog(img_view.getScene().getWindow());
-        if(file!=null){
+        File file = (new FileChooser()).showOpenDialog(img_view.getScene().getWindow());
+        if (file != null) {
             img_view.setImage(new Image(file.toURI().toString()));
         }
     }
 
     /**
      * Allows you to select an item in a table.
+     *
      * @param mouseEvent Mouse Event
      */
     @FXML
     protected void selectedItemTV(MouseEvent mouseEvent) {
-        Person p= tv.getSelectionModel().getSelectedItem();
+        Person p = tv.getSelectionModel().getSelectedItem();
         id.setText(Integer.toString(p.getId()));
         first_name.setText(p.getFirstName());
         last_name.setText(p.getLastName());
@@ -110,6 +115,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Method to connect to a database.
+     *
      * @param event Event
      */
     @FXML
@@ -125,6 +131,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Method to enter student id and delete it from the database.
+     *
      * @param event Event
      */
     @FXML
@@ -136,6 +143,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Assigns display to the display button.
+     *
      * @param event Event
      */
     @FXML
@@ -146,7 +154,7 @@ public class DatabaseController implements Initializable {
     /**
      * Adds a database to the table view.
      */
-    void display(){
+    void display() {
         data.clear();
         data.addAll(cdbop.displayAllUsers());
         tv.setItems(data);
@@ -154,6 +162,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Edit a student record based on their id.
+     *
      * @param event Event
      * @throws SQLException SQL Exception
      */
@@ -173,6 +182,7 @@ public class DatabaseController implements Initializable {
 
     /**
      * Insert a student into the database.
+     *
      * @param event Event
      */
     @FXML
@@ -184,6 +194,7 @@ public class DatabaseController implements Initializable {
         String majorText = password.getText();
 
         cdbop.insertUser(num, firstName, lastName, dept, majorText);
+
         feedback.setText("Added user: " + firstName + " " + lastName);
         display();
     }
@@ -191,6 +202,7 @@ public class DatabaseController implements Initializable {
     /**
      * Query button gets the id from the text field, searches the database
      * and displays the entire Person.
+     *
      * @param event Event
      */
     @FXML
@@ -199,11 +211,13 @@ public class DatabaseController implements Initializable {
         String s = cdbop.queryUser(userID);
         feedback.setText(s);
     }
+
     Pattern idPattern = Pattern.compile("^\\d+$");
     Pattern firstNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
     Pattern lastNamePattern = Pattern.compile("^[a-zA-Z]{2,25}$");
     Pattern emailPattern = Pattern.compile("^[a-zA-Z0-9._%+-]{1,25}@farmingdale\\.edu$");
     Pattern passwordPattern = Pattern.compile("^[a-zA-Z0-9._%+-]{2,25}$");
+
 
     /**
      * Checks if every text field is valid.
@@ -239,5 +253,6 @@ public class DatabaseController implements Initializable {
         else {
             password.setStyle("-fx-border-color:red; -fx-border-width:2px;");
         }
+
     }
 }
