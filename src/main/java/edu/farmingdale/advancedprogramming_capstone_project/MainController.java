@@ -32,7 +32,12 @@ public class MainController {
 
     boolean isLightMode = false;           // Keeps track of light or dark mode.
 
-
+    @FXML
+    public void initialize() {
+        borderPane1.getStylesheets().add(
+                getClass().getResource("/edu/farmingdale/advancedprogramming_capstone_project/styling/main_page_styles.css").toExternalForm()
+        );
+    }
 
     /**
      * Handles the "Start New Call" button action.
@@ -69,23 +74,13 @@ public class MainController {
      */
     @FXML
     public void joinCall() {
-        // Retrieve and trim the entered session code
         String sessionCode = joinSessionField.getText().trim();
-
-        // Validate that the user provided a non-empty code
         if (sessionCode.isEmpty()) {
             System.out.println("Please enter a valid session code.");
             return;
         }
-
-        // Build the Collaboard room URL using the provided session code
-        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
-                + sessionCode;
-
-        // Open the Collaboard session in a separate window
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
         BrowserViewController.open(callUrl);
-
-        // After opening the browser, start the live transcription feature
         openTranscriptionWindowAndStart();
     }
 
@@ -241,7 +236,7 @@ public class MainController {
             Stage stage = new Stage();
             stage.setTitle("Live Transcription");
             stage.setScene(new Scene(root, 600, 450));
-            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initModality(Modality.NONE);
 
             stage.setOnCloseRequest(_ -> {
                 System.out.println("Transcription window close requested. Shutting down controller.");

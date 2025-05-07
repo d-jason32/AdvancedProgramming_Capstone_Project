@@ -1,5 +1,4 @@
 .body-background{
-    /*-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #75c0f6, #ffffff);*/
     -fx-background-color: linear-gradient(
             to bottom,
             #75c0f6,
@@ -10,19 +9,29 @@
 
 .button {
     -fx-background-color: transparent;
-    -fx-border-color: #444444;
+
     -fx-border-radius: 20px;
-    -fx-text-fill: #444444;
     -fx-background-radius: 20px;
     -fx-padding: 8px 16px;
     -fx-font-size: 16px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-color: #444444;
+    -fx-text-fill: #444444;
+    -fx-padding: 8px 16px;
+    -fx-font-size: 16px;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
 .label{
     -fx-text-fill: #FFFFFF;
     -fx-font-size: 16px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
 }
 
 .button:hover {
@@ -34,9 +43,8 @@
     -fx-font-size: 16px;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
-    -fx-font-family: "Segoe UI";
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
     -fx-padding: 8px 16px;
-    -fx-font-size: 16px;
 }
 
 #bottomText{
