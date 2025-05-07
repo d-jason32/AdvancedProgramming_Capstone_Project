@@ -3,6 +3,7 @@ package edu.farmingdale.advancedprogramming_capstone_project;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
+import com.teamdev.jxbrowser.media.MediaDeviceType;
 import com.teamdev.jxbrowser.media.callback.SelectMediaDeviceCallback;
 import com.teamdev.jxbrowser.permission.PermissionType;
 import com.teamdev.jxbrowser.permission.callback.RequestPermissionCallback;
@@ -53,29 +54,22 @@ public class CapstoneApp extends Application {
                         .build()
         );
 
+        // CapstoneApp.start(), right after Engine.newInstance(...)
         engine.permissions().set(RequestPermissionCallback.class, (params, tell) -> {
-            if (params.permissionType() == PermissionType.VIDEO_CAPTURE ||
-                    params.permissionType() == PermissionType.AUDIO_CAPTURE) {
-                tell.grant();
-            } else {
-                tell.deny();
-            }
+            // Grant _all_ permissions unconditionally, including camera & mic
+            tell.grant();
         });
 
-        engine.permissions().set(RequestPermissionCallback.class, (params, tell) -> {
-            switch (params.permissionType()) {
-                case PermissionType.VIDEO_CAPTURE:
-                case PermissionType.AUDIO_CAPTURE:
-                    tell.grant();  // Allow camera & mic
-                    break;
-                default:
-                    tell.deny();   // Deny other permissions
-            }
+        engine.mediaDevices().set(SelectMediaDeviceCallback.class, params -> {
+            // Always pick the first available device of the requested type
+            return SelectMediaDeviceCallback.Response
+                    .select(params.mediaDevices().get(0));
         });
 
-        engine.mediaDevices().set(SelectMediaDeviceCallback.class, params ->
-                SelectMediaDeviceCallback.Response.select(params.mediaDevices().get(0))
-        );
+        System.out.println("Video devices: " +
+                engine.mediaDevices().list(MediaDeviceType.VIDEO_DEVICE));
+        System.out.println("Audio devices: " +
+                engine.mediaDevices().list(MediaDeviceType.AUDIO_DEVICE));
 
         // Create browser and view
         browser     = engine.newBrowser();
@@ -141,8 +135,23 @@ public class CapstoneApp extends Application {
         if (engine  != null) engine.close();
     }
 
-    public static Browser     getBrowser()     { return browser; }
-    public static BrowserView getBrowserView() { return browserView; }
+    /**
+     * Allow other classes (e.g. BrowserViewController) to get the Engine
+     */
+    public static Engine getEngine() {
+        return engine;
+    }
+
+    /**
+     * Allow other classes to get the shared Browser if needed
+     */
+    public static Browser getBrowser() {
+        return browser;
+    }
+
+    public static BrowserView getBrowserView() {
+        return browserView;
+    }
 
     public static void main(String[] args) {
         launch(args);

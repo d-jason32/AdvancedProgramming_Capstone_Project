@@ -74,23 +74,13 @@ public class MainController {
      */
     @FXML
     public void joinCall() {
-        // Retrieve and trim the entered session code
         String sessionCode = joinSessionField.getText().trim();
-
-        // Validate that the user provided a non-empty code
         if (sessionCode.isEmpty()) {
             System.out.println("Please enter a valid session code.");
             return;
         }
-
-        // Build the Collaboard room URL using the provided session code
-        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room="
-                + sessionCode;
-
-        // Open the Collaboard session in a separate window
+        String callUrl = "https://collaboard-djb7e8caezeqbnef.centralus-01.azurewebsites.net?room=" + sessionCode;
         BrowserViewController.open(callUrl);
-
-        // After opening the browser, start the live transcription feature
         openTranscriptionWindowAndStart();
     }
 
