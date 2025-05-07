@@ -9,10 +9,20 @@
 
 .button {
     -fx-background-color: transparent;
-    -fx-border-color: #444444;
+
     -fx-border-radius: 20px;
-    -fx-text-fill: #444444;
     -fx-background-radius: 20px;
+    -fx-padding: 8px 16px;
+    -fx-font-size: 16px;
+    -fx-font-family: "Segoe UI", "Arial", sans-serif;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+    -fx-border-color: #444444;
+    -fx-text-fill: #444444;
     -fx-padding: 8px 16px;
     -fx-font-size: 16px;
     -fx-font-family: "Segoe UI", "Arial", sans-serif;
