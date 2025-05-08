@@ -195,7 +195,7 @@ public class MainController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("database.fxml"));
             Parent root = loader.load();
-            launchNewWindow("Live Transcription", root, 1280, 800);
+            launchNewWindow("Profile Database", root, 1280, 800);
         } catch (IOException e) {
             e.printStackTrace();
         }
