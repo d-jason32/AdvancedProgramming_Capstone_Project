@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.application.HostServices;
 
-//Password Hashing
 import javafx.stage.Stage;
 
 //env support
@@ -58,6 +57,7 @@ public class LoginController implements Initializable {
         cdbop = new ConnDbOps();
         cdbop.connectToDatabase();
         ConnDbOps.AuthService.initializeAuthDB(cdbop);
+        cdbop.listAllUsers();
         authDB = ConnDbOps.AuthService.getAuthDB();
         this.mainScreenCallback = CapstoneApp.getMainScreenCallback();
         System.out.println("Login callback initialized: " + (mainScreenCallback != null));
@@ -213,7 +213,7 @@ public class LoginController implements Initializable {
         SignUpController signUpController = signUpLoader.getController();
 
         // Pass the callback from CapstoneApp
-        signUpController.setOnSignUpSuccess(CapstoneApp.getMainScreenCallback());
+        signUpController.setOnSuccess(CapstoneApp.getMainScreenCallback());
         signUpController.setHostServices(hostServices);
 
         authStage.setScene(new Scene(signUpRoot));

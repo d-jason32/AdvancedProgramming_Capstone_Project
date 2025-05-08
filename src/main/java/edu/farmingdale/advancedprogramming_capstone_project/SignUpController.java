@@ -16,7 +16,6 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -37,8 +36,9 @@ public class SignUpController implements Initializable {
 
     public Text stateLink;
     public Button enterButton;
-    public HostServices hostServices;
-    private Runnable onSignUpSuccess;
+    public static HostServices hostServices;
+    private Runnable onSuccessCallback;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -48,16 +48,20 @@ public class SignUpController implements Initializable {
         authDB = ConnDbOps.AuthService.getAuthDB();
     }
 
-    public void setOnSignUpSuccess(Runnable callback) {
-        this.onSignUpSuccess = callback;
+    public void setOnSuccess(Runnable callback) {
+        this.onSuccessCallback = callback;
         System.out.println("SignUp callback set: " + (callback != null));
+    }
+
+    public static void setHostServices(HostServices services) {
+        hostServices = services;
     }
 
     /** Starts Sign Up process on a thread
      * @param onSignUpSuccess Runnable
      */
     public void setSignUpSuccess(Runnable onSignUpSuccess){
-        this.onSignUpSuccess = onSignUpSuccess;
+        this.onSuccessCallback = onSignUpSuccess;
     }
 
     public void onMicrosoftButtonPress(ActionEvent actionEvent) {
@@ -69,8 +73,8 @@ public class SignUpController implements Initializable {
         new OAuthService.MicrosoftAuthHandler(
                 () -> {
                     // This runs when authentication succeeds
-                    if (onSignUpSuccess != null) {
-                        Platform.runLater(onSignUpSuccess);
+                    if (onSuccessCallback != null) {
+                        Platform.runLater(onSuccessCallback);
                     }
                 },
                 error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
@@ -87,8 +91,8 @@ public class SignUpController implements Initializable {
         new OAuthService.GoogleAuthHandler(
                 () -> {
                     // This runs when authentication succeeds
-                    if (onSignUpSuccess != null) {
-                        Platform.runLater(onSignUpSuccess);
+                    if (onSuccessCallback != null) {
+                        Platform.runLater(onSuccessCallback);
                     }
                 },
                 error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
@@ -103,8 +107,8 @@ public class SignUpController implements Initializable {
 
         new OAuthService.GithubAuthHandler(
                 () -> {
-                    if (onSignUpSuccess != null) {
-                        Platform.runLater(onSignUpSuccess);
+                    if (onSuccessCallback != null) {
+                        Platform.runLater(onSuccessCallback);
                     }
                 },
                 error -> Platform.runLater(() -> errorTextPlaceholder.setText(error)),
@@ -194,8 +198,5 @@ public class SignUpController implements Initializable {
             ConnDbOps.AuthService.initializeAuthDB(cdbop);
             authDB = ConnDbOps.AuthService.getAuthDB();
         }
-    }
-
-    public void setHostServices(HostServices hostServices) {
     }
 }
