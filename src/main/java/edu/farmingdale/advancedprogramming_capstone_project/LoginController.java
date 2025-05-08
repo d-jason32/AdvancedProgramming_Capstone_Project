@@ -76,10 +76,11 @@ public class LoginController implements Initializable {
                 System.out.println(entry.getKey() + "=" + entry.getValue())
         );
 
-        if (devModeCallback != null) {
-            Platform.runLater(devModeCallback);
-        } else if (mainScreenCallback != null) {
+        // Try main callback first, then static onLoginSuccess as fallback
+        if (mainScreenCallback != null) {
             Platform.runLater(mainScreenCallback);
+        } else if (onLoginSuccess != null) {
+            Platform.runLater(onLoginSuccess);
         } else {
             System.err.println("No dev mode callback available");
         }
@@ -257,5 +258,6 @@ public class LoginController implements Initializable {
         this.mainScreenCallback = callback;
         System.out.println("Callback set: " + callback);
     }
+
 
 }
