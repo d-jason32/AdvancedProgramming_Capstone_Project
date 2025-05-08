@@ -32,6 +32,9 @@ public class OAuthService {
      * It manages the process of constructing authentication URLs, opening a browser
      * for user login, handling the callback from the Google OAuth server, and
      * getting access tokens and user information.
+     * 1. It creates the authorization URL
+     * 2. It opens the browser for their Google account login
+     * 3. Starts a callback server so it can handle their response
      */
     public static class GoogleAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
@@ -46,9 +49,10 @@ public class OAuthService {
         private final HostServices hostServices;
 
         /**
-         * @param onSuccess Runnable
-         * @param onError Consumer<String>
-         * @param hostServices HostServices
+         * Initializes a GoogleAuthHandler instance
+         * @param onSuccess Runnable to execute on successful authentication
+         * @param onError Consumer<String> to handle error messages
+         * @param hostServices HostServices for browser operations
          */
         public GoogleAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
             this.onSuccess = onSuccess;
@@ -57,7 +61,10 @@ public class OAuthService {
         }
 
         /**
-         * Starts the Google OAuth 2.0 authentication flow.
+         * Starts the Google OAuth 2.0 authentication process
+         * 1. Builds the authorization URL
+         * 2. Opens the browser for user login
+         * 3. Starts a callback server to handle their response
          */
         public void startAuthentication() {
             try {
@@ -70,7 +77,14 @@ public class OAuthService {
         }
 
         /**
-         * @return String
+         * Constructs the Google OAuth 2.0 authorization URL with required parameters:
+         * - client_id: Application's client ID
+         * - redirect_uri: Callback URL
+         * - response_type: Set to 'code' for authorization code flow
+         * - scope: Requested permissions (email and profile)
+         * - access_type: offline for refresh tokens
+         * - prompt: select_account to have account selection
+         * @return authorization URL as a String
          */
         @NotNull
         private String buildAuthUrl() throws UnsupportedEncodingException {
@@ -83,7 +97,7 @@ public class OAuthService {
                     "prompt=select_account";
         }
 
-        /**
+        /** Opens Browser via Host Services
          * @param url String
          */
         private void openBrowser(String url) {
@@ -114,8 +128,12 @@ public class OAuthService {
         }
 
         /**
-         * @param exchange HttpExchange
-         * @throws IOException IOException
+         * Handles the callback from the Google OAuth server
+         * 1. Parses the authorization code from query parameters
+         * 2. Exchanges code for access token
+         * 3. Fetches user info using a access token
+         * 4. Triggers success/error callbacks
+         * @param exchange HTTP exchange containing callback data
          */
         private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
             String query = exchange.getRequestURI().getQuery();
@@ -264,7 +282,10 @@ public class OAuthService {
         }
 
         /**
-         * Starts the authentication process.
+         * Starts Microsoft authentication by:
+         * 1. Creating callback server
+         * 2. Building auth URL using MSAL
+         * 3. Opening browser for user login
          */
         public void startAuthentication() {
             try {
@@ -352,7 +373,8 @@ public class OAuthService {
         }
 
         /**
-         * Acquires an access token using the provided authorization code.
+         * Exchanges authorization code for tokens using the MSAL library
+         * @param code Authorization code from callback
          */
         private void acquireToken(String code) {
             try {
@@ -425,7 +447,10 @@ public class OAuthService {
         private final HostServices hostServices;
 
         /**
-         * Creates a new instance of GithubAuthHandler to manage the GitHub authentication.
+         * Creates new GithubAuthHandler instance
+         * @param onSuccess Runnable for success
+         * @param onError Consumer<String> for errors
+         * @param hostServices HostServices for browser
          */
         public GithubAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
             this.onSuccess = onSuccess;
@@ -434,7 +459,10 @@ public class OAuthService {
         }
 
         /**
-         * Starts the authentication process.
+         * Initiates the GitHub OAuth flow:
+         * 1. Builds auth URL
+         * 2. Opens browser
+         * 3. Starts callback server
          */
         public void startAuthentication() {
             try {
@@ -515,7 +543,9 @@ public class OAuthService {
         }
 
         /**
-         * Exchanges an authorization code for an access token.
+         * Exchanges GitHub auth code for access token
+         * @param code Authorization code
+         * @return Access token string
          */
         private String exchangeCodeForToken(String code) throws IOException, InterruptedException {
             String params = "client_id=" + CLIENT_ID +
@@ -537,8 +567,9 @@ public class OAuthService {
         }
 
         /**
-         * @param accessToken String
-         * @return Response string containing user information
+         * Fetches user info from GitHub API
+         * @param accessToken Valid access token
+         * @return JSON string of user data
          */
         private String getUserInfo(String accessToken) throws IOException, InterruptedException {
             HttpClient client = HttpClient.newHttpClient();
@@ -553,7 +584,9 @@ public class OAuthService {
         }
 
         /**
-         * Parses a query string into a map of key-value pairs.
+         * Parses URL query string into key-value pairs
+         * @param query The query string to parse
+         * @return Map of parameter names to values
          */
         @NotNull
         private Map<String, String> parseQuery(String query) {
@@ -570,7 +603,8 @@ public class OAuthService {
         }
 
         /**
-         * Sends a success response to the client.
+         * Sends HTML success response to browser
+         * @param exchange HTTP exchange to respond to
          */
         private void sendSuccessResponse(@NotNull HttpExchange exchange) throws IOException {
             String response = "<html><body>GitHub login successful! You can close this window.</body></html>";
@@ -581,7 +615,9 @@ public class OAuthService {
         }
 
         /**
-         * Sends an error response to the client.
+         * Sends HTML error response to browser
+         * @param exchange HTTP exchange to respond to
+         * @param message Error message to display
          */
         private void sendErrorResponse(@NotNull HttpExchange exchange, String message) throws IOException {
             String response = "<html><body>Error: " + message + "</body></html>";

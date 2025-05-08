@@ -42,7 +42,7 @@
                   <Glow level="1.0" />
                </effect>
             </ImageView>
-            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="666.0">
+            <HBox alignment="CENTER" prefHeight="70.0" prefWidth="670.0">
                <children>
                   <Label fx:id="stateText" alignment="TOP_LEFT" prefHeight="74.0" prefWidth="180.0" stylesheets="@styling/login_page_styles.css" text="Sign in" textFill="#569eff">
                      <font>
@@ -54,7 +54,7 @@
                   <Text fx:id="errorTextPlaceholder" fill="#f7ff00" strokeType="OUTSIDE" strokeWidth="0.0" text="Diagnostic Text" textAlignment="CENTER" wrappingWidth="100.95068359375" />
                </children>
             </HBox>
-            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="666.0">
+            <HBox alignment="CENTER" prefHeight="65.0" prefWidth="670.0">
                <children>
                   <TextField fx:id="usernameField" prefHeight="52.0" prefWidth="360.0" promptText="Email" stylesheets="@styling/login_page_styles.css">
                      <font>

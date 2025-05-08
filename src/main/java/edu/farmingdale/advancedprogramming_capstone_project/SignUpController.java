@@ -53,7 +53,7 @@ public class SignUpController implements Initializable {
         System.out.println("SignUp callback set: " + (callback != null));
     }
 
-    /**
+    /** Starts Sign Up process on a thread
      * @param onSignUpSuccess Runnable
      */
     public void setSignUpSuccess(Runnable onSignUpSuccess){
@@ -129,6 +129,15 @@ public class SignUpController implements Initializable {
         currentStage.close();
     }
 
+    /**
+     * Start regex to process credentials
+     * @param fn
+     * @param ln
+     * @param email
+     * @param password
+     * @param confirmPassword
+     * @return
+     */
     private boolean isValidCredentials(String fn, String ln, String email, String password, String confirmPassword){
         if (email.isEmpty() || password.isEmpty() || fn.isEmpty() || ln.isEmpty() || confirmPassword.isEmpty()) {
             errorTextPlaceholder.setText("Please fill in all text fields");

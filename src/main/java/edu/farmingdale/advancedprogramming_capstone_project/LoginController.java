@@ -87,7 +87,7 @@ public class LoginController implements Initializable {
 
     //Reads input from email and password input fields and preforms operations to ensure it works
 
-    /**
+    /** Enter Button checks cases in which the enter button works
      * @param event ActionEvent
      */
     @FXML
@@ -95,9 +95,19 @@ public class LoginController implements Initializable {
         String email = usernameField.getText().trim();
         String password = passwordField.getText().trim();
 
+        if (email.isEmpty()) {
+            errorTextPlaceholder.setText("Please enter your email address");
+            return;
+        }
+
+        if (password.isEmpty()) {
+            errorTextPlaceholder.setText("Please enter your password");
+            return;
+        }
+
         boolean authenticated = false;
         for (String s : authDB) {
-            if (s.equals(email)) {
+            if (authDB.contains(email)) {
                 authenticated = password.equals(cdbop.queryPasswordByEmail(email));
                 break;
             }
@@ -112,15 +122,18 @@ public class LoginController implements Initializable {
         }
     }
 
-    //Sets up the web page functionality
 
-    /**
+    /** Allows browser functionality
      * @param hostServices HostServices
      */
     public static void setHostServices(HostServices hostServices) {
         LoginController.hostServices = hostServices;
     }
 
+    /**
+     * Start Authentication via Microsoft
+     * @param event
+     */
     @FXML
     private void onMicrosoftButtonPress(ActionEvent event) {
         // Add null check for hostServices
@@ -139,6 +152,11 @@ public class LoginController implements Initializable {
                 hostServices
         ).startAuthentication();
     }
+
+    /**
+     * Starts Authentication via Google
+     * @param event
+     */
     @FXML
     private void onGoogleButtonPress(ActionEvent event) {
         // Add null check for hostServices
@@ -158,6 +176,11 @@ public class LoginController implements Initializable {
         ).startAuthentication();
     }
 
+    /**
+     * Start Authentication via Github
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void onGithubButtonPress(ActionEvent event) throws IOException {
         if (hostServices == null) {
@@ -175,6 +198,11 @@ public class LoginController implements Initializable {
         ).startAuthentication();
     }
 
+    /**
+     * Leads to Sign Up Page
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void onSignUpTextPressed(MouseEvent event) throws IOException {
         Node source = (Node) event.getSource();
@@ -197,25 +225,37 @@ public class LoginController implements Initializable {
     }
 
 
+    /**
+     * Leads to Reset Password Page
+     * @param event
+     * @throws IOException
+     */
+    @FXML
+    void onPasswordResetPressed(MouseEvent event) throws IOException {
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
 
-        @FXML
-        void onPasswordResetPressed(ActionEvent event) throws IOException {
-            FXMLLoader passwordResetLoader = new FXMLLoader(getClass().getResource("password-reset-screen.fxml"));
-            Parent mainRoot = passwordResetLoader.load();
+        FXMLLoader resetPwLoader = new FXMLLoader(getClass().getResource("password-reset-screen.fxml"));
+        Parent resetPwRoot = resetPwLoader.load();
+        ResetPasswordController resetPasswordController = resetPwLoader.getController();
+        resetPasswordController.setMainScreenCallback(CapstoneApp.getMainScreenCallback());
+        ResetPasswordController.setHostServices(hostServices);  // Add this line
 
+        Stage loginStage = new Stage();
+        loginStage.setScene(new Scene(resetPwRoot));
+        loginStage.setTitle("AI Whiteboard Teaching Tool - Reset Password");
+        loginStage.show();
 
-            // Switch to the main screen
-            Stage passwordResetStage = new Stage();
-            passwordResetStage.setScene(new Scene(mainRoot, 1280, 800));
-            passwordResetStage.setTitle("AI Whiteboard Program - Reset Password");
-        }
+        currentStage.close();
+    }
 
+    /**
+     * Determines state in which Main is run as a thread
+     * @param callback
+     */
     public void setMainScreenCallback(Runnable callback) {
         this.mainScreenCallback = callback;
         System.out.println("Callback set: " + callback);
     }
 
-    public void setDevModeCallback(Runnable callback) {
-        this.devModeCallback = callback;
-    }
 }

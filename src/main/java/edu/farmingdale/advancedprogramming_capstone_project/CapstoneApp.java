@@ -76,6 +76,9 @@ public class CapstoneApp extends Application {
         browser     = engine.newBrowser();
         browserView = BrowserView.newInstance(browser);
 
+        // Get Host Services for OAuth Web Connection
+        hostServices = getHostServices();
+
         // Load the splash screen first.
         FXMLLoader splashLoader = new FXMLLoader(getClass().getResource("splash-screen.fxml"));
         Parent splashRoot = splashLoader.load();
