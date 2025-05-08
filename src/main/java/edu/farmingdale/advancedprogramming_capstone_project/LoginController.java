@@ -57,6 +57,7 @@ public class LoginController implements Initializable {
         cdbop = new ConnDbOps();
         cdbop.connectToDatabase();
         ConnDbOps.AuthService.initializeAuthDB(cdbop);
+        cdbop.listAllUsers();
         authDB = ConnDbOps.AuthService.getAuthDB();
         this.mainScreenCallback = CapstoneApp.getMainScreenCallback();
         System.out.println("Login callback initialized: " + (mainScreenCallback != null));
