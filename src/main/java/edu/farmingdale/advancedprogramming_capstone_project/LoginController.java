@@ -14,7 +14,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.application.HostServices;
 
-//Password Hashing
 import javafx.stage.Stage;
 
 //env support
@@ -213,7 +212,7 @@ public class LoginController implements Initializable {
         SignUpController signUpController = signUpLoader.getController();
 
         // Pass the callback from CapstoneApp
-        signUpController.setOnSignUpSuccess(CapstoneApp.getMainScreenCallback());
+        signUpController.setOnSuccess(CapstoneApp.getMainScreenCallback());
         signUpController.setHostServices(hostServices);
 
         authStage.setScene(new Scene(signUpRoot));

@@ -34,10 +34,14 @@ public class ResetPasswordController implements Initializable {
     private TextField confidentialField;
     @FXML
     private Text errorTextPlaceholder;
+    private Runnable onSuccessCallback;  // Instance variable
 
+    public void setOnSuccess(Runnable callback) {
+        this.onSuccessCallback = callback;
+    }
 
-    public static void setHostServices(HostServices hostServices) {
-        ResetPasswordController.hostServices = hostServices;
+    public static void setHostServices(HostServices services) {
+        hostServices = services;
     }
 
     @Override
@@ -134,7 +138,7 @@ public class ResetPasswordController implements Initializable {
         Parent signUpRoot = signUpLoader.load();
 
         SignUpController signUpController = signUpLoader.getController();
-        signUpController.setOnSignUpSuccess(mainScreenCallback);
+        signUpController.setOnSuccess(mainScreenCallback);
         signUpController.setHostServices(hostServices);
         Stage signUpStage = new Stage();
         signUpStage.setScene(new Scene(signUpRoot));
