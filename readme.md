@@ -190,10 +190,10 @@ and edit user information by ID. It contains text-fields such as ID, first name,
 last name, email, and password which validated using regular expressions to ensure data integrity and proper formatting.
 
 ## 🛠️ Installation
-### 1. Clone the repository
+### 1. Clone the repository using IntelliJ IDEA
 ```bash
-git clone https://github.com/d-jason32/AdvancedProgramming_Capstone_Project.git
-cd your-repo
+Use the git clone function on link https://github.com/d-jason32/AdvancedProgramming_Capstone_Project.git
+Open the repo
 ```
 ### 2. Set up your environment
 
@@ -207,17 +207,12 @@ cd your-repo
 
 ### 3. Run the project
 
-```bash
-mvn clean install
-mvn javafx:run
-```
+- Click the run button on IntelliJ Idea
 
 ## 🧪 Usage
 ### 1. Launch the application
 Run this command:
-```bash
-mvn javafx:run
-```
+- Click the run button on IntelliJ Idea
 ### 2. Log in or register
 Use your credentials or create a new account to enter the system.
 
