@@ -1,12 +1,14 @@
 package edu.farmingdale.advancedprogramming_capstone_project;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.microsoft.aad.msal4j.*;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
 import javafx.application.HostServices;
 import javafx.application.Platform;
+import javafx.fxml.Initializable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -14,19 +16,40 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.net.URI;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.time.Duration;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import static edu.farmingdale.advancedprogramming_capstone_project.LoginController.dotenv;
 
-public class OAuthService {
+public class OAuthService implements Initializable {
+
+    //Database connection and authDB communication layer
+    static ConnDbOps cdbop;
+    private static List<String> authDB;
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        // Initialize database connection and load existing users
+        cdbop = new ConnDbOps();
+        cdbop.connectToDatabase();
+        ConnDbOps.AuthService.initializeAuthDB(cdbop);
+        cdbop.listAllUsers();
+        authDB = ConnDbOps.AuthService.getAuthDB();
+
+    }
+
+
     /**
      * Handles Google OAuth 2.0 authentication flow for an application.
      * It manages the process of constructing authentication URLs, opening a browser
@@ -39,25 +62,28 @@ public class OAuthService {
     public static class GoogleAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GOOGLE_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GOOGLE_CLIENT_SECRET");
-        private static final String REDIRECT_URI = "http://localhost:8080/auth/google/callback";
+        private static final String REDIRECT_URI = "http://localhost:8081/auth/google/callback";
         private static final String SCOPE = "email profile";
         private static final String TOKEN_URL = "https://oauth2.googleapis.com/token";
         private static final String USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
-        private final Runnable onSuccess;
-        private final Consumer<String> onError;
+        // Callbacks for handling authentication results
+        private final Consumer<Map<String, String>> onUserData;
         private final HostServices hostServices;
+        private final Consumer<String> onError;
+        private Runnable onSuccess;
 
         /**
          * Initializes a GoogleAuthHandler instance
-         * @param onSuccess Runnable to execute on successful authentication
-         * @param onError Consumer<String> to handle error messages
+         *
+         * @param onUserData   Runnable to execute on successful authentication
+         * @param onError      Consumer<String> to handle error messages
          * @param hostServices HostServices for browser operations
          */
-        public GoogleAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
-            this.onSuccess = onSuccess;
-            this.onError = onError;
-            this.hostServices = hostServices;
+        public GoogleAuthHandler(Consumer<Map<String, String>> onUserData, Consumer<String> onError, HostServices hostServices) {
+            this.onUserData = onUserData; //retrieves user data for database insertion
+            this.onError = onError; //Debugger
+            this.hostServices = hostServices; //Enables browser functionality
         }
 
         /**
@@ -67,6 +93,7 @@ public class OAuthService {
          * 3. Starts a callback server to handle their response
          */
         public void startAuthentication() {
+            // Start the OAuth flow: build URL, open browser, start callback server
             try {
                 String authUrl = buildAuthUrl();
                 openBrowser(authUrl);
@@ -101,17 +128,20 @@ public class OAuthService {
          * @param url String
          */
         private void openBrowser(String url) {
+            // Open system browser to Google login page
             hostServices.showDocument(url);
         }
 
 
         /**
-         * Calls Server Starter
+         * Creates an HTTP server to capture OAuth callback responses.
+         * It will automatically be terminated after processing the authentication response.
          */
         private void startCallbackServer() {
+            // Start local HTTP server to handle OAuth callback
             new Thread(() -> {
                 try {
-                    HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+                    HttpServer server = HttpServer.create(new InetSocketAddress(8081), 0);
                     server.createContext("/auth/google/callback", exchange -> {
                         try {
                             handleCallback(exchange);
@@ -127,15 +157,17 @@ public class OAuthService {
             }).start();
         }
 
+
         /**
          * Handles the callback from the Google OAuth server
          * 1. Parses the authorization code from query parameters
          * 2. Exchanges code for access token
-         * 3. Fetches user info using a access token
+         * 3. Fetches user info by using an access token
          * 4. Triggers success/error callbacks
          * @param exchange HTTP exchange containing callback data
          */
         private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
+            // Process Google's callback with authorization code
             String query = exchange.getRequestURI().getQuery();
             Map<String, String> params = parseQuery(query);
             String code = params.get("code");
@@ -147,6 +179,7 @@ public class OAuthService {
             }
 
             try {
+                // Exchange code for tokens and get user info
                 String tokenResponse = exchangeCodeForTokens(code);
                 JsonObject tokenJson = JsonParser.parseString(tokenResponse).getAsJsonObject();
                 String accessToken = tokenJson.get("access_token").getAsString();
@@ -154,18 +187,32 @@ public class OAuthService {
                 String userInfo = getUserInfo(accessToken);
                 JsonObject userJson = JsonParser.parseString(userInfo).getAsJsonObject();
 
-                //Extract Email From OAuth for DB connection
+                // Extract user data from OAuth response
                 String email = userJson.get("email").getAsString();
-                System.out.println("User's email: " + email); // Or store it somewhere
+                String firstName = userJson.get("given_name").getAsString();
+                String lastName = userJson.get("family_name").getAsString();
+                Map<String, String> userData = new HashMap<>();
+                userData.put("email", email);
+                userData.put("firstName", firstName);
+                userData.put("lastName", lastName);
+
+                // Pass data to the success handler
+                Platform.runLater(() -> {
+                    if (onSuccess != null) {
+                        onSuccess.run();
+                    }
+                    Platform.runLater(() -> onUserData.accept(userData));
+                });
 
                 sendSuccessResponse(exchange);
-                onSuccess.run();
 
             } catch (Exception e) {
                 sendErrorResponse(exchange, "Authentication failed");
                 onError.accept("Google login failed: " + e.getMessage());
             }
         }
+
+
 
         /**
          * Exchanges an authorization code for access tokens by making a POST request to Google's token endpoint.
@@ -175,6 +222,7 @@ public class OAuthService {
          * @throws InterruptedException If a token request is interrupted
          */
         private String exchangeCodeForTokens(String code) throws IOException, InterruptedException {
+            // Exchange authorization code for access tokens
             String params = "code=" + code +
                     "&client_id=" + CLIENT_ID +
                     "&client_secret=" + CLIENT_SECRET +
@@ -199,6 +247,7 @@ public class OAuthService {
          * @throws InterruptedException If a token request is interrupted
          */
         private String getUserInfo(String accessToken) throws IOException, InterruptedException {
+            // Fetch user profile using access token
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(USERINFO_URL + "?access_token=" + accessToken))
@@ -215,6 +264,7 @@ public class OAuthService {
          */
         @NotNull
         private Map<String, String> parseQuery(String query) {
+            // Parse URL query parameters into key-value pairs
             Map<String, String> params = new HashMap<>();
             if (query != null) {
                 for (String param : query.split("&")) {
@@ -232,6 +282,7 @@ public class OAuthService {
          * @throws IOException IOException
          */
         private void sendSuccessResponse(@NotNull HttpExchange exchange) throws IOException {
+            // Send HTML response for successful authentication
             String response = "<html><body>Login successful! You can close this window.</body></html>";
             exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -246,6 +297,7 @@ public class OAuthService {
          * @throws IOException If an I/O error occurs while sending the response.
          */
         private void sendErrorResponse(@NotNull HttpExchange exchange, String message) throws IOException {
+            // Send HTML error response
             String response = "<html><body>Error: " + message + "</body></html>";
             exchange.sendResponseHeaders(400, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
@@ -255,92 +307,147 @@ public class OAuthService {
     }
 
     /**
-     * Microsoft OAuth 2.0 Authentication Handler.
+     * Microsoft OAuth 2.0 Authentication Handler with enhanced debugging. Because it was the most difficult one to do.
      */
     public static class MicrosoftAuthHandler {
-        private static final String CLIENT_ID = dotenv.get("MICROSOFT_CLIENT_ID");
-        private static final String AUTHORITY = dotenv.get("MICROSOFT_AUTHORITY_ID");
-        private static final String REDIRECT_URI = "http://localhost:8080/auth/microsoft/callback";
-        private static final String[] SCOPES = {"User.Read"};
+        private static final String CLIENT_ID = dotenv.get("AZURE_CLIENT_ID");
+        private static final String TENANT_ID = dotenv.get("AZURE_TENANT_ID");
+        private static final String REDIRECT_URI = "http://localhost:8082/auth/microsoft/callback";
+        private static final String[] SCOPES = {"openid", "profile", "email", "offline_access"};
 
+        // Authentication callbacks and services
+        private final Consumer<Map<String, String>> onUserData;
         private final Runnable onSuccess;
         private final Consumer<String> onError;
         private final HostServices hostServices;
         private HttpServer server;
+        private String codeVerifier;
 
         /**
-         * Creates a new instance of MicrosoftAuthHandler to manage Microsoft authentication.
-         * @param onSuccess A {@code Runnable} that will be executed when authentication succeeds.
-         * @param onError A {@code Consumer<String>} that will handle errors during the authentication process.
-         * The error message will be passed to the consumer.
-         * @param hostServices A {@code HostServices} instance to help with OS-level operations, such as opening the default web browser.
+         * Initializes the authentication handler with required callbacks and services.
+         * Sets up the communication channels for success/error notifications while
+         * preparing the browser interaction layer through HostServices.
+         *
+         * @param onUserData Consumer for successful authentication containing user profile claims
+         * @param onSuccess Runnable to execute upon complete authentication flow
+         * @param onError Error handler for authentication failures
+         * @param hostServices JavaFX browser integration service
          */
-        public MicrosoftAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
+        public MicrosoftAuthHandler(Consumer<Map<String, String>> onUserData, Runnable onSuccess,
+                                    Consumer<String> onError, HostServices hostServices) {
+            // Initialize with success/error handlers and browser service
+            System.out.println("[DEBUG] Initializing MicrosoftAuthHandler");
+            this.onUserData = onUserData;
             this.onSuccess = onSuccess;
             this.onError = onError;
             this.hostServices = hostServices;
         }
 
         /**
-         * Starts Microsoft authentication by:
-         * 1. Creating callback server
-         * 2. Building auth URL using MSAL
-         * 3. Opening browser for user login
+         * Initiates the Microsoft authentication workflow including PKCE preparation.
+         * Shows the complete sequence from configuration validation through
+         * browser redirection, implementing the OAuth 2.0 authorization code grant flow.
          */
-        public void startAuthentication() {
+        void startAuthentication() {
+            System.out.println("[DEBUG] Starting Microsoft authentication process");
             try {
-                // Start the server first
+                // Verify configuration first
+                if (CLIENT_ID == null || TENANT_ID == null) {
+                    throw new Exception("Azure AD configuration is incomplete");
+                }
+
+                // Generate PKCE code verifier and challenge
+                /*
+                PKCE (Proof Key for Code Exchange) is made for OAuth 2.0 Authorization.
+                Originally designed for mobile and public clients that cannot securely store a client secret.
+                PKCE gives temporary "proof" that the app requesting the authorization is the same one redeeming it.
+                 */
+                codeVerifier = generateCodeVerifier();
+                String codeChallenge = generateCodeChallenge(codeVerifier);
+
+                // Store codeVerifier for later use
+
+                // Start local server for callback
                 startCallbackServer();
 
-                PublicClientApplication pca = PublicClientApplication.builder(CLIENT_ID)
-                        .authority(AUTHORITY)
-                        .build();
+                // Build authorization URL with PKCE parameters
+                String authUrl = String.format(
+                        "https://login.microsoftonline.com/%s/oauth2/v2.0/authorize?" +
+                                "client_id=%s&" +
+                                "response_type=code&" +
+                                "redirect_uri=%s&" +
+                                "response_mode=query&" +
+                                "scope=%s&" +
+                                "state=12345&" +
+                                "code_challenge=%s&" +
+                                "code_challenge_method=S256",
+                        TENANT_ID,
+                        CLIENT_ID,
+                        URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8),
+                        URLEncoder.encode(String.join(" ", SCOPES), StandardCharsets.UTF_8),
+                        URLEncoder.encode(codeChallenge, StandardCharsets.UTF_8)
+                );
 
-                // Generate the authorization URL
-                String authUrl = pca.getAuthorizationRequestUrl(
-                        AuthorizationRequestUrlParameters
-                                .builder(REDIRECT_URI, Collections.singleton(SCOPES[0]))
-                                .responseMode(ResponseMode.QUERY) // Explicitly set response mode
-                                .build()
-                ).toString();
-
-                System.out.println("Authorization URL: " + authUrl); // Debug logging
+                System.out.println("[DEBUG] Constructed Auth URL: " + authUrl);
                 hostServices.showDocument(authUrl);
 
             } catch (Exception e) {
+                System.err.println("[ERROR] Microsoft authentication failed: " + e.getMessage());
                 Platform.runLater(() -> onError.accept("Microsoft login error: " + e.getMessage()));
             }
         }
-
         /**
-         * Starts the callback server.
+         * Creates an HTTP server to securely capture authorization responses.
+         * The server operates on a dedicated port with minimal exposure window,
+         * automatically terminating after processing the OAuth callback.
          */
         private void startCallbackServer() {
+            // Starts local HTTP server to handle OAuth redirect
             new Thread(() -> {
                 try {
-                    server = HttpServer.create(new InetSocketAddress(8080), 0);
-                    server.createContext("/auth/microsoft/callback", this::handleCallback);
-                    server.setExecutor(null); // Use default executor
+                    System.out.println("[DEBUG] Creating HTTP server on port 8082");
+                    server = HttpServer.create(new InetSocketAddress(8082), 0);
+
+                    server.createContext("/auth/microsoft/callback", exchange -> {
+                        try {
+                            System.out.println("[DEBUG] Received callback request");
+                            handleCallback(exchange);
+                        } catch (Exception e) {
+                            System.err.println("[ERROR] Callback handling failed: " + e.getMessage());
+                            e.printStackTrace();
+                        } finally {
+                            exchange.close();
+                        }
+                    });
+
+                    server.setExecutor(null);
                     server.start();
-                    System.out.println("Callback server started on port 8080");
+                    System.out.println("[DEBUG] Callback server started successfully on port 8082");
+
                 } catch (IOException e) {
+                    System.err.println("[ERROR] Failed to start callback server: " + e.getMessage());
                     Platform.runLater(() -> onError.accept("Failed to start callback server: " + e.getMessage()));
                 }
             }).start();
         }
 
         /**
-         * Handles the callback received from the authentication server.
-         * @param exchange The HTTP exchange object containing the request and response data.
-         * @throws IOException If there is an error while handling the HTTP exchange or sending the response.
+         * Processes the authorization response from Microsoft's identity platform.
+         * Validates response parameters and initiates token exchange while handling
+         * protocol errors according to OAuth 2.0 specifications.
+         *
+         * @param exchange HTTP connection containing authorization result
+         * @throws IOException for network communication failures
          */
-        private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
+        private void handleCallback(HttpExchange exchange) throws IOException {
+            // Processes the authorization code from Microsoft's redirect
+            System.out.println("[DEBUG] Handling callback from Microsoft");
             try {
                 String query = exchange.getRequestURI().getQuery();
-                System.out.println("Received callback with query: " + query); // Debug logging
+                System.out.println("[DEBUG] Callback query: " + query);
 
                 if (query == null) {
-                    sendResponse(exchange, 400, "Missing query parameters");
+                    sendErrorResponse(exchange, "Missing query parameters");
                     Platform.runLater(() -> onError.accept("No query parameters received"));
                     return;
                 }
@@ -350,119 +457,268 @@ public class OAuthService {
                 String error = params.get("error");
 
                 if (error != null) {
-                    sendResponse(exchange, 400, "Error: " + error);
+                    sendErrorResponse(exchange, "Error: " + error);
                     Platform.runLater(() -> onError.accept("Authentication error: " + error));
                     return;
                 }
 
                 if (code == null) {
-                    sendResponse(exchange, 400, "Missing authorization code");
+                    sendErrorResponse(exchange, "Missing authorization code");
                     Platform.runLater(() -> onError.accept("No authorization code received"));
                     return;
                 }
 
-                sendResponse(exchange, 200, "Authentication successful! You may close this window.");
-                exchange.close();
-
-                // Process the authorization code
-                acquireToken(code);
+                sendSuccessResponse(exchange);
+                acquireToken(code); // Exchange code for tokens
 
             } finally {
-                server.stop(0); // Ensure the server stops after handling the request
+                System.out.println("[DEBUG] Stopping callback server");
+                server.stop(0); // Shutdown callback server
             }
         }
 
         /**
-         * Exchanges authorization code for tokens using the MSAL library
-         * @param code Authorization code from callback
+         * Does the token exchange.
+         * Secures the request with previously generated PKCE verifier and
+         *
+         * @param code Authorization code from initial authentication phase
          */
         private void acquireToken(String code) {
+            // Exchanges authorization code for access token using PKCE
             try {
-                PublicClientApplication pca = PublicClientApplication.builder(CLIENT_ID)
-                        .authority(AUTHORITY)
+                String tokenUrl = String.format(
+                        "https://login.microsoftonline.com/%s/oauth2/v2.0/token",
+                        TENANT_ID
+                );
+                String params = String.format(
+                        "grant_type=authorization_code&" +
+                                "client_id=%s&" +
+                                "scope=%s&" +
+                                "code=%s&" +
+                                "redirect_uri=%s&" +
+                                "client_secret=%s&" +
+                                "code_verifier=%s",
+                        URLEncoder.encode(CLIENT_ID, StandardCharsets.UTF_8),
+                        URLEncoder.encode(String.join(" ", SCOPES), StandardCharsets.UTF_8),
+                        URLEncoder.encode(code, StandardCharsets.UTF_8),
+                        URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8),
+                        URLEncoder.encode(Objects.requireNonNull(dotenv.get("AZURE_CLIENT_SECRET")), StandardCharsets.UTF_8),
+                        URLEncoder.encode(codeVerifier, StandardCharsets.UTF_8)
+                );
+
+                HttpClient client = HttpClient.newBuilder()
+                        .version(HttpClient.Version.HTTP_1_1)
+                        .connectTimeout(Duration.ofSeconds(30))
                         .build();
 
-                IAuthenticationResult result = pca.acquireToken(
-                        AuthorizationCodeParameters
-                                .builder(code, new URI(REDIRECT_URI))
-                                .scopes(Collections.singleton(SCOPES[0]))
-                                .build()
-                ).join();
+                HttpRequest request = HttpRequest.newBuilder()
+                        .uri(URI.create(tokenUrl))
+                        .header("Content-Type", "application/x-www-form-urlencoded")
+                        .POST(HttpRequest.BodyPublishers.ofString(params))
+                        .build();
 
-                System.out.println("Successfully acquired token for: " + result.account().username());
-                Platform.runLater(onSuccess);
+                System.out.println("[DEBUG] Sending token request...");
+                HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+                System.out.println("[DEBUG] Token response status: " + response.statusCode());
+                System.out.println("[DEBUG] Token response body: " + response.body());
+
+                if (response.statusCode() == 200) {
+                    processSuccessfulTokenResponse(response.body());
+                } else {
+                    handleTokenError(response);
+                }
+            } catch (Exception e) {
+                System.out.println("[ERROR] Detailed token acquisition error:");
+                e.printStackTrace();
+                handleTokenException(e);
+            }
+        }
+
+        /**
+         * Extracts and verifies user identity claims from ID token.
+         * Implements JWT validation and claim processing
+         *
+         * @param responseBody Raw token endpoint response containing JWT
+         */
+        private void processSuccessfulTokenResponse(String responseBody) {
+            try {
+                JsonObject tokenJson = JsonParser.parseString(responseBody).getAsJsonObject();
+                String idToken = tokenJson.get("id_token").getAsString();
+
+                // Decode JWT to get user claims
+                String[] parts = idToken.split("\\.");
+                String payload = new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
+                JsonObject claims = JsonParser.parseString(payload).getAsJsonObject();
+
+                String email = claims.has("preferred_username") ?
+                        claims.get("preferred_username").getAsString() :
+                        claims.get("email").getAsString();
+                String firstName = claims.has("given_name") ? claims.get("given_name").getAsString() : "";
+                String lastName = claims.has("family_name") ? claims.get("family_name").getAsString() : "";
+
+                Map<String, String> userData = new HashMap<>();
+                userData.put("email", email);
+                userData.put("firstName", firstName);
+                userData.put("lastName", lastName);
+
+                Platform.runLater(() -> {
+                    onUserData.accept(userData);
+                    onSuccess.run();
+                });
 
             } catch (Exception e) {
-                Platform.runLater(() -> onError.accept("Failed to acquire token: " + e.getMessage()));
-                e.printStackTrace();
+                Platform.runLater(() -> onError.accept("Failed to process token response: " + e.getMessage()));
             }
         }
 
         /**
-         * Parses a query string into a map of key-value pairs.
-         * The query string is expected to be in the format of URL query parameters.
-         * @param query the query string to parse; can be null or empty
-         * @return a map containing the parsed key-value pairs from the query string
+         * In case the token fails, due to interference between Microsoft and carrying out our request, we will display an error message.
+         * @param response
          */
-        @NotNull
-        private Map<String, String> parseQuery(String query) {
-            Map<String, String> params = new HashMap<>();
-            if (query != null) {
-                for (String param : query.split("&")) {
-                    String[] pair = param.split("=");
-                    if (pair.length > 1) {
-                        params.put(pair[0], pair[1]);
-                    }
+        private void handleTokenError(HttpResponse<String> response) {
+            String errorMsg = "Token request failed with status: " + response.statusCode();
+            if (response.body() != null) {
+                try {
+                    JsonObject errorJson = JsonParser.parseString(response.body()).getAsJsonObject();
+                    errorMsg += " - " + errorJson.get("error_description").getAsString();
+                } catch (Exception e) {
+                    errorMsg += " - " + response.body();
                 }
             }
-            return params;
+            String finalErrorMsg = errorMsg;
+            Platform.runLater(() -> onError.accept(finalErrorMsg));
         }
 
         /**
-         * Sends a response to the client.
+         * Makes a cryptographically secure PKCE code verifier.
+         * Creates a random value using SHA-256
+         *
+         * @return Base64URL-encoded code verifier
          */
-        private void sendResponse(@NotNull HttpExchange exchange, int statusCode, String message) throws IOException {
-            String response = "<html><body>" + message + "</body></html>";
-            exchange.sendResponseHeaders(statusCode, response.length());
+        private void handleTokenException(Exception e) {
+            String errorMsg = "Token acquisition failed: ";
+            if (e.getMessage() != null) {
+                errorMsg += e.getMessage();
+            } else {
+                errorMsg += "Unknown error - " + e.getClass().getName();
+                // Add more details for common exceptions
+                if (e instanceof NullPointerException) {
+                    errorMsg += " (Null pointer exception - likely missing configuration)";
+                } else if (e instanceof java.net.ConnectException) {
+                    errorMsg += " (Connection failed - check network/internet access)";
+                } else if (e instanceof java.net.UnknownHostException) {
+                    errorMsg += " (Unknown host - check your token URL)";
+                }
+            }
+
+            String finalErrorMsg = errorMsg;
+            Platform.runLater(() -> onError.accept(finalErrorMsg));
+        }
+
+        private Map<String, String> parseQuery(String query) {
+            return Arrays.stream(query.split("&"))
+                    .map(param -> param.split("="))
+                    .filter(pair -> pair.length > 1)
+                    .collect(Collectors.toMap(
+                            pair -> pair[0],
+                            pair -> pair[1],
+                            (first, second) -> first));
+        }
+
+        private void sendSuccessResponse(HttpExchange exchange) throws IOException {
+            // Sends success response to browser
+            String response = "<html><body>Authentication successful! You may close this window.</body></html>";
+            exchange.sendResponseHeaders(200, response.length());
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());
             }
         }
+
+        /**
+         * Error management for query
+         * @param exchange
+         * @param message
+         * @throws IOException
+         */
+        private void sendErrorResponse(HttpExchange exchange, String message) throws IOException {
+            String response = "<html><body>Error: " + message + "</body></html>";
+            exchange.sendResponseHeaders(400, response.length());
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(response.getBytes());
+            }
+        }
+        /**
+         * Generates cryptographically secure PKCE code verifier.
+         * Creates a high-entropy random value using SHA-256 as per RFC 7636.
+         *
+         * @return Base64URL-encoded code verifier
+         */
+        private String generateCodeVerifier() {
+            SecureRandom secureRandom = new SecureRandom();
+            byte[] codeVerifier = new byte[32];
+            secureRandom.nextBytes(codeVerifier);
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(codeVerifier);
+        }
+
+        /**
+         * Derives PKCE code challenge from verifier using S256 transformation.
+         * Implements the code_challenge_method specified in RFC 7636.
+         *
+         * @param codeVerifier Original PKCE verifier value
+         * @return Transformed code challenge
+         * @throws UnsupportedEncodingException If ASCII encoding fails
+         * @throws NoSuchAlgorithmException If SHA-256 algorithm unavailable
+         */
+        private String generateCodeChallenge(String codeVerifier) throws UnsupportedEncodingException, NoSuchAlgorithmException {
+            byte[] bytes = codeVerifier.getBytes("US-ASCII");
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(bytes, 0, bytes.length);
+            byte[] digest = messageDigest.digest();
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(digest);
+        }
     }
 
     /**
-     * GitHub OAuth 2.0 Authentication Handler.
+     * Handles GitHub OAuth 2.0 authentication
+     * Manages the complete login flow from browser redirect to user data retrieval,
+     * including email address verification through GitHub's specific APIs.
+     * As reflective of Google's methodology is in GitHub. Email Address verification is the major difference.
      */
     public static class GithubAuthHandler {
         private static final String CLIENT_ID = dotenv.get("GITHUB_CLIENT_ID");
         private static final String CLIENT_SECRET = dotenv.get("GITHUB_CLIENT_SECRET");
-        private static final String REDIRECT_URI = "http://localhost:8080/auth/github/callback";
+        private static final String REDIRECT_URI = "http://localhost:8083/auth/github/callback";
         private static final String SCOPE = "user:email";
         private static final String AUTH_URL = "https://github.com/login/oauth/authorize";
         private static final String TOKEN_URL = "https://github.com/login/oauth/access_token";
         private static final String USER_API_URL = "https://api.github.com/user";
+        private static final String EMAILS_API_URL = "https://api.github.com/user/emails";
 
-        private final Runnable onSuccess;
-        private final Consumer<String> onError;
+        private final Consumer<Map<String, String>> onUserData;
         private final HostServices hostServices;
+        private final Consumer<String> onError;
+        private final Runnable onSuccess;
 
         /**
-         * Creates new GithubAuthHandler instance
-         * @param onSuccess Runnable for success
-         * @param onError Consumer<String> for errors
-         * @param hostServices HostServices for browser
+         * Sets up authentication handler with success/error callbacks.
+         * @param onUserData Receives user profile (email, name) on success
+         * @param onSuccess Runs after successful authentication
+         * @param onError Handles error messages
+         * @param hostServices JavaFX browser opener
          */
-        public GithubAuthHandler(Runnable onSuccess, Consumer<String> onError, HostServices hostServices) {
+        public GithubAuthHandler(Consumer<Map<String, String>> onUserData, Runnable onSuccess,
+                                 Consumer<String> onError, HostServices hostServices) {
+            this.onUserData = onUserData;
             this.onSuccess = onSuccess;
             this.onError = onError;
             this.hostServices = hostServices;
         }
 
         /**
-         * Initiates the GitHub OAuth flow:
-         * 1. Builds auth URL
-         * 2. Opens browser
-         * 3. Starts callback server
+         * Starts GitHub login process:
+         * 1. Opens browser to GitHub's auth page
+         * 2. Listens for callback on localhost
          */
         public void startAuthentication() {
             try {
@@ -475,7 +731,8 @@ public class OAuthService {
         }
 
         /**
-         * Builds the authentication URL for GitHub.
+         * Builds GitHub authorization URL with required OAuth parameters.
+         * Includes requested permissions (scope) and callback location.
          */
         @NotNull
         private String buildAuthUrl() throws UnsupportedEncodingException {
@@ -485,20 +742,19 @@ public class OAuthService {
                     "&response_type=code";
         }
 
-        /**
-         * Opens the specified URL in the default web browser.
-         */
+
         private void openBrowser(String url) {
             hostServices.showDocument(url);
         }
 
         /**
-         * Starts the callback server.
+         * Creates an HTTP server to get authorization responses.
+         * Automatically ends after processing the OAuth callback.
          */
         private void startCallbackServer() {
             new Thread(() -> {
                 try {
-                    HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+                    HttpServer server = HttpServer.create(new InetSocketAddress(8083), 0);
                     server.createContext("/auth/github/callback", exchange -> {
                         try {
                             handleCallback(exchange);
@@ -515,7 +771,10 @@ public class OAuthService {
         }
 
         /**
-         * Handles the callback received from the authentication server.
+         * Handles GitHub's callback after user login:
+         * 1. Exchanges code for access token
+         * 2. Fetches user profile and primary email
+         * 3. Triggers success/error callbacks
          */
         private void handleCallback(@NotNull HttpExchange exchange) throws IOException {
             String query = exchange.getRequestURI().getQuery();
@@ -529,47 +788,93 @@ public class OAuthService {
             }
 
             try {
-                String accessToken = exchangeCodeForToken(code);
+                String tokenResponse = exchangeCodeForTokens(code);
+                JsonObject tokenJson = JsonParser.parseString(tokenResponse).getAsJsonObject();
+                String accessToken = tokenJson.get("access_token").getAsString();
+
                 String userInfo = getUserInfo(accessToken);
                 JsonObject userJson = JsonParser.parseString(userInfo).getAsJsonObject();
 
-                System.out.println("Logged in as GitHub user: " + userJson.get("login").getAsString());
+                // Extract user data from OAuth response
+                String name = userJson.has("name") ? userJson.get("name").getAsString() : "";
+                String[] nameParts = name.split(" ", 2);
+                String firstName = nameParts.length > 0 ? nameParts[0] : "";
+                String lastName = nameParts.length > 1 ? nameParts[1] : "";
+                String email = getPrimaryEmail(accessToken);
+
+                Map<String, String> userData = new HashMap<>();
+                userData.put("email", email);
+                userData.put("firstName", firstName);
+                userData.put("lastName", lastName);
+
+                // FIRST call onUserData with the user info
+                if (onUserData != null) {
+                    onUserData.accept(userData);
+                }
+
+                // THEN call onSuccess
+                if (onSuccess != null) {
+                    Platform.runLater(onSuccess);
+                }
+
                 sendSuccessResponse(exchange);
-                onSuccess.run();
+
             } catch (Exception e) {
                 sendErrorResponse(exchange, "Authentication failed");
-                onError.accept("GitHub login failed: " + e.getMessage());
+                onError.accept("Github login failed: " + e.getMessage());
             }
         }
 
         /**
-         * Exchanges GitHub auth code for access token
-         * @param code Authorization code
-         * @return Access token string
+         * Gets user's primary email from GitHub's email API.
+         * Required because profile endpoint may not return email.
          */
-        private String exchangeCodeForToken(String code) throws IOException, InterruptedException {
-            String params = "client_id=" + CLIENT_ID +
+        private String getPrimaryEmail(String accessToken) throws IOException, InterruptedException {
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(EMAILS_API_URL))
+                    .header("Authorization", "token " + accessToken)
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            JsonArray emails = JsonParser.parseString(response.body()).getAsJsonArray();
+
+            // Find the primary email
+            for (JsonElement emailElement : emails) {
+                JsonObject emailObj = emailElement.getAsJsonObject();
+                if (emailObj.get("primary").getAsBoolean()) {
+                    return emailObj.get("email").getAsString();
+                }
+            }
+            return "";
+        }
+
+        /**
+         * Exchanges temporary code for long-lived access token.
+         * Uses client secret for added security.
+         */
+        private String exchangeCodeForTokens(String code) throws IOException, InterruptedException {
+            // Exchanges authorization code for access token
+            String params = "code=" + code +
+                    "&client_id=" + CLIENT_ID +
                     "&client_secret=" + CLIENT_SECRET +
-                    "&code=" + code +
                     "&redirect_uri=" + URLEncoder.encode(REDIRECT_URI, StandardCharsets.UTF_8);
 
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(TOKEN_URL))
-                    .header("Accept", "application/json")
+                    .header("Accept", "application/json")  // GitHub returns JSON if you ask for it
                     .header("Content-Type", "application/x-www-form-urlencoded")
                     .POST(HttpRequest.BodyPublishers.ofString(params))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            JsonObject tokenJson = JsonParser.parseString(response.body()).getAsJsonObject();
-            return tokenJson.get("access_token").getAsString();
+            return response.body();
         }
 
         /**
-         * Fetches user info from GitHub API
-         * @param accessToken Valid access token
-         * @return JSON string of user data
+         * Fetches basic user profile (name, login) from GitHub API.
          */
         private String getUserInfo(String accessToken) throws IOException, InterruptedException {
             HttpClient client = HttpClient.newHttpClient();
@@ -583,13 +888,11 @@ public class OAuthService {
             return response.body();
         }
 
-        /**
-         * Parses URL query string into key-value pairs
-         * @param query The query string to parse
-         * @return Map of parameter names to values
-         */
+
+
         @NotNull
         private Map<String, String> parseQuery(String query) {
+            // Parses URL query string into key-value pairs
             Map<String, String> params = new HashMap<>();
             if (query != null) {
                 for (String param : query.split("&")) {
@@ -602,10 +905,6 @@ public class OAuthService {
             return params;
         }
 
-        /**
-         * Sends HTML success response to browser
-         * @param exchange HTTP exchange to respond to
-         */
         private void sendSuccessResponse(@NotNull HttpExchange exchange) throws IOException {
             String response = "<html><body>GitHub login successful! You can close this window.</body></html>";
             exchange.sendResponseHeaders(200, response.length());
@@ -614,11 +913,6 @@ public class OAuthService {
             }
         }
 
-        /**
-         * Sends HTML error response to browser
-         * @param exchange HTTP exchange to respond to
-         * @param message Error message to display
-         */
         private void sendErrorResponse(@NotNull HttpExchange exchange, String message) throws IOException {
             String response = "<html><body>Error: " + message + "</body></html>";
             exchange.sendResponseHeaders(400, response.length());
@@ -628,3 +922,4 @@ public class OAuthService {
         }
     }
 }
+

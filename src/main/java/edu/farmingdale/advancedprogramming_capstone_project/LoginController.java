@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
@@ -30,12 +31,15 @@ import java.util.*;
  * database interaction and manages state changes related to authentication.
  */
 public class LoginController implements Initializable {
-    private ConnDbOps cdbop;
-    public static HostServices hostServices;
-    private static Runnable onLoginSuccess;
-    private List<String> authDB;
+
     private static Stage authStage = new Stage();
-    Runnable mainScreenCallback;
+    // Database connection and auth service
+    private ConnDbOps cdbop;
+    private List<String> authDB; // Stores registered emails
+
+    public static HostServices hostServices; // For browser integration
+    static Runnable onLoginSuccess; //Runs when Authentication is successful
+    Runnable mainScreenCallback; //Main app callback
     private Runnable devModeCallback;
 
     static Dotenv dotenv = Dotenv.load();
@@ -46,12 +50,19 @@ public class LoginController implements Initializable {
     @FXML
     public Label stateText;
     @FXML
-    private TextField passwordField;
+    private PasswordField passwordField;
     @FXML
     private TextField usernameField;
     @FXML
     private Text errorTextPlaceholder;
 
+    /**
+     * Starts Login Page with initializing ConnOpsDb and making sure that the communication layer (AuthService) is also initialized.
+     * The purpose of AuthService is for ease of retrieving user information. As Lists are easier to retrieve information from than converting string values from ConnDbOps
+     * each time you want a value.
+     * @param url
+     * @param resourceBundle
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         cdbop = new ConnDbOps();
@@ -63,11 +74,16 @@ public class LoginController implements Initializable {
         System.out.println("Login callback initialized: " + (mainScreenCallback != null));
     }
 
+    /**
+     * Function is called when authentication is deemed successful so the User can transition to the next page.
+     * @param onLoginSuccess
+     */
     public static void setOnLoginSuccess(Runnable onLoginSuccess) {
         LoginController.onLoginSuccess = onLoginSuccess;
     }
 
     /**
+     * For development purposes to ease getting into the main application.
      * @param event ActionEvent
      */
     @FXML
@@ -88,7 +104,7 @@ public class LoginController implements Initializable {
 
     //Reads input from email and password input fields and preforms operations to ensure it works
 
-    /** Enter Button checks cases in which the enter button works
+    /** Enter Button checks cases in which passwords or emails may or may not be valid.
      * @param event ActionEvent
      */
     @FXML
@@ -115,7 +131,7 @@ public class LoginController implements Initializable {
         }
         System.out.println(mainScreenCallback + " " + authenticated);
 
-        if (authenticated && mainScreenCallback != null) {
+        if (authenticated) {
             Platform.runLater(mainScreenCallback);
         } else {
             Platform.runLater(() ->
@@ -132,20 +148,47 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Start Authentication via Microsoft
-     * @param event
+     * Handles Microsoft authentication button press event.
+     * Starts OAuth 2.0 flow with Microsoft OAuth provider.
+     *
+     * Creates new user and inserts in database if checks are fulfilled or just logs in if email is found
      */
     @FXML
     private void onMicrosoftButtonPress(ActionEvent event) {
-        // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
+            return;
         }
 
         new OAuthService.MicrosoftAuthHandler(
-                () -> {
-                    // This runs when authentication succeeds
+                userData -> {
+                    // Handle successful authentication
+                    String email = userData.get("email");
+                    if (!authDB.contains(email)) {
+                        // Create new account
+                        String firstName = userData.get("firstName");
+                        String lastName = userData.get("lastName");
+                        String password = SignUpController.generateRandomPassword();
+
+                        cdbop.insertUser(
+                                String.valueOf(ConnDbOps.AuthService.lastID + 1),
+                                firstName,
+                                lastName,
+                                email,
+                                password
+                        );
+                        ConnDbOps.AuthService.initializeAuthDB(cdbop);
+                        authDB = ConnDbOps.AuthService.getAuthDB();
+                    }
+
                     if (onLoginSuccess != null) {
+                        Platform.runLater(onLoginSuccess);
+                    }
+                },
+                () -> {
+                    // Success callback
+                    if (onLoginSuccess != null) {
+
                         Platform.runLater(onLoginSuccess);
                     }
                 },
@@ -154,20 +197,41 @@ public class LoginController implements Initializable {
         ).startAuthentication();
     }
 
+
     /**
-     * Starts Authentication via Google
-     * @param event
+     * Handles Google authentication button press event.
+     * Starts OAuth 2.0 flow with Google identity provider.
+     *
+     * Creates new user and inserts in database if checks are fulfilled or just logs in if email is found
      */
     @FXML
     private void onGoogleButtonPress(ActionEvent event) {
-        // Add null check for hostServices
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
+            return;
         }
 
         new OAuthService.GoogleAuthHandler(
-                () -> {
-                    // This runs when authentication succeeds
+                userData -> {
+                    // Handle successful authentication
+                    String email = userData.get("email");
+                    if (!authDB.contains(email)) {
+                        // Create new account
+                        String firstName = userData.get("firstName");
+                        String lastName = userData.get("lastName");
+                        String password = SignUpController.generateRandomPassword();
+
+                        cdbop.insertUser(
+                                String.valueOf(ConnDbOps.AuthService.lastID + 1),
+                                firstName,
+                                lastName,
+                                email,
+                                password
+                        );
+                        ConnDbOps.AuthService.initializeAuthDB(cdbop);
+                        authDB = ConnDbOps.AuthService.getAuthDB();
+                    }
+
                     if (onLoginSuccess != null) {
                         Platform.runLater(onLoginSuccess);
                     }
@@ -178,17 +242,38 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Start Authentication via Github
-     * @param event
-     * @throws IOException
+     * Handles GitHub authentication button press event.
+     * Starts OAuth 2.0 flow with GitHub OAuth provider.
+     *
+     * Creates new user and inserts in database if checks are fulfilled or just logs in if email is found
+     * @throws IOException If there's an error loading the authentication view
      */
     @FXML
     private void onGithubButtonPress(ActionEvent event) throws IOException {
         if (hostServices == null) {
             errorTextPlaceholder.setText("Browser services not available");
+            return;
         }
 
         new OAuthService.GithubAuthHandler(
+                userData -> {
+                    String email = userData.get("email");
+                    if (!authDB.contains(email)) {
+                        String firstName = userData.get("firstName");
+                        String lastName = userData.get("lastName");
+                        String password = SignUpController.generateRandomPassword();
+
+                        cdbop.insertUser(
+                                String.valueOf(ConnDbOps.AuthService.lastID + 1),
+                                firstName,
+                                lastName,
+                                email,
+                                password
+                        );
+                        ConnDbOps.AuthService.initializeAuthDB(cdbop);
+                        authDB = ConnDbOps.AuthService.getAuthDB();
+                    }
+                },
                 () -> {
                     if (onLoginSuccess != null) {
                         Platform.runLater(onLoginSuccess);
@@ -200,9 +285,9 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Leads to Sign Up Page
-     * @param event
-     * @throws IOException
+     * Handles navigation to the sign-up view.
+     *
+     * @throws IOException If there's an error loading the sign-up view
      */
     @FXML
     public void onSignUpTextPressed(MouseEvent event) throws IOException {
@@ -215,7 +300,7 @@ public class LoginController implements Initializable {
 
         // Pass the callback from CapstoneApp
         signUpController.setOnSuccess(CapstoneApp.getMainScreenCallback());
-        signUpController.setHostServices(hostServices);
+        SignUpController.setHostServices(hostServices);
 
         authStage.setScene(new Scene(signUpRoot));
         authStage.setTitle("AI Whiteboard Teaching Tool - Sign Up");
@@ -240,7 +325,7 @@ public class LoginController implements Initializable {
         Parent resetPwRoot = resetPwLoader.load();
         ResetPasswordController resetPasswordController = resetPwLoader.getController();
         resetPasswordController.setMainScreenCallback(CapstoneApp.getMainScreenCallback());
-        ResetPasswordController.setHostServices(hostServices);  // Add this line
+        ResetPasswordController.setHostServices(hostServices);
 
         Stage loginStage = new Stage();
         loginStage.setScene(new Scene(resetPwRoot));
@@ -251,8 +336,11 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * Determines state in which Main is run as a thread
-     * @param callback
+     * Registers a callback to be executed upon successful authentication.
+     * This callback handles navigation to the application's main screen.
+     *
+     * @param callback The Runnable to execute after successful login.
+     *                 Will be called on the JavaFX Application Thread.
      */
     public void setMainScreenCallback(Runnable callback) {
         this.mainScreenCallback = callback;

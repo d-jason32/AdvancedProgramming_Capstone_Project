@@ -98,11 +98,6 @@ public class CapstoneApp extends Application {
         splashController.setLoadingBarFinished(() -> {
             Platform.runLater(() -> {
                 try {
-                    splashStage.close();
-                    FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("login-screen.fxml"));
-                    Parent loginRoot = loginLoader.load();
-                    LoginController loginController = loginLoader.getController();
-
                     // Create the main screen callback first
                     mainScreenCallback = () -> {
                         try {
@@ -116,7 +111,10 @@ public class CapstoneApp extends Application {
                             e.printStackTrace();
                         }
                     };
-
+                    splashStage.close();
+                    FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("login-screen.fxml"));
+                    Parent loginRoot = loginLoader.load();
+                    LoginController loginController = loginLoader.getController();
 
                     // Set the callback BEFORE showing the login screen
                     LoginController.setOnLoginSuccess(CapstoneApp.getMainScreenCallback());

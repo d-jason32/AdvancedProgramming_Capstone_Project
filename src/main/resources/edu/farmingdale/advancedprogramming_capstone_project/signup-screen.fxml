@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.effect.DropShadow?>
@@ -96,7 +97,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="666.0">
                <children>
-                  <TextField fx:id="usernameField" prefHeight="52.0" prefWidth="360.0" promptText="Email" stylesheets="@styling/login_page_styles.css">
+                  <TextField fx:id="emailField" prefHeight="52.0" prefWidth="360.0" promptText="Email" stylesheets="@styling/login_page_styles.css">
                      <font>
                         <Font name="Kohinoor Gujarati Medium" size="58.0" />
                      </font>
@@ -118,7 +119,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="65.0" prefWidth="666.0">
                <children>
-                  <TextField fx:id="passwordField" prefHeight="52.0" prefWidth="360.0" promptText="Password">
+                  <PasswordField fx:id="passwordField" prefHeight="52.0" prefWidth="360.0" promptText="Password">
                      <font>
                         <Font name="Kohinoor Gujarati Medium" size="45.0" />
                      </font>
@@ -132,12 +133,12 @@
                      <HBox.margin>
                         <Insets bottom="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </PasswordField>
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="400.0" prefHeight="65.0" prefWidth="666.0">
                <children>
-                  <TextField fx:id="confirmPasswordField" prefHeight="52.0" prefWidth="360.0" promptText="Confirm Password">
+                  <PasswordField fx:id="confirmPasswordField" prefHeight="52.0" prefWidth="360.0" promptText="Confirm Password">
                      <font>
                         <Font name="Kohinoor Gujarati Medium" size="45.0" />
                      </font>
@@ -151,7 +152,7 @@
                      <HBox.margin>
                         <Insets bottom="10.0" />
                      </HBox.margin>
-                  </TextField>
+                  </PasswordField>
                </children>
             </HBox>
             <HBox alignment="CENTER" prefHeight="31.0" prefWidth="666.0">
