@@ -104,8 +104,7 @@ and pay attention to real time speech to text captions.
 - JSON parsing and serialization/deserialization
 
 ## ▶️ Demo
-
-!!! INSERT YOUTUBE VIDEO HERE
+[Watch the Demo Here!](https://youtu.be/b9RrcB694-A)
 
 ## 🧰 Tech Stack
 
