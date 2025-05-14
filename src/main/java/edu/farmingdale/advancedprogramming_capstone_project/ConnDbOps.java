@@ -10,8 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Methods for database use.
+ * Methods for database functionality (Authentication, Editing Users, Deleting users)
  * @author Jason Devaraj
+ * @author Milton Moses
  */
 public class ConnDbOps {
     final String MYSQL_SERVER_URL = "jdbc:mysql://csc311serverjason.mysql.database.azure.com";
@@ -99,7 +100,7 @@ public class ConnDbOps {
     }
 
     /**
-     * Method to search for a student using their email.
+     * Method to search for a student's password using their email.
      * @param accEmail Person object
      */
     public String queryPasswordByEmail(String accEmail) {
@@ -115,6 +116,66 @@ public class ConnDbOps {
                 return resultSet.getString("password");
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Person queryUserByID(String id) {
+        if (id == null) return null;
+
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+            // Select all where the id matches the student
+            String sql = "SELECT * FROM users WHERE id = ?";
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Person(
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error querying user by ID: " + id);
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * Method to search for a student's data using their email. Used for Linking OAuth credentials.
+     * @param email Person object
+     */
+    public Person queryUserByEmail(String email) {
+        if (email == null) return null;
+
+        String normalizedEmail = email.trim().toLowerCase();
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, USERNAME, PASSWORD);
+             PreparedStatement preparedStatement = conn.prepareStatement(
+                     "SELECT * FROM users WHERE LOWER(TRIM(email)) = ?")) {
+
+            preparedStatement.setString(1, normalizedEmail);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Person(
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name"),
+                        resultSet.getString("email"),
+                        resultSet.getString("password")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Error querying user by email: " + email);
             e.printStackTrace();
         }
         return null;
@@ -289,21 +350,26 @@ public class ConnDbOps {
         }
     }
 
+
+    /**
+     * Communication Layer for Login, Sign up, password reset controllers to talk to ConnOpsDb for receiving information
+     */
     public class AuthService {
-        private static List<String> authDB = new ArrayList<>();
+        static List<String> authDB = new ArrayList<>();
+        static int lastID;
 
         public static List<String> getAuthDB() {
             return authDB;
         }
 
-        public void setAuthDB(List<String> authDB) {
-            this.authDB = authDB;
-        }
-
-
+        /**
+         * Ensures AuthService will be up to date with changed information in ConnOpsDb
+         * @param cdbop
+         */
         public static void initializeAuthDB(ConnDbOps cdbop) {
             authDB.clear();
             List<Person> users = cdbop.displayAllUsers();
+            lastID = users.getLast().getId();
 
             for (Person user : users) {
                 String email = user.getEmail();
